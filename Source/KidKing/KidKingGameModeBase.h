@@ -13,5 +13,7 @@ UCLASS()
 class KIDKING_API AKidKingGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+
+public:
+	AKidKingGameModeBase();
 };
