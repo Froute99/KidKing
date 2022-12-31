@@ -6,7 +6,7 @@
 
 AKidKingGameModeBase::AKidKingGameModeBase()
 {
-	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/BluePrint/MainCharacter/BP_Boy01.BP_Boy01_C"));
+	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Script/Engine.Blueprint'/Game/BluePrint/MainCharacter/BP_Boy1.BP_Boy1_C'"));
 	if (PlayerPawnBPClass.Class != NULL)
 	{
 		DefaultPawnClass = PlayerPawnBPClass.Class;
