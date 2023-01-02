@@ -2,10 +2,11 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "EngineMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
 #include "CharacterBase.generated.h"
+
 
 UCLASS()
 class KIDKING_API ACharacterBase : public ACharacter
@@ -20,12 +21,22 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(VisibleAnywhere, Category = Camera) class USpringArmComponent* SpringArm;
-	UPROPERTY(VisibleAnywhere, Category = Camera) class UCameraComponent* Camera;
+	UPROPERTY(VisibleAnywhere, Category = Camera)
+	class USpringArmComponent* SpringArm;
+	
+	UPROPERTY(VisibleAnywhere, Category = Camera)
+	class UCameraComponent* Camera;
 
 
-	UPROPERTY(EditAnywhere, Category = Input) class UInputMappingContext* MovementContext;
-	UPROPERTY(EditAnywhere, Category = Input) class UInputAction* MovementAction;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	class UInputMappingContext* MovementContext;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* MovementAction;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* LookAction;
+
 
 	void EnhancedMove(const FInputActionValue& Value);
 	void EnhancedLook(const FInputActionValue& Value);
