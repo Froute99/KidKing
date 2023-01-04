@@ -3,13 +3,13 @@
 
 #include "KidKingGameModeBase.h"
 #include "MainCharacter1.h" 
+#include "Blueprint/UserWidget.h"
 
-AKidKingGameModeBase::AKidKingGameModeBase()
+void AKidKingGameModeBase::BeginPlay()
 {
-	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/BluePrint/MainCharacter/MyMainCharacter1.MyMainCharacter1_C"));
-	if (PlayerPawnBPClass.Class != NULL)
-	{
-		DefaultPawnClass = PlayerPawnBPClass.Class;
-	}
+	Super::BeginPlay();
+
+	CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), HUDWidget);
+	CurrentWidget->AddToViewport();
 
 }

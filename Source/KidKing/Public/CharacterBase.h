@@ -32,10 +32,10 @@ protected:
 	class UInputMappingContext* MovementContext;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	UInputAction* MovementAction;
+	class UInputAction* MovementAction;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	UInputAction* LookAction;
+	class UInputAction* LookAction;
 
 
 	void EnhancedMove(const FInputActionValue& Value);

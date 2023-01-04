@@ -13,7 +13,12 @@ UCLASS()
 class KIDKING_API AKidKingGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
+protected:
+	virtual void BeginPlay()override;
 
-public:
-	AKidKingGameModeBase();
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UMG Game")
+	UUserWidget* CurrentWidget;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UMG Game")
+	TSubclassOf<UUserWidget> HUDWidget;
 };
