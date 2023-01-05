@@ -10,6 +10,8 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubSystems.h"
 
+#include "MyAIController.h"
+
 // Sets default values
 ACharacterBase::ACharacterBase()
 {
@@ -23,7 +25,9 @@ ACharacterBase::ACharacterBase()
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("CAMERA"));
 	Camera->SetupAttachment(SpringArm);
-
+	
+	AIControllerClass = AMyAIController::StaticClass();
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 }
 
 // Called when the game starts or when spawned
@@ -45,22 +49,27 @@ void ACharacterBase::EnhancedMove(const FInputActionValue& Value)
 {
 	const FVector2D MovementVector = Value.Get<FVector2D>();
 
-	const FVector Forward = GetActorForwardVector();
+	const FRotator Rotation = Controller->GetControlRotation();
+	const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
+
+	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+	AddMovementInput(ForwardDirection, MovementVector.Y);
+	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+	AddMovementInput(RightDirection, MovementVector.X);
+
+
+	/*const FVector Forward = GetActorForwardVector();
 	AddMovementInput(Forward, MovementVector.Y);
 	const FVector Right = GetActorRightVector();
-	AddMovementInput(Right, MovementVector.X);
+	AddMovementInput(Right, MovementVector.X);*/
 }
 
 void ACharacterBase::EnhancedLook(const FInputActionValue& Value)
 {
-	const FVector2D LookAxisValue = Value.Get<FVector2D>();
-	if (GetController())
-	{
-		AddControllerYawInput(LookAxisValue.X);
-		AddControllerPitchInput(LookAxisValue.Y);
-	}
+	const FVector2D LookAxisVector = Value.Get<FVector2D>();
+	AddControllerYawInput(LookAxisVector.X);
+	AddControllerPitchInput(LookAxisVector.Y);
 	
-
 }
 
 // Called every frame
@@ -81,7 +90,8 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ACharacterBase::EnhancedMove);
 
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACharacterBase::EnhancedLook);
-	
+		
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacterBase::Jump);
 	}
 
 

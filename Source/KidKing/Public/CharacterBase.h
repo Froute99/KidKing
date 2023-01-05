@@ -8,6 +8,7 @@
 #include "CharacterBase.generated.h"
 
 
+
 UCLASS()
 class KIDKING_API ACharacterBase : public ACharacter
 {
@@ -37,6 +38,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	class UInputAction* LookAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	class UInputAction* JumpAction;
+
 
 	void EnhancedMove(const FInputActionValue& Value);
 	void EnhancedLook(const FInputActionValue& Value);
@@ -47,5 +51,5 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+	//virtual void Jump() override;
 };
