@@ -7,22 +7,27 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardData.h"
 
+
+const FName AMyAIController::HomePosKey(TEXT("HomePos"));
+const FName AMyAIController::PatrolPosKey(TEXT("PatrolPos"));
+const FName AMyAIController::TargetKey(TEXT("Target"));
+
+
 AMyAIController::AMyAIController()
 {
-	RepeatInterval = 3.0f;
+	
 }
 
 void AMyAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
-	GetWorld()->GetTimerManager().SetTimer(RepeatTimerHandle, this, &AMyAIController::OnRepeatTimer, RepeatInterval, true);
-
+	
 }
 
 void AMyAIController::OnUnPossess()
 {
 	Super::OnUnPossess();
-	GetWorld()->GetTimerManager().ClearTimer(RepeatTimerHandle);
+	
 }
 
 void AMyAIController::OnRepeatTimer()
