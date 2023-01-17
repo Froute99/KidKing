@@ -13,5 +13,5 @@ UCLASS()
 class KIDKING_API AMainCharacter1 : public ACharacterBase
 {
 	GENERATED_BODY()
-	
+
 };

@@ -11,7 +11,8 @@
 #include "EnhancedInputSubSystems.h"
 
 #include "MyAIController.h"
-
+#include "MyAnimInstance.h"
+#include "Engine/DamageEvents.h"
 // Sets default values
 ACharacterBase::ACharacterBase()
 {
@@ -30,11 +31,25 @@ ACharacterBase::ACharacterBase()
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 }
 
+// Called every frame
+void ACharacterBase::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+}
+
 // Called when the game starts or when spawned
 void ACharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
 
+	MyAnim = Cast<UMyAnimInstance>(GetMesh()->GetAnimInstance());
+	if (MyAnim)
+	{
+		MyAnim->OnMontageEnded.AddDynamic(this, &ACharacterBase::OnAttackMontageEnded);
+		MyAnim->OnAttackHitCheck.AddUObject(this, &ACharacterBase::AttackHitCheck);
+	}
+		
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
@@ -44,6 +59,25 @@ void ACharacterBase::BeginPlay()
 	}
 
 }
+
+// Called to bind functionality to input
+void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
+	{
+
+		EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ACharacterBase::EnhancedMove);
+
+		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACharacterBase::EnhancedLook);
+
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacterBase::Jump);
+	}
+
+	PlayerInputComponent->BindAction(TEXT("Attack"), EInputEvent::IE_Pressed, this, &ACharacterBase::Attack);
+}
+
 
 void ACharacterBase::EnhancedMove(const FInputActionValue& Value)
 {
@@ -72,28 +106,96 @@ void ACharacterBase::EnhancedLook(const FInputActionValue& Value)
 	
 }
 
-// Called every frame
-void ACharacterBase::Tick(float DeltaTime)
+void ACharacterBase::Attack()
 {
-	Super::Tick(DeltaTime);
-
+	if (MyAnim)
+	{
+		MyAnim->PlayAttackMontage_Hero();
+		IsAttacking = true;
+	}
 }
 
-// Called to bind functionality to input
-void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ACharacterBase::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted)
 {
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	IsAttacking = false;
+}
 
-	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
+void ACharacterBase::AttackHitCheck()
+{
+	float AttackRange = 200.0f;
+	float AttackRadius = 50.0f;
+
+	if (GEngine)
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("AMyCharacter::AttackHitCheck()"));
+
+	FHitResult HitResult;
+	FCollisionQueryParams Params(NAME_None, false, this);
+	bool bResult = GetWorld()->SweepSingleByChannel(
+		HitResult,
+		GetActorLocation(),
+		GetActorLocation() + GetActorForwardVector() * AttackRange,
+		FQuat::Identity,
+		ECollisionChannel::ECC_GameTraceChannel1,
+		FCollisionShape::MakeSphere(AttackRadius),
+		Params);
+
+#if ENABLE_DRAW_DEBUG
+
+	FVector TraceVec = GetActorForwardVector() * AttackRange;
+	FVector Center = GetActorLocation() + TraceVec * 0.5f;
+	float HalfHeight = AttackRange * 0.5f + AttackRadius;
+
+	//Capsule 의 Z (Up)를 TraceVec 방향으로 회전 
+	FQuat CapsuleRot = FRotationMatrix::MakeFromZ(TraceVec).ToQuat();
+	FColor DrawColor = bResult ? FColor::Green : FColor::Red;
+
+
+	float DebugLifeTime = 5.0f;
+
+	DrawDebugCapsule(GetWorld(),
+		Center,
+		HalfHeight,
+		AttackRadius,
+		CapsuleRot,
+		DrawColor,
+		false,
+		DebugLifeTime);
+
+#endif
+
+	if (bResult)
 	{
-		
-		EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ACharacterBase::EnhancedMove);
+		if (HitResult.GetActor())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Hit ACtor Name : %s"), *HitResult.GetActor()->GetName());
 
-		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACharacterBase::EnhancedLook);
-		
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacterBase::Jump);
+			FDamageEvent DamageEvent;
+			HitResult.GetActor()->TakeDamage(50.0f, DamageEvent, GetController(), this);
+		}
 	}
 
-
 }
+
+float ACharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	float FinalDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	UE_LOG(LogTemp, Warning, TEXT("Actor : %s took Damage : %f"), *GetName(), FinalDamage);
+
+	if (FinalDamage > 0.0f)
+	{
+		MyAnim->SetDeadAnim();
+
+		FVector Dir = DamageCauser->GetActorLocation() - GetActorLocation();
+		Dir.Z = 0.0f;
+		FQuat LookAtRot = FRotationMatrix::MakeFromX(Dir).ToQuat();
+		SetActorRotation(LookAtRot);
+		SetActorEnableCollision(false);
+	}
+
+	return FinalDamage;
+}
+
+
+
+
 
