@@ -35,6 +35,8 @@ public:
 	UFUNCTION()
 	void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted);
 
+	UPROPERTY(VisibleAnywhere, Category = UI)
+		class UWidgetComponent* HPBarWidget;
 
 private:
 	// Called when the game starts or when spawned

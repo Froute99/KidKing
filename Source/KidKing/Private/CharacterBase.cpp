@@ -13,6 +13,11 @@
 #include "MyAIController.h"
 #include "MyAnimInstance.h"
 #include "Engine/DamageEvents.h"
+
+#include "Components/WidgetComponent.h"
+//#include "CharacterWidget.h"
+
+
 // Sets default values
 ACharacterBase::ACharacterBase()
 {
@@ -29,6 +34,18 @@ ACharacterBase::ACharacterBase()
 	
 	AIControllerClass = AMyAIController::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+
+	HPBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HPBARWIDGET"));
+	HPBarWidget->SetupAttachment(GetMesh());
+
+	HPBarWidget->SetRelativeLocation(FVector(0.0f, 0.0f, 180.0f));
+	HPBarWidget->SetWidgetSpace(EWidgetSpace::Screen);
+	static ConstructorHelpers::FClassFinder<UUserWidget> UI_HUD(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/HP_Bar.HP_Bar_C'"));
+	if (UI_HUD.Succeeded())
+	{
+		HPBarWidget->SetWidgetClass(UI_HUD.Class);
+		HPBarWidget->SetDrawSize(FVector2D(150.0f, 50.0f));
+	}
 }
 
 // Called every frame
