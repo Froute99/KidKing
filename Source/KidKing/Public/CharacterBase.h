@@ -7,7 +7,7 @@
 #include "InputActionValue.h"
 #include "CharacterBase.generated.h"
 
-
+DECLARE_MULTICAST_DELEGATE(FOnAttackEndDelegate);
 
 UCLASS()
 class KIDKING_API ACharacterBase : public ACharacter
@@ -23,7 +23,8 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	
+	virtual void PostInitializeComponents() override;
+
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent,
 		class AController* EventInstigator, AActor* DamageCauser) override;
 
@@ -32,8 +33,9 @@ public:
 	void Attack();
 	void AttackHitCheck();
 
-	UFUNCTION()
-	void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted);
+	FOnAttackEndDelegate OnAttackEnd;
+
+
 
 	UPROPERTY(VisibleAnywhere, Category = UI)
 		class UWidgetComponent* HPBarWidget;
@@ -50,6 +52,9 @@ private:
 
 	UPROPERTY()
 	class UMyAnimInstance* MyAnim;
+
+	UFUNCTION()
+		void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted);
 
 	bool IsAttacking = false;
 

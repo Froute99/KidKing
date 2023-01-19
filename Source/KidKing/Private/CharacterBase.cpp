@@ -15,6 +15,7 @@
 #include "Engine/DamageEvents.h"
 
 #include "Components/WidgetComponent.h"
+#include "GameFramework/Actor.h"
 //#include "CharacterWidget.h"
 
 
@@ -128,13 +129,22 @@ void ACharacterBase::Attack()
 	if (MyAnim)
 	{
 		MyAnim->PlayAttackMontage_Hero();
+		MyAnim->PlayAttackMontage_Bot();
 		IsAttacking = true;
 	}
+}
+
+void ACharacterBase::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+		if (MyAnim)
+			MyAnim->OnMontageEnded.AddDynamic(this, &ACharacterBase::OnAttackMontageEnded);
 }
 
 void ACharacterBase::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted)
 {
 	IsAttacking = false;
+	OnAttackEnd.Broadcast();
 }
 
 void ACharacterBase::AttackHitCheck()
@@ -211,6 +221,7 @@ float ACharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 
 	return FinalDamage;
 }
+
 
 
 
