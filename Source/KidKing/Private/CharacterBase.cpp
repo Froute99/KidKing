@@ -16,6 +16,9 @@
 
 #include "Components/WidgetComponent.h"
 #include "GameFramework/Actor.h"
+
+#include "CharacterStatComponent.h"
+#include "MyCharacterWidget.h"
 //#include "CharacterWidget.h"
 
 
@@ -35,6 +38,8 @@ ACharacterBase::ACharacterBase()
 	
 	AIControllerClass = AMyAIController::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+
+	CharacterStat = CreateDefaultSubobject<UCharacterStatComponent>(TEXT("CHARACTERSTAT"));
 
 	HPBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HPBARWIDGET"));
 	HPBarWidget->SetupAttachment(GetMesh());
@@ -74,6 +79,12 @@ void ACharacterBase::BeginPlay()
 		{
 			Subsystem->AddMappingContext(MovementContext, 0);
 		}
+	}
+
+	auto CharacterWidget = Cast<UMyCharacterWidget>(HPBarWidget->GetUserWidgetObject());
+	if (nullptr != CharacterWidget)
+	{
+		CharacterWidget->BindCharacterStat(CharacterStat);
 	}
 
 }
@@ -137,8 +148,17 @@ void ACharacterBase::Attack()
 void ACharacterBase::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-		if (MyAnim)
-			MyAnim->OnMontageEnded.AddDynamic(this, &ACharacterBase::OnAttackMontageEnded);
+	if (MyAnim)
+		MyAnim->OnMontageEnded.AddDynamic(this, &ACharacterBase::OnAttackMontageEnded);
+
+	CharacterStat->OnHPIsZero.AddLambda([this]() -> void {
+
+		UE_LOG(LogTemp, Warning, TEXT("OnHPIsZero"));
+		MyAnim->SetDeadAnim();
+		SetActorEnableCollision(false);
+
+		});
+
 }
 
 void ACharacterBase::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted)
@@ -197,7 +217,7 @@ void ACharacterBase::AttackHitCheck()
 			UE_LOG(LogTemp, Warning, TEXT("Hit ACtor Name : %s"), *HitResult.GetActor()->GetName());
 
 			FDamageEvent DamageEvent;
-			HitResult.GetActor()->TakeDamage(50.0f, DamageEvent, GetController(), this);
+			HitResult.GetActor()->TakeDamage(CharacterStat->GetAttack(), DamageEvent, GetController(), this);
 		}
 	}
 
@@ -210,15 +230,8 @@ float ACharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 
 	if (FinalDamage > 0.0f)
 	{
-		MyAnim->SetDeadAnim();
-
-		FVector Dir = DamageCauser->GetActorLocation() - GetActorLocation();
-		Dir.Z = 0.0f;
-		FQuat LookAtRot = FRotationMatrix::MakeFromX(Dir).ToQuat();
-		SetActorRotation(LookAtRot);
-		SetActorEnableCollision(false);
+		CharacterStat->SetDamage(FinalDamage);
 	}
-
 	return FinalDamage;
 }
 

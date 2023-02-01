@@ -35,7 +35,8 @@ public:
 
 	FOnAttackEndDelegate OnAttackEnd;
 
-
+	UPROPERTY(VisibleAnywhere, Category = Stat)
+		class UCharacterStatComponent* CharacterStat;
 
 	UPROPERTY(VisibleAnywhere, Category = UI)
 		class UWidgetComponent* HPBarWidget;
