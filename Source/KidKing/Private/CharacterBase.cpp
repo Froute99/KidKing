@@ -18,6 +18,8 @@
 #include "GameFramework/Actor.h"
 //#include "CharacterWidget.h"
 
+#include "MyWeapon.h"
+#include "Engine/World.h"
 
 // Sets default values
 ACharacterBase::ACharacterBase()
@@ -36,6 +38,10 @@ ACharacterBase::ACharacterBase()
 	AIControllerClass = AMyAIController::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
+	myHealth = 0.f;
+	myMaxHealth = 100.0f;
+
+
 	HPBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HPBARWIDGET"));
 	HPBarWidget->SetupAttachment(GetMesh());
 
@@ -48,6 +54,7 @@ ACharacterBase::ACharacterBase()
 		HPBarWidget->SetDrawSize(FVector2D(150.0f, 50.0f));
 	}
 }
+
 
 // Called every frame
 void ACharacterBase::Tick(float DeltaTime)
@@ -146,7 +153,67 @@ void ACharacterBase::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupt
 	IsAttacking = false;
 	OnAttackEnd.Broadcast();
 }
+//*******************************************************************
+USkeletalMeshComponent* ACharacterBase::GetSpesificPawnMesh() const
+{
+	return GetMesh();
+}
 
+FName ACharacterBase::GetWeaponAttachPoint() const
+{
+	return WeaponAttachPoint;
+}
+
+void ACharacterBase::EquipWeapon(AMyWeapon* Weapon)
+{
+	if (Weapon)
+	{
+		SetCurrentWeapon(Weapon, CurrentWeapon);
+	}
+}
+
+void ACharacterBase::AddWeapon(AMyWeapon* Weapon)
+{
+	if (Weapon)
+	{
+		Inventory.AddUnique(Weapon);
+	}
+}
+
+void ACharacterBase::SetCurrentWeapon(AMyWeapon* NewWeapon, AMyWeapon* LastWeapon)
+{
+	AMyWeapon* LocalLastWeapon = NULL;
+	if (LastWeapon != NULL)
+	{
+		LocalLastWeapon = LastWeapon;
+	}
+
+	if (NewWeapon)
+	{
+		NewWeapon->SetOwningPawn(this);
+		NewWeapon->OnEquip(LastWeapon);
+
+
+	}
+}
+
+void ACharacterBase::SpawnDefaultInventory()
+{
+	int32 NumWeaponClasses = DefaultInventoryClasses.Num();
+	for (int32 i = 0; i < NumWeaponClasses; i++)
+	{
+		FActorSpawnParameters SpawnInfo;
+		UWorld* WRLD = GetWorld();
+		AMyWeapon* NewWeapon = WRLD->SpawnActor<AMyWeapon>(DefaultInventoryClasses[i], SpawnInfo);
+		AddWeapon(NewWeapon);
+	}
+
+	if (Inventory.Num() > 0)
+	{
+		EquipWeapon(Inventory[0]);
+	}
+}
+//*********************************************************************************
 void ACharacterBase::AttackHitCheck()
 {
 	float AttackRange = 200.0f;
@@ -205,22 +272,26 @@ void ACharacterBase::AttackHitCheck()
 
 float ACharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-	float FinalDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
-	UE_LOG(LogTemp, Warning, TEXT("Actor : %s took Damage : %f"), *GetName(), FinalDamage);
-
-	if (FinalDamage > 0.0f)
+	const float myGetDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	if (myHealth <= 0)
 	{
-		MyAnim->SetDeadAnim();
-
-		FVector Dir = DamageCauser->GetActorLocation() - GetActorLocation();
-		Dir.Z = 0.0f;
-		FQuat LookAtRot = FRotationMatrix::MakeFromX(Dir).ToQuat();
-		SetActorRotation(LookAtRot);
-		SetActorEnableCollision(false);
+		this->Destroy();
 	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("HP: % f"), myHealth));
+		myHealth -= myGetDamage;
+	}
+	MyAnim->SetHitAnim();
 
-	return FinalDamage;
+	return myGetDamage;
 }
+
+//void ACharacterBase::OnHit(float DamageTaken, FDamageEvent const& DamageEvent, APawn* PawnInstigator, AActor* DamageCauser)
+//{
+//	
+//
+//}
 
 
 

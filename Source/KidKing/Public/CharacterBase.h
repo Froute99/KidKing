@@ -18,6 +18,12 @@ public:
 	// Sets default values for this character's properties
 	ACharacterBase();
 
+	USkeletalMeshComponent* GetSpesificPawnMesh()const;
+
+	FName GetWeaponAttachPoint()const;
+
+	void EquipWeapon(class AMyWeapon* Weapon);
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -28,6 +34,8 @@ public:
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent,
 		class AController* EventInstigator, AActor* DamageCauser) override;
 
+	//virtual void OnHit(float DamageTaken, struct FDamageEvent const& DamageEvent, class APawn* PawnInstigator, class AActor* DamageCauser);
+
 	void EnhancedMove(const FInputActionValue& Value);
 	void EnhancedLook(const FInputActionValue& Value);
 	void Attack();
@@ -35,7 +43,11 @@ public:
 
 	FOnAttackEndDelegate OnAttackEnd;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Stat)
+		float myHealth;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Stat)
+		float myMaxHealth;
 
 	UPROPERTY(VisibleAnywhere, Category = UI)
 		class UWidgetComponent* HPBarWidget;
@@ -70,5 +82,21 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 		class UInputAction* JumpAction;
+
+	UPROPERTY(EditDefaultsOnly, Category = Inventory)
+		FName WeaponAttachPoint;
+
+	TArray<class AMyWeapon*>Inventory;
+
+	class AMyWeapon* CurrentWeapon;
+
+	void AddWeapon(class AMyWeapon* Weapon);
+
+	void SetCurrentWeapon(class AMyWeapon* NewWeapon, class AMyWeapon* LastWeapon);
+
+	void SpawnDefaultInventory();
+
+	UPROPERTY(EditDefaultsOnly, Category = Inventory)
+		TArray<TSubclassOf<class AMyWeapon>>DefaultInventoryClasses;
 
 };

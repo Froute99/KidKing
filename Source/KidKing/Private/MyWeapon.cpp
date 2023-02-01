@@ -15,6 +15,28 @@ AMyWeapon::AMyWeapon(const class FObjectInitializer& ObjectInitializer):Super(Ob
 
 	WeaponCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("WeaponCollision"));
 	WeaponCollision->SetBoxExtent(FVector(3.f, 3.f, 3.f));
+	WeaponCollision->AttachToComponent(WeaponMesh, FAttachmentTransformRules::KeepRelativeTransform,"DamageSocket");
 }
 
+void AMyWeapon::SetOwningPawn(ACharacterBase* NewOwner)
+{
+	if (MyPawn != NewOwner)
+	{
+		MyPawn = NewOwner;
+	}
+}
 
+void AMyWeapon::AttachMeshToPawn()
+{
+	if (MyPawn)
+	{
+		USkeletalMeshComponent* PawnMesh = MyPawn->GetSpesificPawnMesh();
+		FName AttachPoint = MyPawn->GetWeaponAttachPoint();
+		WeaponMesh->AttachToComponent(PawnMesh, FAttachmentTransformRules::KeepRelativeTransform, AttachPoint);
+	}
+}
+
+void AMyWeapon::OnEquip(const AMyWeapon* LastWeapon)
+{
+	AttachMeshToPawn();
+}
