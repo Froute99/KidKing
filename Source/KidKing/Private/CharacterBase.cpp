@@ -41,6 +41,7 @@ ACharacterBase::ACharacterBase()
 	myHealth = 0.f;
 	myMaxHealth = 100.0f;
 
+	myHealth = myMaxHealth;
 
 	HPBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HPBARWIDGET"));
 	HPBarWidget->SetupAttachment(GetMesh());
@@ -53,6 +54,9 @@ ACharacterBase::ACharacterBase()
 		HPBarWidget->SetWidgetClass(UI_HUD.Class);
 		HPBarWidget->SetDrawSize(FVector2D(150.0f, 50.0f));
 	}
+
+	IsAttacking = false;
+
 }
 
 
@@ -71,7 +75,6 @@ void ACharacterBase::BeginPlay()
 	MyAnim = Cast<UMyAnimInstance>(GetMesh()->GetAnimInstance());
 	if (MyAnim)
 	{
-		MyAnim->OnMontageEnded.AddDynamic(this, &ACharacterBase::OnAttackMontageEnded);
 		MyAnim->OnAttackHitCheck.AddUObject(this, &ACharacterBase::AttackHitCheck);
 	}
 		
@@ -133,25 +136,23 @@ void ACharacterBase::EnhancedLook(const FInputActionValue& Value)
 
 void ACharacterBase::Attack()
 {
-	if (MyAnim)
+	if (!IsAttacking)
 	{
 		MyAnim->PlayAttackMontage_Hero();
 		MyAnim->PlayAttackMontage_Bot();
-		IsAttacking = true;
+		IsAttacking = true;	
 	}
 }
 
 void ACharacterBase::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-		if (MyAnim)
-			MyAnim->OnMontageEnded.AddDynamic(this, &ACharacterBase::OnAttackMontageEnded);
+	
 }
 
-void ACharacterBase::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted)
+void ACharacterBase::OnAttackMontageEnded()
 {
 	IsAttacking = false;
-	OnAttackEnd.Broadcast();
 }
 //*******************************************************************
 USkeletalMeshComponent* ACharacterBase::GetSpesificPawnMesh() const

@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "MyWeapon.h"
+#include "Engine.h"
 
 // Sets default values
 AMyWeapon::AMyWeapon(const class FObjectInitializer& ObjectInitializer):Super(ObjectInitializer)
@@ -39,4 +39,14 @@ void AMyWeapon::AttachMeshToPawn()
 void AMyWeapon::OnEquip(const AMyWeapon* LastWeapon)
 {
 	AttachMeshToPawn();
+}
+
+void AMyWeapon::NotifyActorBeginOverlap(AActor* OtherActor)
+{
+	if (OtherActor->IsA(AActor::StaticClass()))
+	{
+		UGameplayStatics::ApplyDamage(OtherActor, 10.f, NULL, this, UDamageType::StaticClass());
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, "ApplyDamage");
+	}
+
 }

@@ -52,6 +52,9 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = UI)
 		class UWidgetComponent* HPBarWidget;
 
+	void OnAttackMontageEnded();
+	bool IsAttacking;
+
 private:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -64,11 +67,6 @@ private:
 
 	UPROPERTY()
 	class UMyAnimInstance* MyAnim;
-
-	UFUNCTION()
-		void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted);
-
-	bool IsAttacking = false;
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)

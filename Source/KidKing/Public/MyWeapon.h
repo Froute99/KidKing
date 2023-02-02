@@ -21,6 +21,7 @@ public:
 	void SetOwningPawn(ACharacterBase* NewOwner);
 	void AttachMeshToPawn();
 	void OnEquip(const AMyWeapon* LastWeapon);
+	
 private:
 	UPROPERTY(VisibleDefaultsOnly, Category = Weapon)
 		USkeletalMeshComponent* WeaponMesh;
@@ -30,4 +31,8 @@ private:
 
 protected:
 	class ACharacterBase* MyPawn;
+
+public:
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor)override;
+
 };
