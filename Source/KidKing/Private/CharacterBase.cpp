@@ -139,8 +139,7 @@ void ACharacterBase::Attack()
 	if (!IsAttacking)
 	{
 		MyAnim->PlayAttackMontage_Hero();
-		MyAnim->PlayAttackMontage_Bot();
-		IsAttacking = true;	
+		MyAnim->PlayAttackMontage_Bot();	
 	}
 }
 
@@ -273,26 +272,84 @@ void ACharacterBase::AttackHitCheck()
 
 float ACharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
+	if (myHealth <= 0.0f)
+	{
+		return 0.0f;
+	}
+
 	const float myGetDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+
+	if (myGetDamage > 0.f)
+	{
+		myHealth -= myGetDamage;
+	}
+
+
 	if (myHealth <= 0)
 	{
-		this->Destroy();
+		MyAnim->SetDeadAnim();
+		Die(myGetDamage, DamageEvent, EventInstigator, DamageCauser);
 	}
 	else
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("HP: % f"), myHealth));
-		myHealth -= myGetDamage;
+		OnHit(myGetDamage, DamageEvent, EventInstigator ? EventInstigator->GetPawn() : NULL, DamageCauser);
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("HP is : %f"), myHealth));
 	}
-	MyAnim->SetHitAnim();
+
 
 	return myGetDamage;
 }
 
-//void ACharacterBase::OnHit(float DamageTaken, FDamageEvent const& DamageEvent, APawn* PawnInstigator, AActor* DamageCauser)
-//{
-//	
-//
-//}
+void ACharacterBase::OnHit(float DamageTaken, FDamageEvent const& DamageEvent, APawn* PawnInstigator, AActor* DamageCauser)
+{
+	PlayAnimMontage(BeHit_AnimMontage);
+	if (DamageTaken > 0.f)
+	{
+		ApplyDamageMomentum(DamageTaken, DamageEvent, PawnInstigator, DamageCauser);
+	}
+
+}
+
+void ACharacterBase::Die(float KillingDamage, FDamageEvent const& DamageEvent, AController* Killer, AActor* DamageCauser)
+{
+
+	myHealth = FMath::Min(0.f, myHealth);
+
+	UDamageType const* const DamageType = DamageEvent.DamageTypeClass ? Cast<const UDamageType>(DamageEvent.DamageTypeClass->GetDefaultObject()) : GetDefault<UDamageType>();
+
+	Killer = GetDamageInstigator(Killer, *DamageType);
+
+	GetWorldTimerManager().ClearAllTimersForObject(this);
+
+	if (GetCapsuleComponent())
+	{
+		GetCapsuleComponent()->BodyInstance.SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		GetCapsuleComponent()->BodyInstance.SetResponseToChannel(ECC_Pawn, ECR_Ignore);
+		GetCapsuleComponent()->BodyInstance.SetResponseToChannel(ECC_PhysicsBody, ECR_Ignore);
+	}
+
+	if (GetCharacterMovement())
+	{
+		GetCharacterMovement()->StopMovementImmediately();
+		GetCharacterMovement()->DisableMovement();
+	}
+
+	if (Controller != NULL)
+	{
+		Controller->UnPossess();
+	}
+
+	float DeathAnimDuration = 1.5f;
+
+	FTimerHandle TimerHandle;
+	GetWorldTimerManager().SetTimer(TimerHandle, this, &ACharacterBase::DeathAnimationEnd, DeathAnimDuration, false);
+}
+
+void ACharacterBase::DeathAnimationEnd()
+{
+	this->SetActorHiddenInGame(true);
+	SetLifeSpan(0.1f);
+}
 
 
 

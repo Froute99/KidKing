@@ -23,7 +23,7 @@ public:
 	void PlayAttackMontage_Hero();
 	void PlayAttackMontage_Bot();
 	void SetDeadAnim();
-	void SetHitAnim();
+	
 
 	UFUNCTION()
 	void AnimNotify_AttackHitCheck();
@@ -43,6 +43,4 @@ private:
 	UPROPERTY(BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))
 	bool bDeadAnim;
 
-	UPROPERTY(BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))
-	bool bHitAnim;
 };

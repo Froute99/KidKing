@@ -34,14 +34,18 @@ public:
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent,
 		class AController* EventInstigator, AActor* DamageCauser) override;
 
-	//virtual void OnHit(float DamageTaken, struct FDamageEvent const& DamageEvent, class APawn* PawnInstigator, class AActor* DamageCauser);
+	virtual void OnHit(float DamageTaken, struct FDamageEvent const& DamageEvent, class APawn* PawnInstigator, class AActor* DamageCauser);
+
+	virtual void Die(float KillingDamage, struct FDamageEvent const& DamageEvent, AController* Killer, AActor* DamageCauser);
+
+	void DeathAnimationEnd();
 
 	void EnhancedMove(const FInputActionValue& Value);
 	void EnhancedLook(const FInputActionValue& Value);
 	void Attack();
 	void AttackHitCheck();
 
-	FOnAttackEndDelegate OnAttackEnd;
+	FOnAttackEndDelegate OnAttackEnd; // bot notify
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Stat)
 		float myHealth;
@@ -51,6 +55,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, Category = UI)
 		class UWidgetComponent* HPBarWidget;
+
+	UPROPERTY(EditDefaultsOnly, Category = Attack)
+		UAnimMontage* BeHit_AnimMontage;
 
 	void OnAttackMontageEnded();
 	bool IsAttacking;

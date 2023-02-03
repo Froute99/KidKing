@@ -55,7 +55,3 @@ void UMyAnimInstance::SetDeadAnim()
 	bDeadAnim = true;
 }
 
-void UMyAnimInstance::SetHitAnim()
-{
-	bHitAnim = true;
-}

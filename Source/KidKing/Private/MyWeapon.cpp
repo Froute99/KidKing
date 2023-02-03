@@ -43,7 +43,7 @@ void AMyWeapon::OnEquip(const AMyWeapon* LastWeapon)
 
 void AMyWeapon::NotifyActorBeginOverlap(AActor* OtherActor)
 {
-	if (OtherActor->IsA(AActor::StaticClass()))
+	if (OtherActor->IsA(AActor::StaticClass()) && MyPawn->IsAttacking && OtherActor != MyPawn)
 	{
 		UGameplayStatics::ApplyDamage(OtherActor, 10.f, NULL, this, UDamageType::StaticClass());
 		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, "ApplyDamage");

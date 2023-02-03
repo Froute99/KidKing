@@ -8,7 +8,15 @@
 void UMyAnimNotifyState::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration)
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Purple, __FUNCTION__);
-
+	
+	if (MeshComp != NULL && MeshComp->GetOwner() != NULL)
+	{
+		ACharacterBase* Player = Cast<ACharacterBase>(MeshComp->GetOwner());
+		if (Player != NULL)
+		{
+			Player->IsAttacking = true;
+		}
+	}
 
 }
 
@@ -22,6 +30,7 @@ void UMyAnimNotifyState::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequen
 		if (Player != NULL)
 		{
 			Player->OnAttackMontageEnded();
+			Player->IsAttacking = false;
 		}
 	}
 }
