@@ -15,6 +15,8 @@
 #include "Engine/DamageEvents.h"
 
 #include "Components/WidgetComponent.h"
+#include "Blueprint/UserWidget.h"
+#include "HPbar.h"
 #include "GameFramework/Actor.h"
 //#include "CharacterWidget.h"
 
@@ -22,7 +24,7 @@
 #include "Engine/World.h"
 
 // Sets default values
-ACharacterBase::ACharacterBase()
+ACharacterBase::ACharacterBase() : Widget_Component(CreateDefaultSubobject<UWidgetComponent>(TEXT("HealthValue")))
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -43,16 +45,22 @@ ACharacterBase::ACharacterBase()
 
 	myHealth = myMaxHealth;
 
-	HPBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HPBARWIDGET"));
-	HPBarWidget->SetupAttachment(GetMesh());
+	//myHPbar_Text = FString::SanitizeFloat(MyHealth) + "/" + FString::SanitizeFloat(MyMaxHealth);
 
-	HPBarWidget->SetRelativeLocation(FVector(0.0f, 0.0f, 180.0f));
-	HPBarWidget->SetWidgetSpace(EWidgetSpace::Screen);
-	static ConstructorHelpers::FClassFinder<UUserWidget> UI_HUD(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/HP_Bar.HP_Bar_C'"));
-	if (UI_HUD.Succeeded())
+	//make HPbar on the head
+	if (Widget_Component)
 	{
-		HPBarWidget->SetWidgetClass(UI_HUD.Class);
-		HPBarWidget->SetDrawSize(FVector2D(150.0f, 50.0f));
+		Widget_Component->SetupAttachment(RootComponent);
+		Widget_Component->SetWidgetSpace(EWidgetSpace::Screen);
+		Widget_Component->SetRelativeLocation(FVector(0.0f, 0.0f, 180.0f));
+		static ConstructorHelpers::FClassFinder<UUserWidget>widget_class(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/HPbar_BP.HPbar_BP_C'"));
+
+		if (widget_class.Succeeded())
+		{
+			//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Magenta, __FUNCTION__);
+			Widget_Component->SetWidgetClass(widget_class.Class);
+
+		}
 	}
 
 	IsAttacking = false;
@@ -65,6 +73,13 @@ void ACharacterBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	float myHPnum = (myHealth / myMaxHealth);
+
+	auto const uw = Cast<UHPbar>(Widget_Component->GetUserWidgetObject());
+	if (uw)
+	{
+		uw->set_bar_value_percent(myHPnum);
+	}
 }
 
 // Called when the game starts or when spawned
@@ -339,7 +354,10 @@ void ACharacterBase::Die(float KillingDamage, FDamageEvent const& DamageEvent, A
 		Controller->UnPossess();
 	}
 
-	float DeathAnimDuration = 1.5f;
+	//GetMesh()->SetCollisionProfileName("Ragdoll");
+	//GetMesh()->SetSimulatePhysics(true);
+
+	float DeathAnimDuration = 5.0f;
 
 	FTimerHandle TimerHandle;
 	GetWorldTimerManager().SetTimer(TimerHandle, this, &ACharacterBase::DeathAnimationEnd, DeathAnimDuration, false);
@@ -352,6 +370,20 @@ void ACharacterBase::DeathAnimationEnd()
 }
 
 
+float ACharacterBase::get_Health() const
+{
+	return myHealth;
+}
+
+float ACharacterBase::get_maxHealth() const
+{
+	return myMaxHealth;
+}
+
+void ACharacterBase::set_health(float const new_health)
+{
+	myHealth = new_health;
+}
 
 
 

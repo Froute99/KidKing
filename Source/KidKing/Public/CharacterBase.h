@@ -62,6 +62,10 @@ public:
 	void OnAttackMontageEnded();
 	bool IsAttacking;
 
+	float get_Health()const;
+	float get_maxHealth()const;
+	void set_health(float const new_health);
+
 private:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -103,5 +107,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = Inventory)
 		TArray<TSubclassOf<class AMyWeapon>>DefaultInventoryClasses;
+
+
+	UPROPERTY(VisibleAnywhere, Category = UI)
+	class UWidgetComponent* Widget_Component;
 
 };
