@@ -9,16 +9,36 @@
 /**
  * 
  */
+
+UENUM(BlueprintType)
+enum class EGameState :uint8
+{
+	GameStart,
+	GamePlay,
+	GamePause,
+	GameOver,
+};
+
+
 UCLASS()
 class KIDKING_API AKidKingGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 protected:
+	
+	AKidKingGameModeBase();
+	
 	virtual void BeginPlay()override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UMG Game")
-	UUserWidget* CurrentWidget;
+	UPROPERTY(EditAnywhere, Category = "UMG Game")
+		EGameState gameStateEnum;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UMG Game")
-	TSubclassOf<UUserWidget> HUDWidget;
+		TSubclassOf<UUserWidget>HUDWidgetClass;
+
+
+	UUserWidget* CurrentWidget;
+
+public:
+	void ChangeUI();
 };

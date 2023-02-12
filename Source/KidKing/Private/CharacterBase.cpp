@@ -52,7 +52,7 @@ ACharacterBase::ACharacterBase() : Widget_Component(CreateDefaultSubobject<UWidg
 	{
 		Widget_Component->SetupAttachment(RootComponent);
 		Widget_Component->SetWidgetSpace(EWidgetSpace::Screen);
-		Widget_Component->SetRelativeLocation(FVector(0.0f, 0.0f, 180.0f));
+		Widget_Component->SetRelativeLocation(FVector(0.0f, 0.0f, 50.0f));
 		static ConstructorHelpers::FClassFinder<UUserWidget>widget_class(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/HPbar_BP.HPbar_BP_C'"));
 
 		if (widget_class.Succeeded())
