@@ -17,6 +17,7 @@
 #include "Components/WidgetComponent.h"
 #include "Blueprint/UserWidget.h"
 #include "HPbar.h"
+#include "GameHUD_UI.h"
 #include "GameFramework/Actor.h"
 //#include "CharacterWidget.h"
 
@@ -73,12 +74,19 @@ void ACharacterBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	float myHPnum = (myHealth / myMaxHealth);
+	float myHPnum = (myHealth / myMaxHealth) * 100;
 
 	auto const uw = Cast<UHPbar>(Widget_Component->GetUserWidgetObject());
 	if (uw)
 	{
 		uw->set_bar_value_percent(myHPnum);
+	}
+
+	auto const GameHUD_HPBar = Cast<UGameHUD_UI>(Widget_Component->GetUserWidgetObject());
+
+	if (GameHUD_HPBar)
+	{
+		GameHUD_HPBar->set_bar_value_percent(myHPnum);
 	}
 }
 

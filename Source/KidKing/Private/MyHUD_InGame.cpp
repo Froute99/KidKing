@@ -8,22 +8,10 @@
 
 AMyHUD_InGame::AMyHUD_InGame()
 {
-	
 	static ConstructorHelpers::FClassFinder<UUserWidget> obj(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/HUD.HUD_C'"));
 	if (obj.Succeeded())
 	{
 		uiBPClass = obj.Class;
-	}
-
-	if (uiBPClass)
-	{
-		uiWidget = CreateWidget<UUserWidget>(GetWorld(), uiBPClass);
-
-		if (uiWidget)
-		{
-			uiWidget->AddToViewport();
-		}
-
 	}
 
 }

@@ -2,6 +2,7 @@
 
 
 #include "StartMenu_UI.h"
+#include "Controller_StartMenu.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -10,6 +11,11 @@ void UStartMenu_UI::NativeConstruct()
 	if (Bnt_StartGame)
 	{
 		Bnt_StartGame->OnClicked.AddDynamic(this, &UStartMenu_UI::Bnt_StartGame_ButtonClicked);
+	}
+
+	if (Bnt_Credits)
+	{
+		Bnt_Credits->OnClicked.AddDynamic(this, &UStartMenu_UI::Bnt_Credits_ButtonClicked);
 	}
 
 	if (Bnt_ExitGame)
@@ -22,6 +28,12 @@ void UStartMenu_UI::NativeConstruct()
 void UStartMenu_UI::Bnt_StartGame_ButtonClicked()
 {
 	UGameplayStatics::OpenLevel(GetWorld(), "/Game/Map/stage_01");
+}
+
+void UStartMenu_UI::Bnt_Credits_ButtonClicked()
+{
+	AController_StartMenu* controller = Cast<AController_StartMenu>(GetOwningPlayer());
+	controller->ShowCredits();
 }
 
 void UStartMenu_UI::Bnt_ExitGame_ButtonClicked()

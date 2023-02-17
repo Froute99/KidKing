@@ -8,6 +8,8 @@
 
 void UGameHUD_UI::NativeConstruct()
 {
+	Super::NativeConstruct();
+
 	if (Btn_GameMenu)
 	{
 		Btn_GameMenu->OnClicked.AddDynamic(this, &UGameHUD_UI::GameMenu_Clicked);
@@ -16,6 +18,7 @@ void UGameHUD_UI::NativeConstruct()
 
 void UGameHUD_UI::set_bar_value_percent(float const value)
 {
+	ACharacterBase* PlayerHP = Cast<ACharacterBase>(GetOwningPlayer());
 	HPbar_value->SetPercent(value);
 }
 

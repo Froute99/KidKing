@@ -22,13 +22,17 @@ protected:
 
 public:
 	void ShowGameMenu();
+	void ShowCredits();
 
 private:
-	TSubclassOf<class UUserWidget> uiBPClass;
-		UUserWidget* uiWidget;
+	//TSubclassOf<class UUserWidget> uiBPClass;
+	//	UUserWidget* uiWidget;
 
 	TSubclassOf<class UUserWidget>uiGameMenuBPClass;
 		UUserWidget* uiGameMenuWidget;
+
+	TSubclassOf<class UUserWidget>uiCreditsBPClass;
+		UUserWidget* uiCreditsWidget;
 
 //public:
 //	void ShowGameMenu();
