@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "CharacterBase.h"
+#include "GameFramework/Actor.h"
 #include "MainCharacter1.generated.h"
 
 /**
@@ -13,5 +14,9 @@ UCLASS()
 class KIDKING_API AMainCharacter1 : public ACharacterBase
 {
 	GENERATED_BODY()
-	
+
+public:
+	AMainCharacter1();
+
+	virtual void PostInitializeComponents()override;
 };

@@ -7,7 +7,7 @@
 #include "InputActionValue.h"
 #include "CharacterBase.generated.h"
 
-
+DECLARE_MULTICAST_DELEGATE(FOnAttackEndDelegate);
 
 UCLASS()
 class KIDKING_API ACharacterBase : public ACharacter
@@ -18,7 +18,55 @@ public:
 	// Sets default values for this character's properties
 	ACharacterBase();
 
-protected:
+	USkeletalMeshComponent* GetSpesificPawnMesh()const;
+
+	FName GetWeaponAttachPoint()const;
+
+	void EquipWeapon(class AMyWeapon* Weapon);
+
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
+	// Called to bind functionality to input
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void PostInitializeComponents() override;
+
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent,
+		class AController* EventInstigator, AActor* DamageCauser) override;
+
+	virtual void OnHit(float DamageTaken, struct FDamageEvent const& DamageEvent, class APawn* PawnInstigator, class AActor* DamageCauser);
+
+	virtual void Die(float KillingDamage, struct FDamageEvent const& DamageEvent, AController* Killer, AActor* DamageCauser);
+
+	void DeathAnimationEnd();
+
+	void EnhancedMove(const FInputActionValue& Value);
+	void EnhancedLook(const FInputActionValue& Value);
+	void Attack();
+	void AttackHitCheck();
+
+	FOnAttackEndDelegate OnAttackEnd; // bot notify
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Stat)
+		float myHealth;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Stat)
+		float myMaxHealth;
+
+	UPROPERTY(VisibleAnywhere, Category = UI)
+		class UWidgetComponent* HPBarWidget;
+
+	UPROPERTY(EditDefaultsOnly, Category = Attack)
+		UAnimMontage* BeHit_AnimMontage;
+
+	void OnAttackMontageEnded();
+	bool IsAttacking;
+
+	float get_Health()const;
+	float get_maxHealth()const;
+	void set_health(float const new_health);
+
+private:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
@@ -28,28 +76,40 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = Camera)
 	class UCameraComponent* Camera;
 
+	UPROPERTY()
+	class UMyAnimInstance* MyAnim;
+
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+		class UInputMappingContext* MovementContext;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	class UInputMappingContext* MovementContext;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	class UInputAction* MovementAction;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	class UInputAction* LookAction;
+		class UInputAction* MovementAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	class UInputAction* JumpAction;
+		class UInputAction* LookAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+		class UInputAction* JumpAction;
+
+	UPROPERTY(EditDefaultsOnly, Category = Inventory)
+		FName WeaponAttachPoint;
+
+	TArray<class AMyWeapon*>Inventory;
+
+	class AMyWeapon* CurrentWeapon;
+
+	void AddWeapon(class AMyWeapon* Weapon);
+
+	void SetCurrentWeapon(class AMyWeapon* NewWeapon, class AMyWeapon* LastWeapon);
+
+	void SpawnDefaultInventory();
+
+	UPROPERTY(EditDefaultsOnly, Category = Inventory)
+		TArray<TSubclassOf<class AMyWeapon>>DefaultInventoryClasses;
 
 
-	void EnhancedMove(const FInputActionValue& Value);
-	void EnhancedLook(const FInputActionValue& Value);
+	UPROPERTY(VisibleAnywhere, Category = UI)
+	class UWidgetComponent* Widget_Component;
 
-public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	//virtual void Jump() override;
 };
