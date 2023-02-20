@@ -74,7 +74,7 @@ void ACharacterBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	float myHPnum = (myHealth / myMaxHealth) * 100;
+	float myHPnum = (myHealth / myMaxHealth);
 
 	auto const uw = Cast<UHPbar>(Widget_Component->GetUserWidgetObject());
 	if (uw)
@@ -166,16 +166,20 @@ void ACharacterBase::Attack()
 	}
 }
 
+
+void ACharacterBase::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted)
+{
+	OnAttackEnd.Broadcast();
+}
+
 void ACharacterBase::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 	
 }
 
-void ACharacterBase::OnAttackMontageEnded()
-{
-	IsAttacking = false;
-}
+
+
 //*******************************************************************
 USkeletalMeshComponent* ACharacterBase::GetSpesificPawnMesh() const
 {
@@ -287,7 +291,7 @@ void ACharacterBase::AttackHitCheck()
 			UE_LOG(LogTemp, Warning, TEXT("Hit ACtor Name : %s"), *HitResult.GetActor()->GetName());
 
 			FDamageEvent DamageEvent;
-			HitResult.GetActor()->TakeDamage(50.0f, DamageEvent, GetController(), this);
+			HitResult.GetActor()->TakeDamage(10.0f, DamageEvent, GetController(), this);
 		}
 	}
 
@@ -326,10 +330,10 @@ float ACharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 void ACharacterBase::OnHit(float DamageTaken, FDamageEvent const& DamageEvent, APawn* PawnInstigator, AActor* DamageCauser)
 {
 	PlayAnimMontage(BeHit_AnimMontage);
-	if (DamageTaken > 0.f)
-	{
-		ApplyDamageMomentum(DamageTaken, DamageEvent, PawnInstigator, DamageCauser);
-	}
+	//if (DamageTaken > 0.f)
+	//{
+	//	ApplyDamageMomentum(DamageTaken, DamageEvent, PawnInstigator, DamageCauser);
+	//}
 
 }
 
@@ -376,6 +380,7 @@ void ACharacterBase::DeathAnimationEnd()
 	this->SetActorHiddenInGame(true);
 	SetLifeSpan(0.1f);
 }
+
 
 
 float ACharacterBase::get_Health() const

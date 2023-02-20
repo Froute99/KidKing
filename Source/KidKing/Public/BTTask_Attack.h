@@ -24,6 +24,6 @@ protected:
 
 private:
 
-	bool IsAttacking = false;
+	FThreadSafeBool IsAttacking = false;
 
 };

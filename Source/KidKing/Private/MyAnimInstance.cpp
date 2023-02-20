@@ -48,6 +48,7 @@ void UMyAnimInstance::AnimNotify_AttackHitCheck()
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("AnimNofify_HitCheck"));
 	
 	OnAttackHitCheck.Broadcast();
+
 }
 
 void UMyAnimInstance::SetDeadAnim()

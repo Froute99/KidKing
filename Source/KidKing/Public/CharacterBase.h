@@ -59,7 +59,10 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = Attack)
 		UAnimMontage* BeHit_AnimMontage;
 
-	void OnAttackMontageEnded();
+	UFUNCTION()
+		void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted);
+
+	
 	bool IsAttacking;
 
 	float get_Health()const;

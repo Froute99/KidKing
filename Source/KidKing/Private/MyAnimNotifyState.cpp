@@ -29,7 +29,6 @@ void UMyAnimNotifyState::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequen
 		ACharacterBase* Player = Cast<ACharacterBase>(MeshComp->GetOwner());
 		if (Player != NULL)
 		{
-			Player->OnAttackMontageEnded();
 			Player->IsAttacking = false;
 		}
 	}
