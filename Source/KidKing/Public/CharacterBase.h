@@ -47,11 +47,17 @@ public:
 
 	FOnAttackEndDelegate OnAttackEnd; // bot notify
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Stat)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = State)
+		FName MyCharacterName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = State)
 		float myHealth;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Stat)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = State)
 		float myMaxHealth;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = State)
+		float myHPnum;
 
 	UPROPERTY(VisibleAnywhere, Category = UI)
 		class UWidgetComponent* HPBarWidget;

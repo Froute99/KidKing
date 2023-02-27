@@ -9,10 +9,12 @@
 AController_StartMenu::AController_StartMenu()
 {
 	
+	isShowPauseMenu = false;
+	isShowCredits = false;
 	static ConstructorHelpers::FClassFinder<UUserWidget> GamePauseUI(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/Pause_BP.Pause_BP_C'"));
 	if (GamePauseUI.Succeeded())
 	{
-		uiGameMenuBPClass = GamePauseUI.Class;
+		uiGamePauseBPClass = GamePauseUI.Class;
 	}
 
 	static ConstructorHelpers::FClassFinder<UUserWidget> GameCreditsUI(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/Credits_BP.Credits_BP_C'"));
@@ -20,40 +22,73 @@ AController_StartMenu::AController_StartMenu()
 	{
 		uiCreditsBPClass = GameCreditsUI.Class;
 	}
+
+	static ConstructorHelpers::FClassFinder<UUserWidget> DieUI(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/DieUI_BP.DieUI_BP_C'"));
+	if (DieUI.Succeeded())
+	{
+		uiDieBPClass = DieUI.Class;
+	}
+
 }
 
 void AController_StartMenu::SetupInputComponent()
 {
 	APlayerController::SetupInputComponent();
 
-	InputComponent->BindAction(TEXT("ShowGameMenu"), EInputEvent::IE_Pressed, this, &AController_StartMenu::ShowGameMenu);
+	InputComponent->BindAction(TEXT("ShowGameMenu"), EInputEvent::IE_Pressed, this, &AController_StartMenu::ShowPauseMenu);
 	
 
 }
 
-void AController_StartMenu::ShowGameMenu()
+void AController_StartMenu::ShowPauseMenu()
 {
-	if(uiGameMenuBPClass)
+	if(uiGamePauseBPClass && isShowPauseMenu == false)
 	{
-		uiGameMenuWidget = CreateWidget<UUserWidget>(GetWorld(), uiGameMenuBPClass);
-
-		if (uiGameMenuWidget)
+		uiPauseMenuWidget = CreateWidget<UUserWidget>(GetWorld(), uiGamePauseBPClass);
+		if (uiPauseMenuWidget)
 		{
-			uiGameMenuWidget->AddToViewport();
+			uiPauseMenuWidget->AddToViewport();
 		}
-
+		isShowPauseMenu = true;
 	}
+}
+
+void AController_StartMenu::ClosePauseMenu()
+{
+	uiPauseMenuWidget->RemoveFromViewport();
+	isShowPauseMenu = false;
 }
 
 void AController_StartMenu::ShowCredits()
 {
-	if (uiCreditsBPClass)
+	if (uiCreditsBPClass && isShowCredits == false)
 	{
 		uiCreditsWidget = CreateWidget<UUserWidget>(GetWorld(), uiCreditsBPClass);
 
 		if (uiCreditsWidget)
 		{
 			uiCreditsWidget->AddToViewport();
+		}
+		isShowCredits = true;
+	}
+}
+
+void AController_StartMenu::CloseCredits()
+{
+	uiCreditsWidget->RemoveFromViewport();
+	isShowCredits = false;
+}
+
+void AController_StartMenu::ShowDieUI()
+{
+	
+	if (uiDieBPClass)
+	{
+		uiDieWidget = CreateWidget<UUserWidget>(GetWorld(), uiDieBPClass);
+
+		if (uiDieWidget)
+		{
+			uiDieWidget->AddToViewport();
 		}
 
 	}

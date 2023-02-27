@@ -10,20 +10,15 @@ void UGameHUD_UI::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	if (Btn_GameMenu)
+	if (Btn_PauseMenu)
 	{
-		Btn_GameMenu->OnClicked.AddDynamic(this, &UGameHUD_UI::GameMenu_Clicked);
+		Btn_PauseMenu->OnClicked.AddDynamic(this, &UGameHUD_UI::PauseMenu_Clicked);
 	}
 }
 
-void UGameHUD_UI::set_bar_value_percent(float const value)
-{
-	//ACharacterBase* PlayerHP = Cast<ACharacterBase>(GetOwningPlayer());
-	HPbar_value->SetPercent(value);
-}
-
-void UGameHUD_UI::GameMenu_Clicked()
+void UGameHUD_UI::PauseMenu_Clicked()
 {
 	AController_StartMenu* controller = Cast<AController_StartMenu>(GetOwningPlayer());
-	controller->ShowGameMenu();
+	controller->ShowPauseMenu();
 }
+

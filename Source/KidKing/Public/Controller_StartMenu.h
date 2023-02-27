@@ -21,19 +21,30 @@ protected:
 
 
 public:
-	void ShowGameMenu();
+	void ShowPauseMenu();
+	void ClosePauseMenu();
+
 	void ShowCredits();
+	void CloseCredits();
+
+	void ShowDieUI();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool isShowPauseMenu;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool isShowCredits;
 
 private:
-	//TSubclassOf<class UUserWidget> uiBPClass;
-	//	UUserWidget* uiWidget;
-
-	TSubclassOf<class UUserWidget>uiGameMenuBPClass;
-		UUserWidget* uiGameMenuWidget;
+	
+	TSubclassOf<class UUserWidget>uiGamePauseBPClass;
+		UUserWidget* uiPauseMenuWidget;
 
 	TSubclassOf<class UUserWidget>uiCreditsBPClass;
 		UUserWidget* uiCreditsWidget;
 
+	TSubclassOf<class UUserWidget>uiDieBPClass;
+		UUserWidget* uiDieWidget;
 //public:
 //	void ShowGameMenu();
 //	void CloseGameMenu();

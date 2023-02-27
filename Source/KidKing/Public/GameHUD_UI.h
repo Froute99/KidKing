@@ -18,18 +18,15 @@ class KIDKING_API UGameHUD_UI : public UUserWidget
 
 public:
 	void NativeConstruct() override;
-	void set_bar_value_percent(float const value);
 	
 protected:
-	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
-		UProgressBar* HPbar_value = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
-		UButton* Btn_GameMenu = nullptr;
+		UButton* Btn_PauseMenu = nullptr;
 
 private:
 	UFUNCTION()
-		void GameMenu_Clicked();
+		void PauseMenu_Clicked();
 
 
 };

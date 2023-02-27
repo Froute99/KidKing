@@ -38,4 +38,5 @@ private:
 
 	UFUNCTION()
 		void Bnt_ExitGame_ButtonClicked();
+
 };

@@ -29,7 +29,6 @@ EBTNodeResult::Type UBTTask_Attack::ExecuteTask(UBehaviorTreeComponent& OwnerCom
 	FRotator TargetRot = FRotationMatrix::MakeFromX(LookVector).Rotator();
 	MyCharacter->SetActorRotation(TargetRot);
 
-
 	MyCharacter->Attack();
 	
 
