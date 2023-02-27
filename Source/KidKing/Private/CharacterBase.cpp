@@ -76,14 +76,13 @@ void ACharacterBase::Tick(float DeltaTime)
 
 	float myHPnum = (myHealth / myMaxHealth);
 
-	auto const uw = Cast<UHPbar>(Widget_Component->GetUserWidgetObject());
+	/*auto const uw = Cast<UHPbar>(Widget_Component->GetUserWidgetObject());
 	if (uw)
 	{
 		uw->set_bar_value_percent(myHPnum);
-	}
+	}*/
 
 	auto const GameHUD_HPBar = Cast<UGameHUD_UI>(Widget_Component->GetUserWidgetObject());
-
 	if (GameHUD_HPBar)
 	{
 		GameHUD_HPBar->set_bar_value_percent(myHPnum);
@@ -163,6 +162,7 @@ void ACharacterBase::Attack()
 	{
 		MyAnim->PlayAttackMontage_Hero();
 		MyAnim->PlayAttackMontage_Bot();	
+		
 	}
 }
 

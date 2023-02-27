@@ -18,7 +18,7 @@ void UGameHUD_UI::NativeConstruct()
 
 void UGameHUD_UI::set_bar_value_percent(float const value)
 {
-	ACharacterBase* PlayerHP = Cast<ACharacterBase>(GetOwningPlayer());
+	//ACharacterBase* PlayerHP = Cast<ACharacterBase>(GetOwningPlayer());
 	HPbar_value->SetPercent(value);
 }
 
