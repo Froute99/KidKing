@@ -11,6 +11,7 @@ AController_StartMenu::AController_StartMenu()
 	
 	isShowPauseMenu = false;
 	isShowCredits = false;
+
 	static ConstructorHelpers::FClassFinder<UUserWidget> GamePauseUI(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/Pause_BP.Pause_BP_C'"));
 	if (GamePauseUI.Succeeded())
 	{
@@ -55,7 +56,7 @@ void AController_StartMenu::ShowPauseMenu()
 
 void AController_StartMenu::ClosePauseMenu()
 {
-	uiPauseMenuWidget->RemoveFromViewport();
+	uiPauseMenuWidget->RemoveFromParent();
 	isShowPauseMenu = false;
 }
 
@@ -75,7 +76,7 @@ void AController_StartMenu::ShowCredits()
 
 void AController_StartMenu::CloseCredits()
 {
-	uiCreditsWidget->RemoveFromViewport();
+	uiCreditsWidget->RemoveFromParent();
 	isShowCredits = false;
 }
 
