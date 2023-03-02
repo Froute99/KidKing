@@ -15,8 +15,10 @@ class URespawnBlueprintLibrary : public UBlueprintFunctionLibrary
 	GENERATED_BODY()
 protected:
 	// call when player died
-	static void RegisterRespawn(class ACharacterPawn* Character);
+	UFUNCTION(BlueprintCallable)
+	static void RegisterRespawn(float RespawnTime, class ACharacter* Character, FTimerHandle* TimerHandle);
 
+	UPROPERTY(EditAnywhere, BlueprintCallable)
 public:
 
 
