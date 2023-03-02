@@ -2,24 +2,24 @@
 
 #pragma once
 
-#include "EngineMinimal.h"
-#include "SkillInterface.generated.h"
+//#include "EngineMinimal.h"
+//#include "SkillInterface.generated.h"
 
 /**
  * 
  */
 
-UCLASS()
-class KIDKING_API ASkillInterface
-{
-	GENERATED_BODY()
-protected:
-	
-	AKidKingGameModeBase();
-	
-	virtual void BeginPlay()override;
-
-
-public:
-	void ChangeUI();
-};
+//UCLASS(Abstract)
+//class KIDKING_API ASkillInterface : public 
+//{
+//	GENERATED_BODY()
+//protected:
+//	
+//	AKidKingGameModeBase();
+//	
+//	virtual void BeginPlay()override;
+//
+//
+//public:
+//	void ChangeUI();
+//};

@@ -31,13 +31,15 @@ protected:
 	virtual void BeginPlay()override;
 
 	UPROPERTY(EditAnywhere, Category = "UMG Game")
-		EGameState gameStateEnum;
+	EGameState gameStateEnum;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UMG Game")
-		TSubclassOf<UUserWidget>HUDWidgetClass;
+	TSubclassOf<UUserWidget>HUDWidgetClass;
 
 
 	UUserWidget* CurrentWidget;
+
+	float OccupationPoint;
 
 public:
 	void ChangeUI();

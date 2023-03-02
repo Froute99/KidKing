@@ -39,6 +39,8 @@ public:
 };
 
 
+DECLARE_DELEGATE(FWinDelegate)
+
 UCLASS()
 class KIDKING_API UMyGameInstance : public UGameInstance
 {
@@ -51,7 +53,21 @@ public:
 
 	virtual void Init()override;
 
+	void IncreaseScore();
+
+	// some binding functions here
+
 private:
 	UPROPERTY()
-		class UDataTable* MyCharacterTable;
+	class UDataTable* MyCharacterTable;
+
+	int32 OccupyRate;		// 100 means team one occupy, -100 means the opposite team occupy
+
+	int32 TeamOneScore;
+	int32 TeamTwoScore;
+
+	const int32 DesiredScore = 200;
+
+	FWinDelegate WinDelegate;
+
 };

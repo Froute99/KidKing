@@ -32,7 +32,6 @@ void AKidKingGameModeBase::BeginPlay()
 
 void AKidKingGameModeBase::ChangeUI()
 {
-
 	CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), HUDWidgetClass);
 	CurrentWidget->AddToViewport();
 }
