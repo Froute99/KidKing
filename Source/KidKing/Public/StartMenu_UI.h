@@ -15,18 +15,21 @@ class KIDKING_API UStartMenu_UI : public UUserWidget
 {
 	GENERATED_BODY()
 public:
+
 	void NativeConstruct() override;
 
-protected:
-
-	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 		UButton* Bnt_StartGame = nullptr;
 
-	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 		UButton* Bnt_Credits = nullptr;
 
-	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 		UButton* Bnt_ExitGame = nullptr;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+		UButton* Bnt_Option = nullptr;
+protected:
+
 
 private:
 

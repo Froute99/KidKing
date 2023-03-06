@@ -335,11 +335,6 @@ float ACharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 void ACharacterBase::OnHit(float DamageTaken, FDamageEvent const& DamageEvent, APawn* PawnInstigator, AActor* DamageCauser)
 {
 	PlayAnimMontage(BeHit_AnimMontage);
-	//if (DamageTaken > 0.f)
-	//{
-	//	ApplyDamageMomentum(DamageTaken, DamageEvent, PawnInstigator, DamageCauser);
-	//}
-
 }
 
 void ACharacterBase::Die(float KillingDamage, FDamageEvent const& DamageEvent, AController* Killer, AActor* DamageCauser)
