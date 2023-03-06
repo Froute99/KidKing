@@ -16,10 +16,9 @@ class URespawnBlueprintLibrary : public UBlueprintFunctionLibrary
 protected:
 	// call when player died
 	UFUNCTION(BlueprintCallable)
-	static void RegisterRespawn(float RespawnTime, class ACharacter* Character, FTimerHandle* TimerHandle);
-
-	UPROPERTY(EditAnywhere, BlueprintCallable)
+	static void RegisterRespawn(class ACharacterBase* Character);
+	
 public:
-
+	
 
 };
