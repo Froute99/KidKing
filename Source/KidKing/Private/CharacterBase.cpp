@@ -262,7 +262,7 @@ void ACharacterBase::AttackHitCheck()
 	FVector Center = GetActorLocation() + TraceVec * 0.5f;
 	float HalfHeight = AttackRange * 0.5f + AttackRadius;
 
-	//Capsule ÀÇ Z (Up)¸¦ TraceVec ¹æÇâÀ¸·Î È¸Àü 
+	//Capsule ï¿½ï¿½ Z (Up)ï¿½ï¿½ TraceVec ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ 
 	FQuat CapsuleRot = FRotationMatrix::MakeFromZ(TraceVec).ToQuat();
 	FColor DrawColor = bResult ? FColor::Green : FColor::Red;
 
