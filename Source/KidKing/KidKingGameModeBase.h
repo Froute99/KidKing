@@ -11,7 +11,7 @@
  */
 
 UENUM(BlueprintType)
-enum class EGameState :uint8
+enum class EKidKingGameState :uint8
 {
 	GameStart,
 	GamePlay,
@@ -31,7 +31,7 @@ protected:
 	virtual void BeginPlay()override;
 
 	UPROPERTY(EditAnywhere, Category = "UMG Game")
-	EGameState gameStateEnum;
+	EKidKingGameState GameStateEnum;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UMG Game")
 	TSubclassOf<UUserWidget>HUDWidgetClass;

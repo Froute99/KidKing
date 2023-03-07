@@ -48,25 +48,25 @@ public:
 	FOnAttackEndDelegate OnAttackEnd; // bot notify
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = State)
-		FName MyCharacterName;
+	FName MyCharacterName;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = State)
-		float myHealth;
+	float myHealth;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = State)
-		float myMaxHealth;
+	float myMaxHealth;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = State)
-		float myHPnum;
+	float myHPnum;
 
 	UPROPERTY(VisibleAnywhere, Category = UI)
-		class UWidgetComponent* HPBarWidget;
+	class UWidgetComponent* HPBarWidget;
 
 	UPROPERTY(EditDefaultsOnly, Category = Attack)
-		UAnimMontage* BeHit_AnimMontage;
+	UAnimMontage* BeHit_AnimMontage;
 
 	UFUNCTION()
-		void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted);
+	void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted);
 
 	bool IsAttacking;
 
@@ -92,19 +92,19 @@ private:
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-		class UInputMappingContext* MovementContext;
+	class UInputMappingContext* MovementContext;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-		class UInputAction* MovementAction;
+	class UInputAction* MovementAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-		class UInputAction* LookAction;
+	class UInputAction* LookAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-		class UInputAction* JumpAction;
+	class UInputAction* JumpAction;
 
 	UPROPERTY(EditDefaultsOnly, Category = Inventory)
-		FName WeaponAttachPoint;
+	FName WeaponAttachPoint;
 
 	UFUNCTION(BlueprintCallable)
 	void Respawn();
