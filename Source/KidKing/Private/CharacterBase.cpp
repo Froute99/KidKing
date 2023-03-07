@@ -38,7 +38,7 @@ ACharacterBase::ACharacterBase() : Widget_Component(CreateDefaultSubobject<UWidg
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("CAMERA"));
 	Camera->SetupAttachment(SpringArm);
-	
+
 	AIControllerClass = AMyAIController::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
@@ -95,7 +95,7 @@ void ACharacterBase::BeginPlay()
 	{
 		MyAnim->OnAttackHitCheck.AddUObject(this, &ACharacterBase::AttackHitCheck);
 	}
-		
+
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
@@ -149,7 +149,7 @@ void ACharacterBase::EnhancedLook(const FInputActionValue& Value)
 	const FVector2D LookAxisVector = Value.Get<FVector2D>();
 	AddControllerYawInput(LookAxisVector.X);
 	AddControllerPitchInput(LookAxisVector.Y);
-	
+
 }
 
 void ACharacterBase::Attack()
@@ -171,7 +171,7 @@ void ACharacterBase::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupt
 void ACharacterBase::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-	
+
 }
 
 
@@ -193,6 +193,14 @@ void ACharacterBase::EquipWeapon(AMyWeapon* Weapon)
 	{
 		SetCurrentWeapon(Weapon, CurrentWeapon);
 	}
+}
+
+void ACharacterBase::Respawn()
+{
+	TeleportTo(SpawnLocation, SpawnRotator, false, false);
+
+	OnRespawn();
+
 }
 
 void ACharacterBase::AddWeapon(AMyWeapon* Weapon)

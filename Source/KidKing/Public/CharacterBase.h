@@ -68,12 +68,14 @@ public:
 	UFUNCTION()
 		void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted);
 
-	
 	bool IsAttacking;
 
 	float get_Health()const;
 	float get_maxHealth()const;
 	void set_health(float const new_health);
+
+	const FVector& GetSpawnLocation() const { return SpawnLocation; }
+	const FRotator& GetSpawnRotator() const { return SpawnRotator; }
 
 private:
 	// Called when the game starts or when spawned
@@ -104,6 +106,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = Inventory)
 		FName WeaponAttachPoint;
 
+	UFUNCTION(BlueprintCallable)
+	void Respawn();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnRespawn();
+
 	TArray<class AMyWeapon*>Inventory;
 
 	class AMyWeapon* CurrentWeapon;
@@ -120,5 +128,8 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = UI)
 	class UWidgetComponent* Widget_Component;
+
+	FVector SpawnLocation;
+	FRotator SpawnRotator;
 
 };
