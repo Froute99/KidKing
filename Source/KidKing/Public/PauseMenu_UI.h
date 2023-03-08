@@ -17,7 +17,7 @@ class KIDKING_API UPauseMenu_UI : public UUserWidget
 	
 public:
 	void NativeConstruct() override;
-
+	
 protected:
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))

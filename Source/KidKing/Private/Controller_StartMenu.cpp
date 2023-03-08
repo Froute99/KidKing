@@ -36,13 +36,15 @@ void AController_StartMenu::SetupInputComponent()
 {
 	APlayerController::SetupInputComponent();
 
-	InputComponent->BindAction(TEXT("ShowGameMenu"), EInputEvent::IE_Pressed, this, &AController_StartMenu::ShowPauseMenu);
+	InputComponent->BindAction(TEXT("Pause_UI"), EInputEvent::IE_Pressed, this, &AController_StartMenu::ShowPauseMenu);
 	
 
 }
 
 void AController_StartMenu::ShowPauseMenu()
 {
+	SetInputMode(FInputModeUIOnly());
+
 	if(uiGamePauseBPClass && isShowPauseMenu == false)
 	{
 		uiPauseMenuWidget = CreateWidget<UUserWidget>(GetWorld(), uiGamePauseBPClass);
@@ -51,13 +53,17 @@ void AController_StartMenu::ShowPauseMenu()
 			uiPauseMenuWidget->AddToViewport();
 		}
 		isShowPauseMenu = true;
+		bShowMouseCursor = true;
 	}
+
 }
 
 void AController_StartMenu::ClosePauseMenu()
 {
 	uiPauseMenuWidget->RemoveFromParent();
 	isShowPauseMenu = false;
+	bShowMouseCursor = false;
+	SetInputMode(FInputModeGameOnly());
 }
 
 void AController_StartMenu::ShowCredits()
