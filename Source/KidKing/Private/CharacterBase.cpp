@@ -387,8 +387,9 @@ void ACharacterBase::Die(float KillingDamage, FDamageEvent const& DamageEvent, A
 
 void ACharacterBase::DeathAnimationEnd()
 {
-	this->SetActorHiddenInGame(true);
-	SetLifeSpan(0.1f);
+	//this->SetActorHiddenInGame(true);
+	//SetLifeSpan(0.1f);
+	MyAnim->SetDeadAnimEnd();
 }
 
 
