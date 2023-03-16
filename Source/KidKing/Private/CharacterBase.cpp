@@ -369,10 +369,10 @@ void ACharacterBase::Die(float KillingDamage, FDamageEvent const& DamageEvent, A
 		GetCharacterMovement()->DisableMovement();
 	}
 
-	if (Controller != NULL)
+	/*if (Controller != NULL)
 	{
 		Controller->UnPossess();
-	}
+	}*/
 
 	//GetMesh()->SetCollisionProfileName("Ragdoll");
 	//GetMesh()->SetSimulatePhysics(true);
