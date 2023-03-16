@@ -23,7 +23,8 @@ public:
 	void PlayAttackMontage_Hero();
 	void PlayAttackMontage_Bot();
 	void SetDeadAnim();
-	
+
+	void RespawnAnim();
 
 	UFUNCTION()
 	void AnimNotify_AttackHitCheck();

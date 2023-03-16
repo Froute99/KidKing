@@ -56,3 +56,8 @@ void UMyAnimInstance::SetDeadAnim()
 	bDeadAnim = true;
 }
 
+void UMyAnimInstance::RespawnAnim()
+{
+
+}
+

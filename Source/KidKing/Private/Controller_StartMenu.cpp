@@ -88,7 +88,6 @@ void AController_StartMenu::CloseCredits()
 
 void AController_StartMenu::ShowDieUI()
 {
-	
 	if (uiDieBPClass)
 	{
 		uiDieWidget = CreateWidget<UUserWidget>(GetWorld(), uiDieBPClass);
@@ -96,7 +95,7 @@ void AController_StartMenu::ShowDieUI()
 		if (uiDieWidget)
 		{
 			uiDieWidget->AddToViewport();
-		}
 
+		}
 	}
 }

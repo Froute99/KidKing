@@ -4,7 +4,7 @@
 
 #include "EngineMinimal.h"
 #include "GameFramework/Character.h"
-#include "InputActionValue.h"
+#include "InputAction.h"
 #include "CharacterBase.generated.h"
 
 DECLARE_MULTICAST_DELEGATE(FOnAttackEndDelegate);
@@ -38,6 +38,7 @@ public:
 
 	virtual void Die(float KillingDamage, struct FDamageEvent const& DamageEvent, AController* Killer, AActor* DamageCauser);
 
+
 	void DeathAnimationEnd();
 
 	void EnhancedMove(const FInputActionValue& Value);
@@ -51,13 +52,13 @@ public:
 	FName MyCharacterName;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = State)
-	float myHealth;
+	float Hp;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = State)
-	float myMaxHealth;
+	float MaxHp;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = State)
-	float myHPnum;
+	float HpRate;
 
 	UPROPERTY(VisibleAnywhere, Category = UI)
 	class UWidgetComponent* HPBarWidget;
@@ -74,6 +75,9 @@ public:
 	float get_maxHealth()const;
 	void set_health(float const new_health);
 
+	UFUNCTION(BlueprintCallable)
+	void DebugDecreaseHp();
+
 	const FVector& GetSpawnLocation() const { return SpawnLocation; }
 	const FRotator& GetSpawnRotator() const { return SpawnRotator; }
 
@@ -87,8 +91,13 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = Camera)
 	class UCameraComponent* Camera;
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UMyAnimInstance* MyAnim;
+
+
+	const float DeathAnimDuration = 5;
+	FTimerHandle DeathAnimationTimer;
+	
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
@@ -123,7 +132,7 @@ protected:
 	void SpawnDefaultInventory();
 
 	UPROPERTY(EditDefaultsOnly, Category = Inventory)
-		TArray<TSubclassOf<class AMyWeapon>>DefaultInventoryClasses;
+	TArray<TSubclassOf<class AMyWeapon>>DefaultInventoryClasses;
 
 
 	UPROPERTY(VisibleAnywhere, Category = UI)

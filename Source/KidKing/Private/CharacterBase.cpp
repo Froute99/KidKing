@@ -42,10 +42,9 @@ ACharacterBase::ACharacterBase() : Widget_Component(CreateDefaultSubobject<UWidg
 	AIControllerClass = AMyAIController::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
-	myHealth = 0.f;
-	myMaxHealth = 100.0f;
+	MaxHp = 100.0f;
+	Hp = MaxHp;
 
-	myHealth = myMaxHealth;
 
 	//myHPbar_Text = FString::SanitizeFloat(MyHealth) + "/" + FString::SanitizeFloat(MyMaxHealth);
 
@@ -75,12 +74,12 @@ void ACharacterBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	myHPnum = (myHealth / myMaxHealth);
+	HpRate = (Hp / MaxHp);
 
 	auto const uw = Cast<UHPbar>(Widget_Component->GetUserWidgetObject());
 	if (uw)
 	{
-		uw->set_bar_value_percent(myHPnum);
+		uw->set_bar_value_percent(HpRate);
 	}
 
 }
@@ -197,9 +196,17 @@ void ACharacterBase::EquipWeapon(AMyWeapon* Weapon)
 
 void ACharacterBase::Respawn()
 {
-	TeleportTo(SpawnLocation, SpawnRotator, false, false);
 
+	//URespawnBlueprintLibrary::RegisterRespawn(this);
 	OnRespawn();
+
+
+	Hp = MaxHp;
+	MyAnim->SetDeadAnim();
+	
+
+
+	TeleportTo(SpawnLocation, SpawnRotator, false, false);
 
 }
 
@@ -223,7 +230,6 @@ void ACharacterBase::SetCurrentWeapon(AMyWeapon* NewWeapon, AMyWeapon* LastWeapo
 	{
 		NewWeapon->SetOwningPawn(this);
 		NewWeapon->OnEquip(LastWeapon);
-
 
 	}
 }
@@ -303,7 +309,7 @@ void ACharacterBase::AttackHitCheck()
 
 float ACharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-	if (myHealth <= 0.0f)
+	if (Hp <= 0.0f)
 	{
 		return 0.0f;
 	}
@@ -312,11 +318,11 @@ float ACharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 
 	if (myGetDamage > 0.f)
 	{
-		myHealth -= myGetDamage;
+		Hp -= myGetDamage;
 	}
 
 
-	if (myHealth <= 0)
+	if (Hp <= 0)
 	{
 		MyAnim->SetDeadAnim();
 		if (MyCharacterName == "Player")
@@ -324,6 +330,7 @@ float ACharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 			AController_StartMenu* con = Cast<AController_StartMenu>(GetOwner());
 			con->ShowDieUI();
 			Die(myGetDamage, DamageEvent, EventInstigator, DamageCauser);
+
 		}
 		else
 		{
@@ -333,7 +340,7 @@ float ACharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 	else
 	{
 		OnHit(myGetDamage, DamageEvent, EventInstigator ? EventInstigator->GetPawn() : NULL, DamageCauser);
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("HP is : %f"), myHealth));
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("HP is : %f"), Hp));
 	}
 
 
@@ -347,14 +354,14 @@ void ACharacterBase::OnHit(float DamageTaken, FDamageEvent const& DamageEvent, A
 
 void ACharacterBase::Die(float KillingDamage, FDamageEvent const& DamageEvent, AController* Killer, AActor* DamageCauser)
 {
-
-	myHealth = FMath::Min(0.f, myHealth);
+	Hp = FMath::Min(0.f, Hp);		// ?
 
 	UDamageType const* const DamageType = DamageEvent.DamageTypeClass ? Cast<const UDamageType>(DamageEvent.DamageTypeClass->GetDefaultObject()) : GetDefault<UDamageType>();
 
 	Killer = GetDamageInstigator(Killer, *DamageType);
 
-	GetWorldTimerManager().ClearAllTimersForObject(this);
+	GetWorldTimerManager().ClearTimer(DeathAnimationTimer);
+	//GetWorldTimerManager().ClearAllTimersForObject(this);
 
 	if (GetCapsuleComponent())
 	{
@@ -369,18 +376,21 @@ void ACharacterBase::Die(float KillingDamage, FDamageEvent const& DamageEvent, A
 		GetCharacterMovement()->DisableMovement();
 	}
 
-	if (Controller != NULL)
-	{
-		Controller->UnPossess();
-	}
+
+	//if (Controller != NULL)
+	//{
+	//	Controller->UnPossess();
+	//}
+
+
 
 	//GetMesh()->SetCollisionProfileName("Ragdoll");
 	//GetMesh()->SetSimulatePhysics(true);
 
-	float DeathAnimDuration = 5.0f;
+	//float DeathAnimDuration = 5.0f;
 
-	FTimerHandle TimerHandle;
-	GetWorldTimerManager().SetTimer(TimerHandle, this, &ACharacterBase::DeathAnimationEnd, DeathAnimDuration, false);
+	//FTimerHandle TimerHandle;
+	//GetWorldTimerManager().SetTimer(DeathAnimationTimer, this, &ACharacterBase::DeathAnimationEnd, DeathAnimDuration, false);
 
 	
 }
@@ -392,22 +402,24 @@ void ACharacterBase::DeathAnimationEnd()
 }
 
 
-
 float ACharacterBase::get_Health() const
 {
-	return myHealth;
+	return Hp;
 }
 
 float ACharacterBase::get_maxHealth() const
 {
-	return myMaxHealth;
+	return MaxHp;
 }
 
 void ACharacterBase::set_health(float const new_health)
 {
-	myHealth = new_health;
+	Hp = new_health;
 }
 
-
-
+void ACharacterBase::DebugDecreaseHp()
+{
+	FDamageEvent DamageEvent;
+	TakeDamage(10, DamageEvent, GetController(), this);
+}
 
