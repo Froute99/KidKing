@@ -81,6 +81,9 @@ public:
 	const FVector& GetSpawnLocation() const { return SpawnLocation; }
 	const FRotator& GetSpawnRotator() const { return SpawnRotator; }
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UMyAnimInstance* MyAnim;
+
 private:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -91,14 +94,9 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = Camera)
 	class UCameraComponent* Camera;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class UMyAnimInstance* MyAnim;
-
-
 	const float DeathAnimDuration = 5;
 	FTimerHandle DeathAnimationTimer;
 	
-
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	class UInputMappingContext* MovementContext;
@@ -138,7 +136,12 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = UI)
 	class UWidgetComponent* Widget_Component;
 
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Respawn")
 	FVector SpawnLocation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Respawn")
 	FRotator SpawnRotator;
 
 };

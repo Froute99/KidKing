@@ -196,15 +196,12 @@ void ACharacterBase::EquipWeapon(AMyWeapon* Weapon)
 
 void ACharacterBase::Respawn()
 {
-
-	//URespawnBlueprintLibrary::RegisterRespawn(this);
 	OnRespawn();
 
 
 	Hp = MaxHp;
-	MyAnim->SetDeadAnim();
+	MyAnim->SetDeadAnim(false);
 	
-
 
 	TeleportTo(SpawnLocation, SpawnRotator, false, false);
 
@@ -324,7 +321,7 @@ float ACharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 
 	if (Hp <= 0)
 	{
-		MyAnim->SetDeadAnim();
+		MyAnim->SetDeadAnim(true);
 		if (MyCharacterName == "Player")
 		{
 			AController_StartMenu* con = Cast<AController_StartMenu>(GetOwner());
@@ -363,18 +360,18 @@ void ACharacterBase::Die(float KillingDamage, FDamageEvent const& DamageEvent, A
 	GetWorldTimerManager().ClearTimer(DeathAnimationTimer);
 	//GetWorldTimerManager().ClearAllTimersForObject(this);
 
-	if (GetCapsuleComponent())
-	{
-		GetCapsuleComponent()->BodyInstance.SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		GetCapsuleComponent()->BodyInstance.SetResponseToChannel(ECC_Pawn, ECR_Ignore);
-		GetCapsuleComponent()->BodyInstance.SetResponseToChannel(ECC_PhysicsBody, ECR_Ignore);
-	}
+	//if (GetCapsuleComponent())
+	//{
+	//	GetCapsuleComponent()->BodyInstance.SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	//	GetCapsuleComponent()->BodyInstance.SetResponseToChannel(ECC_Pawn, ECR_Ignore);
+	//	GetCapsuleComponent()->BodyInstance.SetResponseToChannel(ECC_PhysicsBody, ECR_Ignore);
+	//}
 
-	if (GetCharacterMovement())
-	{
-		GetCharacterMovement()->StopMovementImmediately();
-		GetCharacterMovement()->DisableMovement();
-	}
+	//if (GetCharacterMovement())
+	//{
+	//	GetCharacterMovement()->StopMovementImmediately();
+	//	GetCharacterMovement()->DisableMovement();
+	//}
 
 
 	//if (Controller != NULL)
@@ -399,7 +396,7 @@ void ACharacterBase::DeathAnimationEnd()
 {
 	//this->SetActorHiddenInGame(true);
 	//SetLifeSpan(0.1f);
-	MyAnim->SetDeadAnimEnd();
+	MyAnim->SetDeadAnim(false);
 }
 
 
