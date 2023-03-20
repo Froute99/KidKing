@@ -51,13 +51,8 @@ void UMyAnimInstance::AnimNotify_AttackHitCheck()
 
 }
 
-void UMyAnimInstance::SetDeadAnim()
+void UMyAnimInstance::SetDeadAnim(bool Value)
 {
-	bDeadAnim = true;
-}
-
-void UMyAnimInstance::RespawnAnim()
-{
-
+	bDeadAnim = Value;
 }
 
