@@ -22,8 +22,7 @@ public:
 	
 	void PlayAttackMontage_Hero();
 	void PlayAttackMontage_Bot();
-	void SetDeadAnim();
-	void SetDeadAnimEnd();
+	void SetDeadAnim(bool Value);
 	
 
 	UFUNCTION()

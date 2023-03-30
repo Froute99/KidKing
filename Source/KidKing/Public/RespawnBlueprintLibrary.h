@@ -13,12 +13,9 @@ UCLASS()
 class URespawnBlueprintLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
-protected:
+public:
 	// call when player died
 	UFUNCTION(BlueprintCallable)
 	static void RegisterRespawn(class ACharacterBase* Character);
 	
-public:
-	
-
 };
