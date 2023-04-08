@@ -42,12 +42,12 @@ public:
 DECLARE_DELEGATE(FWinDelegate)
 
 UCLASS()
-class KIDKING_API UMyGameInstance : public UGameInstance
+class KIDKING_API UKidKingGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
 	
 public:
-	UMyGameInstance();
+	UKidKingGameInstance();
 
 	FMyCharacterData* GetMyCharacterData(int32 Character);
 

@@ -13,11 +13,11 @@
 DECLARE_MULTICAST_DELEGATE(FOnAttackHitCheckDelegate);
 
 UCLASS()
-class KIDKING_API UMyAnimInstance : public UAnimInstance
+class KIDKING_API UCharacterAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
 public:
-	UMyAnimInstance();
+	UCharacterAnimInstance();
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 	
 	void PlayAttackMontage_Hero();

@@ -4,7 +4,7 @@
 #include "MyBTServiceDetect.h"
 #include "MyAIController.h"
 #include "CharacterBase.h"
-#include "MainCharacter1.h"
+#include "MainCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "DrawDebugHelpers.h"
 
@@ -40,10 +40,10 @@ void UMyBTServiceDetect::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* Node
 	{
 		for (auto const& OverlapResult : OverlapResults)
 		{
-			AMainCharacter1* MyCharacter = Cast<AMainCharacter1>(OverlapResult.GetActor());
+			AMainCharacter* MyCharacter = Cast<AMainCharacter>(OverlapResult.GetActor());
 			if (MyCharacter && MyCharacter->GetController()->IsPlayerController())
 			{
-				OwnerComp.GetBlackboardComponent()->SetValueAsObject(AMyAIController::TargetKey, MyCharacter);
+				OwnerComp.GetBlackboardComponent()->SetValueAsObject(ACustomAIController::TargetKey, MyCharacter);
 				DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Green, false, 0.2f);
 
 				DrawDebugPoint(World, MyCharacter->GetActorLocation(), 10.0f, FColor::Blue, false, 0.2f);
@@ -53,7 +53,7 @@ void UMyBTServiceDetect::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* Node
 		}
 	}
 
-	OwnerComp.GetBlackboardComponent()->SetValueAsObject(AMyAIController::TargetKey, nullptr);
+	OwnerComp.GetBlackboardComponent()->SetValueAsObject(ACustomAIController::TargetKey, nullptr);
 	DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Red, false, 0.2f);
 }
 

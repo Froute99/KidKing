@@ -3,7 +3,7 @@
 
 #include "MyGameInstance.h"
 
-UMyGameInstance::UMyGameInstance()
+UKidKingGameInstance::UKidKingGameInstance()
 {
 	FString CharacterDataPath = TEXT("/Script/Engine.DataTable'/Game/GameData/MyCharacterData.MyCharacterData'");
 	static ConstructorHelpers::FObjectFinder<UDataTable> DT_MYCHARACTER(*CharacterDataPath);
@@ -15,13 +15,13 @@ UMyGameInstance::UMyGameInstance()
 	}
 }
 
-void UMyGameInstance::Init()
+void UKidKingGameInstance::Init()
 {
 	Super::Init();
-	UE_LOG(LogTemp, Warning, TEXT("UMyGameInstance::Init()"));
+	UE_LOG(LogTemp, Warning, TEXT("UKidKingGameInstance::Init()"));
 }
 
-void UMyGameInstance::IncreaseScore()
+void UKidKingGameInstance::IncreaseScore()
 {
 	if (OccupyRate == 100)
 	{
@@ -43,7 +43,7 @@ void UMyGameInstance::IncreaseScore()
 	}
 }
 
-FMyCharacterData* UMyGameInstance::GetMyCharacterData(int32 Character)
+FMyCharacterData* UKidKingGameInstance::GetMyCharacterData(int32 Character)
 {
 	return MyCharacterTable->FindRow<FMyCharacterData>(*FString::FromInt(Character), TEXT(""));
 }

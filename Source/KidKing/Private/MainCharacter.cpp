@@ -1,15 +1,15 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "MainCharacter1.h"
+#include "MainCharacter.h"
 
 
-AMainCharacter1::AMainCharacter1()
+AMainCharacter::AMainCharacter()
 {
 
 }
 
-void AMainCharacter1::PostInitializeComponents()
+void AMainCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 	SpawnDefaultInventory();

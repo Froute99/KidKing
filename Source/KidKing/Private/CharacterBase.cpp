@@ -39,7 +39,7 @@ ACharacterBase::ACharacterBase() : Widget_Component(CreateDefaultSubobject<UWidg
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("CAMERA"));
 	Camera->SetupAttachment(SpringArm);
 
-	AIControllerClass = AMyAIController::StaticClass();
+	AIControllerClass = ACustomAIController::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
 	MaxHp = 100.0f;
@@ -89,7 +89,7 @@ void ACharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
 
-	MyAnim = Cast<UMyAnimInstance>(GetMesh()->GetAnimInstance());
+	MyAnim = Cast<UCharacterAnimInstance>(GetMesh()->GetAnimInstance());
 	if (MyAnim)
 	{
 		MyAnim->OnAttackHitCheck.AddUObject(this, &ACharacterBase::AttackHitCheck);

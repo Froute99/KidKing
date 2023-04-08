@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class KIDKING_API UMyAnimNotifyState : public UAnimNotifyState
+class KIDKING_API UCharacterAttackNotify : public UAnimNotifyState
 {
 	GENERATED_BODY()
 public:

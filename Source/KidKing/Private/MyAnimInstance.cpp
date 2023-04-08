@@ -3,7 +3,7 @@
 
 #include "MyAnimInstance.h"
 
-UMyAnimInstance::UMyAnimInstance()
+UCharacterAnimInstance::UCharacterAnimInstance()
 {
 	CurrentPawnSpeed = 0.0f;
 
@@ -21,7 +21,7 @@ UMyAnimInstance::UMyAnimInstance()
 
 }
 
-void UMyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
+void UCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
 
@@ -32,17 +32,17 @@ void UMyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	}
 }
 
-void UMyAnimInstance::PlayAttackMontage_Hero()
+void UCharacterAnimInstance::PlayAttackMontage_Hero()
 {
 	Montage_Play(AttackMontage_Hero, 1.0f);
 }
 
-void UMyAnimInstance::PlayAttackMontage_Bot()
+void UCharacterAnimInstance::PlayAttackMontage_Bot()
 {
 	Montage_Play(AttackMontage_Bot, 1.0f);
 }
 
-void UMyAnimInstance::AnimNotify_AttackHitCheck()
+void UCharacterAnimInstance::AnimNotify_AttackHitCheck()
 {
 	if (GEngine)
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("AnimNofify_HitCheck"));
@@ -51,7 +51,7 @@ void UMyAnimInstance::AnimNotify_AttackHitCheck()
 
 }
 
-void UMyAnimInstance::SetDeadAnim(bool Value)
+void UCharacterAnimInstance::SetDeadAnim(bool Value)
 {
 	bDeadAnim = Value;
 }

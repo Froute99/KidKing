@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class KIDKING_API AMyBotCharacter : public ACharacterBase
+class KIDKING_API ABotCharacter : public ACharacterBase
 {
 	GENERATED_BODY()
 	

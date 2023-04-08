@@ -20,7 +20,7 @@ EBTNodeResult::Type UBTTask_Attack::ExecuteTask(UBehaviorTreeComponent& OwnerCom
 	if (nullptr == MyCharacter)
 		return EBTNodeResult::Failed;
 
-	auto Target = Cast<ACharacterBase>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(AMyAIController::TargetKey));
+	auto Target = Cast<ACharacterBase>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(ACustomAIController::TargetKey));
 	if (nullptr == Target)
 		return EBTNodeResult::Failed;
 

@@ -82,7 +82,7 @@ public:
 	const FRotator& GetSpawnRotator() const { return SpawnRotator; }
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class UMyAnimInstance* MyAnim;
+	class UCharacterAnimInstance* MyAnim;
 
 private:
 	// Called when the game starts or when spawned
