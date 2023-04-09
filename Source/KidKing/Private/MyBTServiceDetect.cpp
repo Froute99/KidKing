@@ -2,7 +2,7 @@
 
 
 #include "MyBTServiceDetect.h"
-#include "MyAIController.h"
+#include "CustomAIController.h"
 #include "CharacterBase.h"
 #include "MainCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"

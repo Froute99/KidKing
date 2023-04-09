@@ -2,7 +2,7 @@
 
 
 #include "BTDecorator_IsInAttackRange.h"
-#include "MyAIController.h"
+#include "CustomAIController.h"
 #include "MainCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 

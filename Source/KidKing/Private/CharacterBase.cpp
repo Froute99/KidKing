@@ -10,8 +10,8 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubSystems.h"
 
-#include "MyAIController.h"
-#include "MyAnimInstance.h"
+#include "CustomAIController.h"
+#include "CharacterAnimInstance.h"
 #include "Engine/DamageEvents.h"
 
 #include "Components/WidgetComponent.h"
@@ -22,7 +22,7 @@
 #include "GameFramework/Actor.h"
 //#include "CharacterWidget.h"
 
-#include "MyWeapon.h"
+#include "Weapon.h"
 #include "Engine/World.h"
 
 // Sets default values
@@ -54,7 +54,7 @@ ACharacterBase::ACharacterBase() : Widget_Component(CreateDefaultSubobject<UWidg
 		Widget_Component->SetupAttachment(RootComponent);
 		Widget_Component->SetWidgetSpace(EWidgetSpace::Screen);
 		Widget_Component->SetRelativeLocation(FVector(0.0f, 0.0f, 50.0f));
-		static ConstructorHelpers::FClassFinder<UUserWidget>widget_class(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/HPbar_BP.HPbar_BP_C'"));
+		static ConstructorHelpers::FClassFinder<UUserWidget> widget_class(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/HPbar_BP.HPbar_BP_C'"));
 
 		if (widget_class.Succeeded())
 		{
@@ -186,7 +186,7 @@ FName ACharacterBase::GetWeaponAttachPoint() const
 	return WeaponAttachPoint;
 }
 
-void ACharacterBase::EquipWeapon(AMyWeapon* Weapon)
+void ACharacterBase::EquipWeapon(AWeapon* Weapon)
 {
 	if (Weapon)
 	{
@@ -207,7 +207,7 @@ void ACharacterBase::Respawn()
 
 }
 
-void ACharacterBase::AddWeapon(AMyWeapon* Weapon)
+void ACharacterBase::AddWeapon(AWeapon* Weapon)
 {
 	if (Weapon)
 	{
@@ -215,9 +215,9 @@ void ACharacterBase::AddWeapon(AMyWeapon* Weapon)
 	}
 }
 
-void ACharacterBase::SetCurrentWeapon(AMyWeapon* NewWeapon, AMyWeapon* LastWeapon)
+void ACharacterBase::SetCurrentWeapon(AWeapon* NewWeapon, AWeapon* LastWeapon)
 {
-	AMyWeapon* LocalLastWeapon = NULL;
+	AWeapon* LocalLastWeapon = NULL;
 	if (LastWeapon != NULL)
 	{
 		LocalLastWeapon = LastWeapon;
@@ -238,7 +238,7 @@ void ACharacterBase::SpawnDefaultInventory()
 	{
 		FActorSpawnParameters SpawnInfo;
 		UWorld* WRLD = GetWorld();
-		AMyWeapon* NewWeapon = WRLD->SpawnActor<AMyWeapon>(DefaultInventoryClasses[i], SpawnInfo);
+		AWeapon* NewWeapon = WRLD->SpawnActor<AWeapon>(DefaultInventoryClasses[i], SpawnInfo);
 		AddWeapon(NewWeapon);
 	}
 

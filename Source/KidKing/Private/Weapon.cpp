@@ -1,10 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "MyWeapon.h"
+#include "Weapon.h"
 #include "Engine.h"
 
 // Sets default values
-AMyWeapon::AMyWeapon(const class FObjectInitializer& ObjectInitializer):Super(ObjectInitializer)
+AWeapon::AWeapon(const class FObjectInitializer& ObjectInitializer):Super(ObjectInitializer)
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -18,7 +18,7 @@ AMyWeapon::AMyWeapon(const class FObjectInitializer& ObjectInitializer):Super(Ob
 	WeaponCollision->AttachToComponent(WeaponMesh, FAttachmentTransformRules::KeepRelativeTransform,"DamageSocket");
 }
 
-void AMyWeapon::SetOwningPawn(ACharacterBase* NewOwner)
+void AWeapon::SetOwningPawn(ACharacterBase* NewOwner)
 {
 	if (MyPawn != NewOwner)
 	{
@@ -26,7 +26,7 @@ void AMyWeapon::SetOwningPawn(ACharacterBase* NewOwner)
 	}
 }
 
-void AMyWeapon::AttachMeshToPawn()
+void AWeapon::AttachMeshToPawn()
 {
 	if (MyPawn)
 	{
@@ -36,12 +36,12 @@ void AMyWeapon::AttachMeshToPawn()
 	}
 }
 
-void AMyWeapon::OnEquip(const AMyWeapon* LastWeapon)
+void AWeapon::OnEquip(const AWeapon* LastWeapon)
 {
 	AttachMeshToPawn();
 }
 
-void AMyWeapon::NotifyActorBeginOverlap(AActor* OtherActor)
+void AWeapon::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	if (OtherActor->IsA(AActor::StaticClass()) && MyPawn->IsAttacking && OtherActor != MyPawn)
 	{

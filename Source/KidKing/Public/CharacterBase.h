@@ -22,7 +22,7 @@ public:
 
 	FName GetWeaponAttachPoint()const;
 
-	void EquipWeapon(class AMyWeapon* Weapon);
+	void EquipWeapon(class AWeapon* Weapon);
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -119,18 +119,18 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnRespawn();
 
-	TArray<class AMyWeapon*>Inventory;
+	TArray<class AWeapon*>Inventory;
 
-	class AMyWeapon* CurrentWeapon;
+	class AWeapon* CurrentWeapon;
 
-	void AddWeapon(class AMyWeapon* Weapon);
+	void AddWeapon(class AWeapon* Weapon);
 
-	void SetCurrentWeapon(class AMyWeapon* NewWeapon, class AMyWeapon* LastWeapon);
+	void SetCurrentWeapon(class AWeapon* NewWeapon, class AWeapon* LastWeapon);
 
 	void SpawnDefaultInventory();
 
 	UPROPERTY(EditDefaultsOnly, Category = Inventory)
-	TArray<TSubclassOf<class AMyWeapon>>DefaultInventoryClasses;
+	TArray<TSubclassOf<class AWeapon>>DefaultInventoryClasses;
 
 
 	UPROPERTY(VisibleAnywhere, Category = UI)

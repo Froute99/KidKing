@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
-#include "MyAIController.generated.h"
+#include "CustomAIController.generated.h"
 
 /**
  * 

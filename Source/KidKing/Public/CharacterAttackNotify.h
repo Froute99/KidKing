@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimNotifies/AnimNotifyState.h"
-#include "MyAnimNotifyState.generated.h"
+#include "CharacterAttackNotify.generated.h"
 
 /**
  * 

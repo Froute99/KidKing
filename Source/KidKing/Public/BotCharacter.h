@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "CharacterBase.h"
-#include "MyBotCharacter.generated.h"
+#include "BotCharacter.generated.h"
 
 /**
  * 

@@ -5,7 +5,7 @@
 #include "EngineMinimal.h"
 #include "Engine/DataTable.h"
 #include "Engine/GameInstance.h"
-#include "MyGameInstance.generated.h"
+#include "KidKingGameInstance.generated.h"
 
 /**
  * 
