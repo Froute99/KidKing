@@ -63,8 +63,11 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = UI)
 	class UWidgetComponent* HPBarWidget;
 
-	UPROPERTY(EditDefaultsOnly, Category = Attack)
+	UPROPERTY(EditDefaultsOnly, Category = Anim)
 	UAnimMontage* BeHit_AnimMontage;
+
+	UPROPERTY(EditDefaultsOnly, Category = Anim)
+		UAnimMontage* BeDeath_AnimMontage;
 
 	UFUNCTION()
 	void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted);

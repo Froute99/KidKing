@@ -358,6 +358,8 @@ void ACharacterBase::Die(float KillingDamage, FDamageEvent const& DamageEvent, A
 	Killer = GetDamageInstigator(Killer, *DamageType);
 
 	GetWorldTimerManager().ClearTimer(DeathAnimationTimer);
+
+	PlayAnimMontage(BeDeath_AnimMontage);
 	//GetWorldTimerManager().ClearAllTimersForObject(this);
 
 	//if (GetCapsuleComponent())
