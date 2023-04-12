@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "CharacterBase.h"
 #include "GameFramework/Actor.h"
-#include "MainCharacter1.generated.h"
+#include "MainCharacter.generated.h"
 
 /**
  * 

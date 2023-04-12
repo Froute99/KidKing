@@ -23,8 +23,18 @@ public class KidKing : ModuleRules
 		PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
 
 		// Uncomment if you are using online features
-		// PrivateDependencyModuleNames.Add("OnlineSubsystem");
-
+		PrivateDependencyModuleNames.Add("OnlineSubsystem");
 		// To include OnlineSubsystemSteam, add it to the plugins section in your uproject file with the Enabled attribute set to true
+
+
+		PublicIncludePaths.AddRange(new string[] {
+			"KidKing/",
+			"KidKing/Animation/",
+			"KidKing/Bot/",
+			"KidKing/Character/",
+			"KidKing/Widget/",
+			"KidKing/Core/"
+		});
+
 	}
 }

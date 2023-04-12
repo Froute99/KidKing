@@ -1,36 +1,36 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "MyAIController.h"
+#include "CustomAIController.h"
 #include "NavigationSystem.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardData.h"
 
 
-const FName AMyAIController::HomePosKey(TEXT("HomePos"));
-const FName AMyAIController::PatrolPosKey(TEXT("PatrolPos"));
-const FName AMyAIController::TargetKey(TEXT("Target"));
+const FName ACustomAIController::HomePosKey(TEXT("HomePos"));
+const FName ACustomAIController::PatrolPosKey(TEXT("PatrolPos"));
+const FName ACustomAIController::TargetKey(TEXT("Target"));
 
 
-AMyAIController::AMyAIController()
+ACustomAIController::ACustomAIController()
 {
 	
 }
 
-void AMyAIController::OnPossess(APawn* InPawn)
+void ACustomAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 	
 }
 
-void AMyAIController::OnUnPossess()
+void ACustomAIController::OnUnPossess()
 {
 	Super::OnUnPossess();
 	
 }
 
-void AMyAIController::OnRepeatTimer()
+void ACustomAIController::OnRepeatTimer()
 {
 	auto CurrentPawn = GetPawn();
 	ensure(nullptr != CurrentPawn);

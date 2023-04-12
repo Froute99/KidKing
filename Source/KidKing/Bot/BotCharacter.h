@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "CharacterBase.h"
-#include "MyBotCharacter.generated.h"
+#include "BotCharacter.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class KIDKING_API AMyBotCharacter : public ACharacterBase
+class KIDKING_API ABotCharacter : public ACharacterBase
 {
 	GENERATED_BODY()
 	

@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimNotifies/AnimNotifyState.h"
-#include "MyAnimNotifyState.generated.h"
+#include "CharacterAttackNotify.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class KIDKING_API UMyAnimNotifyState : public UAnimNotifyState
+class KIDKING_API UCharacterAttackNotify : public UAnimNotifyState
 {
 	GENERATED_BODY()
 public:

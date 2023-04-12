@@ -7,20 +7,20 @@
 #include "CharacterBase.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/BoxComponent.h"
-#include "MyWeapon.generated.h"
+#include "Weapon.generated.h"
 
 
 UCLASS()
-class KIDKING_API AMyWeapon : public AActor
+class KIDKING_API AWeapon : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AMyWeapon(const class FObjectInitializer& ObjectInitializer);
+	AWeapon(const class FObjectInitializer& ObjectInitializer);
 	void SetOwningPawn(ACharacterBase* NewOwner);
 	void AttachMeshToPawn();
-	void OnEquip(const AMyWeapon* LastWeapon);
+	void OnEquip(const AWeapon* LastWeapon);
 	
 private:
 	UPROPERTY(VisibleDefaultsOnly, Category = Weapon)

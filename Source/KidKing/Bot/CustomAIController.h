@@ -4,18 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
-#include "MyAIController.generated.h"
+#include "CustomAIController.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class KIDKING_API AMyAIController : public AAIController
+class KIDKING_API ACustomAIController : public AAIController
 {
 	GENERATED_BODY()
 	
 public:
-	AMyAIController();
+	ACustomAIController();
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void OnUnPossess() override;
 
