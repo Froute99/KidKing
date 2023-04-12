@@ -39,7 +39,10 @@ protected:
 
 	UUserWidget* CurrentWidget;
 
-	float OccupationPoint;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float RedTeamCapturePoint;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float BlueTeamCapturePoint;
 
 public:
 	void ChangeUI();
