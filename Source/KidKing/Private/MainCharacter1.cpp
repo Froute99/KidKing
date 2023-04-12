@@ -4,12 +4,12 @@
 #include "MainCharacter1.h"
 
 
-AMainCharacter1::AMainCharacter1()
+AMainCharacter::AMainCharacter()
 {
 
 }
 
-void AMainCharacter1::PostInitializeComponents()
+void AMainCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 	SpawnDefaultInventory();

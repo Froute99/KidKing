@@ -11,12 +11,12 @@
  * 
  */
 UCLASS()
-class KIDKING_API AMainCharacter1 : public ACharacterBase
+class KIDKING_API AMainCharacter : public ACharacterBase
 {
 	GENERATED_BODY()
 
 public:
-	AMainCharacter1();
+	AMainCharacter();
 
 	virtual void PostInitializeComponents()override;
 };

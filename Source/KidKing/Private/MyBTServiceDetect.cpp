@@ -40,7 +40,7 @@ void UMyBTServiceDetect::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* Node
 	{
 		for (auto const& OverlapResult : OverlapResults)
 		{
-			AMainCharacter1* MyCharacter = Cast<AMainCharacter1>(OverlapResult.GetActor());
+			AMainCharacter* MyCharacter = Cast<AMainCharacter>(OverlapResult.GetActor());
 			if (MyCharacter && MyCharacter->GetController()->IsPlayerController())
 			{
 				OwnerComp.GetBlackboardComponent()->SetValueAsObject(AMyAIController::TargetKey, MyCharacter);

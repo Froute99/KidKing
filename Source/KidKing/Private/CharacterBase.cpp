@@ -89,7 +89,7 @@ void ACharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
 
-	MyAnim = Cast<UMyAnimInstance>(GetMesh()->GetAnimInstance());
+	MyAnim = Cast<UCharacterAnimInstance>(GetMesh()->GetAnimInstance());
 	if (MyAnim)
 	{
 		MyAnim->OnAttackHitCheck.AddUObject(this, &ACharacterBase::AttackHitCheck);

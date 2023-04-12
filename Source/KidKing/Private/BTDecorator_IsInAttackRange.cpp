@@ -20,7 +20,7 @@ bool UBTDecorator_IsInAttackRange::CalculateRawConditionValue(UBehaviorTreeCompo
 	if (nullptr == ControllingPawn)
 		return false;
 
-	auto Target = Cast<AMainCharacter1>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(AMyAIController::TargetKey));
+	auto Target = Cast<AMainCharacter>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(AMyAIController::TargetKey));
 	if (nullptr == Target)
 		return false;
 
