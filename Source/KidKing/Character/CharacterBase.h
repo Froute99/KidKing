@@ -60,6 +60,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = State)
 	float HpRate;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Gold;
+
+
 	UPROPERTY(VisibleAnywhere, Category = UI)
 	class UWidgetComponent* HPBarWidget;
 
