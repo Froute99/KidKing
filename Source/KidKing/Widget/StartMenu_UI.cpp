@@ -27,7 +27,7 @@ void UStartMenu_UI::NativeConstruct()
 
 void UStartMenu_UI::Bnt_StartGame_ButtonClicked()
 {
-	UGameplayStatics::OpenLevel(GetWorld(), "/Game/Map/stage_01");
+	UGameplayStatics::OpenLevel(GetWorld(), "/Game/Map/CharacterSelection");
 }
 
 void UStartMenu_UI::Bnt_Credits_ButtonClicked()

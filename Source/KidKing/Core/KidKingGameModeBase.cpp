@@ -11,12 +11,7 @@
 
 AKidKingGameModeBase::AKidKingGameModeBase()
 {
-	/*static ConstructorHelpers::FClassFinder<APawn> Player(TEXT("/Script/Engine.Blueprint'/Game/BluePrint/MainCharacter/MyMainCharacter1.MyMainCharacter1_C'"));
-	if (Player.Succeeded())
-	{
-		DefaultPawnClass = Player.Class;		
-	}*/
-
+	
 	HUDClass = AMyHUD_InGame::StaticClass();
 	PlayerControllerClass = AController_StartMenu::StaticClass();
 
