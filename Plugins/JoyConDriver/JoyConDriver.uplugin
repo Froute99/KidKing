@@ -18,7 +18,7 @@
 		{
 			"Name": "JoyConDriver",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "PreDefault"
 		}
 	]
 }
