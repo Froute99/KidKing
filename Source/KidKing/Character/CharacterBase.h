@@ -128,6 +128,15 @@ protected:
 
 	TArray<class AWeapon*>Inventory;
 
+	// Includes Items to Use
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
+	//TArray<class Item*> Items;
+
+	// Ultimate skill
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skills")
+	//class Skill* Ultimate;
+
+	
 	class AWeapon* CurrentWeapon;
 
 	void AddWeapon(class AWeapon* Weapon);
@@ -137,7 +146,7 @@ protected:
 	void SpawnDefaultInventory();
 
 	UPROPERTY(EditDefaultsOnly, Category = Inventory)
-	TArray<TSubclassOf<class AWeapon>>DefaultInventoryClasses;
+	TArray<TSubclassOf<class AWeapon>> DefaultInventoryClasses;
 
 
 	UPROPERTY(VisibleAnywhere, Category = UI)
