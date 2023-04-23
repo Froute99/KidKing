@@ -30,10 +30,13 @@ public class KidKing : ModuleRules
 		PublicIncludePaths.AddRange(new string[] {
 			"KidKing/",
 			"KidKing/Animation/",
+			"KidKing/BlueprintFunctionLibrary/",
 			"KidKing/Bot/",
 			"KidKing/Character/",
 			"KidKing/Widget/",
-			"KidKing/Core/"
+			"KidKing/Core/",
+			"KidKing/Items/",
+			"KidKing/Skills/"
 		});
 
 	}
