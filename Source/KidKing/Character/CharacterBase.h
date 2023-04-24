@@ -5,12 +5,13 @@
 #include "EngineMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputAction.h"
+#include "AbilitySystemInterface.h"
 #include "CharacterBase.generated.h"
 
 DECLARE_MULTICAST_DELEGATE(FOnAttackEndDelegate);
 
 UCLASS()
-class KIDKING_API ACharacterBase : public ACharacter
+class KIDKING_API ACharacterBase : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
@@ -26,6 +27,14 @@ public:
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+
+	
+	// Must be overrided
+	// https://docs.unrealengine.com/5.1/en-US/gameplay-ability-system-component-and-gameplay-attributes-in-unreal-engine/
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+
+
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
