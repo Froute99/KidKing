@@ -37,7 +37,7 @@ public:
 	virtual void OnHit(float DamageTaken, struct FDamageEvent const& DamageEvent, class APawn* PawnInstigator, class AActor* DamageCauser);
 
 	virtual void Die(float KillingDamage, struct FDamageEvent const& DamageEvent, AController* Killer, AActor* DamageCauser);
-
+	virtual void BotDie(float KillingDamage, struct FDamageEvent const& DamageEvent, AController* Killer, AActor* DamageCauser);
 
 	void DeathAnimationEnd();
 
@@ -101,7 +101,7 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = Camera)
 	class UCameraComponent* Camera;
 
-	const float DeathAnimDuration = 5;
+	const float DeathAnimDuration = 5.0f;
 	FTimerHandle DeathAnimationTimer;
 	
 protected:

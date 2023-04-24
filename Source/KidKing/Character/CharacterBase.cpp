@@ -331,7 +331,7 @@ float ACharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 		}
 		else
 		{
-			Die(myGetDamage, DamageEvent, EventInstigator, DamageCauser);
+			BotDie(myGetDamage, DamageEvent, EventInstigator, DamageCauser);
 		}
 	}
 	else
@@ -394,10 +394,51 @@ void ACharacterBase::Die(float KillingDamage, FDamageEvent const& DamageEvent, A
 	
 }
 
+void ACharacterBase::BotDie(float KillingDamage, FDamageEvent const& DamageEvent, AController* Killer, AActor* DamageCauser)
+{
+	Hp = FMath::Min(0.f, Hp);		// ?
+
+	UDamageType const* const DamageType = DamageEvent.DamageTypeClass ? Cast<const UDamageType>(DamageEvent.DamageTypeClass->GetDefaultObject()) : GetDefault<UDamageType>();
+
+	Killer = GetDamageInstigator(Killer, *DamageType);
+
+	GetWorldTimerManager().ClearTimer(DeathAnimationTimer);
+
+	PlayAnimMontage(BeDeath_AnimMontage);
+	GetWorldTimerManager().ClearAllTimersForObject(this);
+
+	if (GetCapsuleComponent())
+	{
+		GetCapsuleComponent()->BodyInstance.SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		GetCapsuleComponent()->BodyInstance.SetResponseToChannel(ECC_Pawn, ECR_Ignore);
+		GetCapsuleComponent()->BodyInstance.SetResponseToChannel(ECC_PhysicsBody, ECR_Ignore);
+	}
+
+	if (GetCharacterMovement())
+	{
+		GetCharacterMovement()->StopMovementImmediately();
+		GetCharacterMovement()->DisableMovement();
+	}
+
+
+	if (Controller != NULL)
+	{
+		Controller->UnPossess();
+	}
+
+
+
+	GetMesh()->SetCollisionProfileName("Ragdoll");
+	GetMesh()->SetSimulatePhysics(true);
+
+	FTimerHandle TimerHandle;
+	GetWorldTimerManager().SetTimer(DeathAnimationTimer, this, &ACharacterBase::DeathAnimationEnd, DeathAnimDuration, false);
+}
+
 void ACharacterBase::DeathAnimationEnd()
 {
-	//this->SetActorHiddenInGame(true);
-	//SetLifeSpan(0.1f);
+	this->SetActorHiddenInGame(true);
+	SetLifeSpan(0.1f);
 	MyAnim->SetDeadAnim(false);
 }
 
