@@ -5,13 +5,13 @@
 #include "EngineMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputAction.h"
-#include "AbilitySystemInterface.h"
+//#include "AbilitySystemInterface.h"
 #include "CharacterBase.generated.h"
 
 DECLARE_MULTICAST_DELEGATE(FOnAttackEndDelegate);
 
 UCLASS()
-class KIDKING_API ACharacterBase : public ACharacter, public IAbilitySystemInterface
+class KIDKING_API ACharacterBase : public ACharacter//, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
@@ -32,7 +32,7 @@ public:
 	
 	// Must be overrided
 	// https://docs.unrealengine.com/5.1/en-US/gameplay-ability-system-component-and-gameplay-attributes-in-unreal-engine/
-	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	// virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
 
 

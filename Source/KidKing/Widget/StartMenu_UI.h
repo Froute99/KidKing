@@ -28,18 +28,20 @@ public:
 		UButton* Bnt_ExitGame = nullptr;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 		UButton* Bnt_Option = nullptr;
+	
+
 protected:
 
 
 private:
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 		void Bnt_StartGame_ButtonClicked();
 	
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 		void Bnt_Credits_ButtonClicked();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 		void Bnt_ExitGame_ButtonClicked();
 
 };
