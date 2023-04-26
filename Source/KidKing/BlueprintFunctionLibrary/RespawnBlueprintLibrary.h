@@ -10,12 +10,15 @@
  * 
  */
 UCLASS()
-class URespawnBlueprintLibrary : public UBlueprintFunctionLibrary
+class UKidKingBlueprintLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 public:
-	// call when player died
+	// When Character Die, Register to respawn in 5sec.
 	UFUNCTION(BlueprintCallable)
 	static void RegisterRespawn(class ACharacterBase* Character);
 	
+
+	UFUNCTION(BlueprintCallable)
+	static bool Purchase(class ACharacterBase* Character, int Cost);
 };

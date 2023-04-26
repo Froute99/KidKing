@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "SkillInterface.generated.h"
+#include "ItemInterface.generated.h"
 
 UCLASS()
-class KIDKING_API ASkillInterface : public AActor
+class KIDKING_API AItemInterface : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ASkillInterface();
+	AItemInterface();
 
 protected:
 	// Called when the game starts or when spawned
@@ -26,9 +26,8 @@ public:
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FName SkillName;
-
+	FName ItemName;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Cost;
-
 };
