@@ -30,6 +30,12 @@ AController_StartMenu::AController_StartMenu()
 		uiDieBPClass = DieUI.Class;
 	}
 
+	static ConstructorHelpers::FClassFinder<UUserWidget> FinalStageDieUI(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/FinalStageLoser.FinalStageLoser_C'"));
+	if (FinalStageDieUI.Succeeded())
+	{
+		uiFinalStageDieBPClass = FinalStageDieUI.Class;
+	}
+
 }
 
 void AController_StartMenu::SetupInputComponent()
@@ -98,4 +104,19 @@ void AController_StartMenu::ShowDieUI()
 
 		}
 	}
+}
+
+void AController_StartMenu::ShowFinalStageDieUI()
+{
+	if (uiFinalStageDieBPClass)
+	{
+		uiFinalStageDieWidget = CreateWidget<UUserWidget>(GetWorld(), uiFinalStageDieBPClass);
+
+		if (uiFinalStageDieWidget)
+		{
+			uiFinalStageDieWidget->AddToViewport();
+
+		}
+	}
+
 }

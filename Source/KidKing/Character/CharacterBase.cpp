@@ -324,9 +324,21 @@ float ACharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 		MyAnim->SetDeadAnim(true);
 		if (MyCharacterName == "Player")
 		{
+			auto World = GetWorld();
+			FString CurrentLevel = World->GetMapName();
 			AController_StartMenu* con = Cast<AController_StartMenu>(GetOwner());
-			con->ShowDieUI();
-			Die(myGetDamage, DamageEvent, EventInstigator, DamageCauser);
+			
+			if (CurrentLevel == "UEDPIE_0_stage_01")
+			{
+				con->ShowDieUI();
+				Die(myGetDamage, DamageEvent, EventInstigator, DamageCauser);
+			}
+			else
+			{
+				con->ShowFinalStageDieUI();
+				Die(myGetDamage, DamageEvent, EventInstigator, DamageCauser);
+			}
+
 
 		}
 		else

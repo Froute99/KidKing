@@ -28,6 +28,7 @@ public:
 	void CloseCredits();
 
 	void ShowDieUI();
+	void ShowFinalStageDieUI();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool isShowPauseMenu;
@@ -45,52 +46,9 @@ private:
 
 	TSubclassOf<class UUserWidget>uiDieBPClass;
 		UUserWidget* uiDieWidget;
-//public:
-//	void ShowGameMenu();
-//	void CloseGameMenu();
-//
-//	void ShowInventory();
-//	void ShowShopUI();
-//	UFUNCTION(BlueprintCallable, Category = "MyUI")
-//		void CloseShopUI();
-//
-//
-//	UFUNCTION(BlueprintCallable, Category = "MyUI")
-//		void CreateItemSlots();
-//
-//	UFUNCTION(BlueprintCallable, Category = "MyUI")
-//		void CloseInventory();
-//
-//	void WeaponAttack();
-//	void ChangeWeapon();
-//	void ShowDieUI();
-//
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-//		bool isShowGameMenu;
-//
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-//		bool isShowShopMenu;
-//
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-//		bool isShowInventory;
-//
-//
-//	TSubclassOf<class UUserWidget>uiItemSlotBPClass;
-//	UUserWidget* uiItemSlotWidget;
-//
-//private:
-//	TSubclassOf<class UUserWidget>uiGameBPClass;
-//	UUserWidget* uiGameWidget;
-//
-//	TSubclassOf<class UUserWidget>uiGameMenuBPClass;
-//	UUserWidget* uiGameMenuWidget;
-//
-//	TSubclassOf<class UUserWidget>uiInventoryBPClass;
-//	UUserWidget* uiInventoryWidget;
-//
-//	TSubclassOf<class UUserWidget>uiGameShopBPClass;
-//	UUserWidget* uiGameShopWidget;
-//
-//	TSubclassOf<class UUserWidget>uiGameDieBPClass;
-//	UUserWidget* uiGameDieWidget;
+	
+	TSubclassOf<class UUserWidget>uiFinalStageDieBPClass;
+		UUserWidget* uiFinalStageDieWidget;
+
+
 };
