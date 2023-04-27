@@ -207,6 +207,11 @@ void ACharacterBase::Respawn()
 
 }
 
+void ACharacterBase::AddItemToInventory(AItemInterface* Item)
+{
+	Items.Add(Item);
+}
+
 void ACharacterBase::AddWeapon(AWeapon* Weapon)
 {
 	if (Weapon)
@@ -372,6 +377,11 @@ void ACharacterBase::Die(float KillingDamage, FDamageEvent const& DamageEvent, A
 	GetWorldTimerManager().ClearTimer(DeathAnimationTimer);
 
 	PlayAnimMontage(BeDeath_AnimMontage);
+
+
+	OnCharacterDie();
+
+
 	//GetWorldTimerManager().ClearAllTimersForObject(this);
 
 	//if (GetCapsuleComponent())
@@ -403,7 +413,7 @@ void ACharacterBase::Die(float KillingDamage, FDamageEvent const& DamageEvent, A
 	//FTimerHandle TimerHandle;
 	//GetWorldTimerManager().SetTimer(DeathAnimationTimer, this, &ACharacterBase::DeathAnimationEnd, DeathAnimDuration, false);
 
-	
+
 }
 
 void ACharacterBase::BotDie(float KillingDamage, FDamageEvent const& DamageEvent, AController* Killer, AActor* DamageCauser)
@@ -443,7 +453,6 @@ void ACharacterBase::BotDie(float KillingDamage, FDamageEvent const& DamageEvent
 	GetMesh()->SetCollisionProfileName("Ragdoll");
 	GetMesh()->SetSimulatePhysics(true);
 
-	FTimerHandle TimerHandle;
 	GetWorldTimerManager().SetTimer(DeathAnimationTimer, this, &ACharacterBase::DeathAnimationEnd, DeathAnimDuration, false);
 }
 

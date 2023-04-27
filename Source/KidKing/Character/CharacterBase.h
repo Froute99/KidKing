@@ -5,7 +5,11 @@
 #include "EngineMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputAction.h"
-//#include "AbilitySystemInterface.h"
+#include "AbilitySystemInterface.h"
+
+#include "ItemInterface.h"
+//#include "SkillInterface.h"
+
 #include "CharacterBase.generated.h"
 
 DECLARE_MULTICAST_DELEGATE(FOnAttackEndDelegate);
@@ -29,11 +33,16 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 
-	
+
 	// Must be overrided
 	// https://docs.unrealengine.com/5.1/en-US/gameplay-ability-system-component-and-gameplay-attributes-in-unreal-engine/
-	//virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override
+	{
+		return AbilitySystemComponent;
+	}
 
+	UPROPERTY(EditDefaultsOnly, Category = "Abilities")
+	UAbilitySystemComponent* AbilitySystemComponent;
 
 
 	// Called to bind functionality to input
@@ -80,7 +89,7 @@ public:
 	UAnimMontage* BeHit_AnimMontage;
 
 	UPROPERTY(EditDefaultsOnly, Category = Anim)
-		UAnimMontage* BeDeath_AnimMontage;
+	UAnimMontage* BeDeath_AnimMontage;
 
 	UFUNCTION()
 	void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted);
@@ -106,13 +115,13 @@ private:
 
 	UPROPERTY(VisibleAnywhere, Category = Camera)
 	class USpringArmComponent* SpringArm;
-	
+
 	UPROPERTY(VisibleAnywhere, Category = Camera)
 	class UCameraComponent* Camera;
 
 	const float DeathAnimDuration = 5.0f;
 	FTimerHandle DeathAnimationTimer;
-	
+
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	class UInputMappingContext* MovementContext;
@@ -133,19 +142,27 @@ protected:
 	void Respawn();
 
 	UFUNCTION(BlueprintImplementableEvent)
+	void OnCharacterDie();
+	UFUNCTION(BlueprintImplementableEvent)
 	void OnRespawn();
 
-	TArray<class AWeapon*>Inventory;
+	TArray<class AWeapon*> Inventory;
+
+
 
 	// Includes Items to Use
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
-	//TArray<class Item*> Items;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
+	TArray<class AItemInterface*> Items;
+
+	UFUNCTION(BlueprintCallable)
+	void AddItemToInventory(class AItemInterface* Item);
+
 
 	// Ultimate skill
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skills")
-	//class Skill* Ultimate;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
+	//class USkillInterface* Ultimate;
 
-	
+
 	class AWeapon* CurrentWeapon;
 
 	void AddWeapon(class AWeapon* Weapon);
