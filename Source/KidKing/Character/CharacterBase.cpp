@@ -450,8 +450,8 @@ void ACharacterBase::BotDie(float KillingDamage, FDamageEvent const& DamageEvent
 
 
 
-	GetMesh()->SetCollisionProfileName("Ragdoll");
-	GetMesh()->SetSimulatePhysics(true);
+	/*GetMesh()->SetCollisionProfileName("Ragdoll");
+	GetMesh()->SetSimulatePhysics(true);*/
 
 	GetWorldTimerManager().SetTimer(DeathAnimationTimer, this, &ACharacterBase::DeathAnimationEnd, DeathAnimDuration, false);
 }
