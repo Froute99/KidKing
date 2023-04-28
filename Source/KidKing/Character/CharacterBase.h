@@ -10,12 +10,14 @@
 #include "ItemInterface.h"
 //#include "SkillInterface.h"
 
+#include "AbilitySystemComponent.h"
+
 #include "CharacterBase.generated.h"
 
 DECLARE_MULTICAST_DELEGATE(FOnAttackEndDelegate);
 
 UCLASS()
-class KIDKING_API ACharacterBase : public ACharacter//, public IAbilitySystemInterface
+class KIDKING_API ACharacterBase : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
