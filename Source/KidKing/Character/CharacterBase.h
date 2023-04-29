@@ -147,7 +147,11 @@ protected:
 	void OnCharacterDie();
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnRespawn();
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnAttackStart();
 
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
 	TArray<class AWeapon*> Inventory;
 
 
@@ -165,6 +169,7 @@ protected:
 	//class USkillInterface* Ultimate;
 
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
 	class AWeapon* CurrentWeapon;
 
 	void AddWeapon(class AWeapon* Weapon);

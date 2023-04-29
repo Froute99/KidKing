@@ -158,6 +158,7 @@ void ACharacterBase::Attack()
 		MyAnim->PlayAttackMontage_Hero();
 		MyAnim->PlayAttackMontage_Bot();	
 		
+		OnAttackStart();
 	}
 }
 

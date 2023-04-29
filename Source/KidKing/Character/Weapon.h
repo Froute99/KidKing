@@ -21,18 +21,19 @@ public:
 	void SetOwningPawn(ACharacterBase* NewOwner);
 	void AttachMeshToPawn();
 	void OnEquip(const AWeapon* LastWeapon);
-	
-private:
-	UPROPERTY(VisibleDefaultsOnly, Category = Weapon)
-		USkeletalMeshComponent* WeaponMesh;
-
-	UPROPERTY(VisibleDefaultsOnly, Category = Weapon)
-		class UBoxComponent* WeaponCollision;
 
 protected:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	USkeletalMeshComponent* WeaponMesh;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UBoxComponent* WeaponCollision;
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class ACharacterBase* MyPawn;
 
 public:
-	virtual void NotifyActorBeginOverlap(AActor* OtherActor)override;
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 
 };
