@@ -335,7 +335,7 @@ float ACharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 			
 			if (CurrentLevel == "UEDPIE_0_stage_01")
 			{
-				con->ShowDieUI();
+				//con->ShowDieUI();
 				Die(myGetDamage, DamageEvent, EventInstigator, DamageCauser);
 			}
 			else
@@ -450,8 +450,8 @@ void ACharacterBase::BotDie(float KillingDamage, FDamageEvent const& DamageEvent
 
 
 
-	/*GetMesh()->SetCollisionProfileName("Ragdoll");
-	GetMesh()->SetSimulatePhysics(true);*/
+	//GetMesh()->SetCollisionProfileName("Ragdoll");
+	//GetMesh()->SetSimulatePhysics(true);
 
 	GetWorldTimerManager().SetTimer(DeathAnimationTimer, this, &ACharacterBase::DeathAnimationEnd, DeathAnimDuration, false);
 }
