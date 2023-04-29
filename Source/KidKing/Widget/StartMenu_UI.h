@@ -35,13 +35,13 @@ protected:
 
 private:
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable , Category = "UI")
 		void Bnt_StartGame_ButtonClicked();
 	
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "UI")
 		void Bnt_Credits_ButtonClicked();
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "UI")
 		void Bnt_ExitGame_ButtonClicked();
 
 };
