@@ -13,7 +13,7 @@ UCharacterAnimInstance::UCharacterAnimInstance()
 		AttackMontage_Hero = ATTACK_MONTAGE_HERO.Object;
 	}
 
-	static ConstructorHelpers::FObjectFinder<UAnimMontage> ATTACK_MONTAGE_BOT(TEXT("/Script/Engine.AnimMontage'/Game/BluePrint/Bot/Attack_Bot.Attack_Bot'"));
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> ATTACK_MONTAGE_BOT(TEXT("/Script/Engine.AnimMontage'/Game/BluePrint/Bot/Poprika_Attack_Montage.Poprika_Attack_Montage'"));
 	if (ATTACK_MONTAGE_BOT.Succeeded())
 	{
 		AttackMontage_Bot = ATTACK_MONTAGE_BOT.Object;
@@ -40,6 +40,11 @@ void UCharacterAnimInstance::PlayAttackMontage_Hero()
 void UCharacterAnimInstance::PlayAttackMontage_Bot()
 {
 	Montage_Play(AttackMontage_Bot, 1.0f);
+}
+
+void UCharacterAnimInstance::PlayAttackMontage_Poprika()
+{
+	Montage_Play(AttackMontage_Paprika, 1.0f);
 }
 
 void UCharacterAnimInstance::AnimNotify_AttackHitCheck()

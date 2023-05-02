@@ -22,6 +22,7 @@ public:
 	
 	void PlayAttackMontage_Hero();
 	void PlayAttackMontage_Bot();
+	void PlayAttackMontage_Poprika();
 	void SetDeadAnim(bool Value);
 	
 
@@ -34,11 +35,14 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))
 	float CurrentPawnSpeed;
 
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = Attack, Meta = (AllowPrivateAccess = true))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Attack, Meta = (AllowPrivateAccess = true))
 	UAnimMontage* AttackMontage_Hero;
 
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = Attack, Meta = (AllowPrivateAccess = true))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Attack, Meta = (AllowPrivateAccess = true))
 	UAnimMontage* AttackMontage_Bot;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Attack, Meta = (AllowPrivateAccess = true))
+	UAnimMontage* AttackMontage_Paprika;
 
 	UPROPERTY(BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))
 	bool bDeadAnim;

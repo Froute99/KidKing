@@ -156,7 +156,8 @@ void ACharacterBase::Attack()
 	if (!IsAttacking)
 	{
 		MyAnim->PlayAttackMontage_Hero();
-		MyAnim->PlayAttackMontage_Bot();	
+		MyAnim->PlayAttackMontage_Bot();
+		MyAnim->PlayAttackMontage_Poprika();
 		
 	}
 }
