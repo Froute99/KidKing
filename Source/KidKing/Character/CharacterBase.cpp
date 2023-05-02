@@ -22,6 +22,12 @@
 #include "GameFramework/Actor.h"
 //#include "CharacterWidget.h"
 
+
+#include "Components/CapsuleComponent.h"
+#include "Skills/CharacterAbilitySystemComponent.h"
+#include "CharacterAttributeSetBase.h"
+#include "CharacterGameplayAbility.h"
+
 #include "Weapon.h"
 #include "Engine/World.h"
 
@@ -66,6 +72,162 @@ ACharacterBase::ACharacterBase() : Widget_Component(CreateDefaultSubobject<UWidg
 
 	IsAttacking = false;
 
+
+
+
+
+	
+
+
+	BindASCInput();
+
+}
+
+ACharacterBase::ACharacterBase(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer.SetDefaultSubobjectClass<UCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
+{
+	PrimaryActorTick.bCanEverTick = true;
+
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Overlap);
+	bAlwaysRelevant = true;
+
+	DeadTag = FGameplayTag::RequestGameplayTag(FName("State.Dead"));
+	EffectRemoveOnDeathTag = FGameplayTag::RequestGameplayTag(FName("State.RemoveOnDeath"));
+
+
+	InitializeAttributes();
+
+	SetHealth(GetMaxHealth());
+
+
+//****************************************************************************
+
+
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SPRINGARM"));
+	SpringArm->SetupAttachment(GetCapsuleComponent());
+	SpringArm->TargetArmLength = 400.0f;
+	SpringArm->SetRelativeRotation(FRotator(-15.0f, 0.0f, 0.0f));
+
+	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("CAMERA"));
+	Camera->SetupAttachment(SpringArm);
+
+	AIControllerClass = ACustomAIController::StaticClass();
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+
+	MaxHp = 100.0f;
+	Hp = MaxHp;
+
+}
+
+bool ACharacterBase::IsAlive() const
+{
+	return GetHealth() > 0.0f;
+}
+
+int32 ACharacterBase::GetAbilityLevel(KidKingAbilityID AbilityID) const
+{
+	return 1;
+}
+
+void ACharacterBase::RemoveCharacterAbilities()
+{
+	if (GetLocalRole() != ROLE_Authority || !AbilitySystemComponent.IsValid() || !AbilitySystemComponent->CharacterAbilitiesGiven)
+	{
+		return;
+	}
+
+	TArray<FGameplayAbilitySpecHandle> AbilitiesToRemove;
+	for (const FGameplayAbilitySpec& Spec : AbilitySystemComponent->GetActivatableAbilities())
+	{
+		if ((Spec.SourceObject == this) && CharacterAbilities.Contains(Spec.Ability->GetClass()))
+		{
+			AbilitiesToRemove.Add(Spec.Handle);
+		}
+	}
+
+
+	for (int32 i = 0; i < AbilitiesToRemove.Num(); ++i)
+	{
+		AbilitySystemComponent->ClearAbility(AbilitiesToRemove[i]);
+	}
+
+	AbilitySystemComponent->CharacterAbilitiesGiven = false;
+}
+
+void ACharacterBase::GSADie()
+{
+	RemoveCharacterAbilities();
+
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetCharacterMovement()->GravityScale = 0;
+	GetCharacterMovement()->Velocity = FVector(0);
+
+	OnCharacterDied.Broadcast(this);
+
+	if (AbilitySystemComponent.IsValid())
+	{
+		AbilitySystemComponent->CancelAbilities();
+
+		FGameplayTagContainer EffectsTagsToRemove;
+
+		EffectsTagsToRemove.AddTag(EffectRemoveOnDeathTag);
+		int32 NumEffectEremoved = AbilitySystemComponent->RemoveActiveEffectsWithTags(EffectsTagsToRemove);
+		AbilitySystemComponent->AddLooseGameplayTag(DeadTag);
+
+		if (DeathMontage)
+		{
+			PlayAnimMontage(DeathMontage);
+		}
+		else
+		{
+			FinishDying();
+		}
+	}
+
+}
+
+void ACharacterBase::FinishDying()
+{
+	Destroy();
+}
+
+float ACharacterBase::GetCharacterLevel() const
+{
+	if (AttributeSetBase.IsValid())
+	{
+		return AttributeSetBase->GetLevel();
+	}
+
+	return 0.0f;
+}
+
+float ACharacterBase::GetHealth() const
+{
+	if (AttributeSetBase.IsValid())
+	{
+		return AttributeSetBase->GetHealth();
+	}
+
+	return 0.f;
+}
+
+float ACharacterBase::GetMaxHealth() const
+{
+	if (AttributeSetBase.IsValid())
+	{
+		return AttributeSetBase->GetMaxHealth();
+	}
+
+	return 0.f;
+}
+
+void ACharacterBase::BindASCInput()
+{
+	if (!ASCInputBound && AbilitySystemComponent.IsValid() && IsValid(InputComponent))
+	{
+		AbilitySystemComponent->BindAbilityActivationToInputComponent(InputComponent, FGameplayAbilityInputBinds(FString("ConfirmTarget"), FString("CancelTarget"), FString("DemoAbilityID"), static_cast<int32>(KidKingAbilityID::Confirm), static_cast<int32>(KidKingAbilityID::Cancel)));
+	}
+
+	ASCInputBound = true;
 }
 
 
@@ -76,12 +238,17 @@ void ACharacterBase::Tick(float DeltaTime)
 
 	HpRate = (Hp / MaxHp);
 
-	auto const uw = Cast<UHPbar>(Widget_Component->GetUserWidgetObject());
-	if (uw)
-	{
-		uw->set_bar_value_percent(HpRate);
-	}
+	//auto const uw = Cast<UHPbar>(Widget_Component->GetUserWidgetObject());
+	//if (uw)
+	//{
+	//	uw->set_bar_value_percent(HpRate);
+	//}
 
+}
+
+UAbilitySystemComponent* ACharacterBase::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent.Get();
 }
 
 // Called when the game starts or when spawned
@@ -103,6 +270,77 @@ void ACharacterBase::BeginPlay()
 		}
 	}
 
+}
+
+void ACharacterBase::AddCharacterAbilities()
+{
+	if (GetLocalRole() != ROLE_Authority || !AbilitySystemComponent.IsValid() || AbilitySystemComponent->CharacterAbilitiesGiven)
+	{
+		return;
+	}
+
+	for (TSubclassOf<UCharacterGameplayAbility>& StartupAbility : CharacterAbilities)
+	{
+		AbilitySystemComponent->GiveAbility(FGameplayAbilitySpec(StartupAbility, GetAbilityLevel(StartupAbility.GetDefaultObject()->AbilityID), static_cast<int32>(StartupAbility.GetDefaultObject()->AbilityInputID), this));
+	}
+
+	AbilitySystemComponent->CharacterAbilitiesGiven = true;
+}
+
+void ACharacterBase::InitializeAttributes()
+{
+	if (!AbilitySystemComponent.IsValid())
+	{
+		return;
+	}
+	
+	if (!DefaultAttributes)
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s() Missing DefaultAttributes for %s. Please fill in the character's Blueprint."), *FString(__FUNCTION__), *GetName());
+		return;
+	}
+
+	FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
+	EffectContext.AddSourceObject(this);
+
+	FGameplayEffectSpecHandle NewHandle = AbilitySystemComponent->MakeOutgoingSpec(DefaultAttributes, GetCharacterLevel(), EffectContext);
+	
+	if (NewHandle.IsValid())
+	{
+		FActiveGameplayEffectHandle ActiveGEHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToTarget(*NewHandle.Data.Get(), AbilitySystemComponent.Get());
+	}
+
+}
+
+void ACharacterBase::AddStartupEffects()
+{
+	if (GetLocalRole() != ROLE_Authority || !AbilitySystemComponent.IsValid() || AbilitySystemComponent->StartupEffectApplied)
+	{
+		return;
+	}
+
+	FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
+	EffectContext.AddSourceObject(this);
+
+	for (TSubclassOf<UGameplayEffect> GameplayEffect : StartupEffects)
+	{
+		FGameplayEffectSpecHandle NewHandle = AbilitySystemComponent->MakeOutgoingSpec(GameplayEffect, GetCharacterLevel(), EffectContext);
+
+		if (NewHandle.IsValid())
+		{
+			FActiveGameplayEffectHandle ActiveGEHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToTarget(*NewHandle.Data.Get(), AbilitySystemComponent.Get());
+		}
+	}
+
+	AbilitySystemComponent->StartupEffectApplied = true;
+}
+
+void ACharacterBase::SetHealth(float Health)
+{
+	if (AttributeSetBase.IsValid())
+	{
+		AttributeSetBase->SetHealth(Health);
+	}
 }
 
 // Called to bind functionality to input
