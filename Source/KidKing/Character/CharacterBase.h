@@ -17,7 +17,7 @@
 DECLARE_MULTICAST_DELEGATE(FOnAttackEndDelegate);
 
 UCLASS()
-class KIDKING_API ACharacterBase : public ACharacter, public IAbilitySystemInterface
+class KIDKING_API ACharacterBase : public ACharacter
 {
 	GENERATED_BODY()
 

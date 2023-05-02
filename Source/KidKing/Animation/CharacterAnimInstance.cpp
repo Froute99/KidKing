@@ -7,7 +7,7 @@ UCharacterAnimInstance::UCharacterAnimInstance()
 {
 	CurrentPawnSpeed = 0.0f;
 
-	static ConstructorHelpers::FObjectFinder<UAnimMontage> ATTACK_MONTAGE_HERO(TEXT("/Script/Engine.AnimMontage'/Game/BluePrint/MainCharacter/Maria/Attack_Hero.Attack_Hero'"));
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> ATTACK_MONTAGE_HERO(TEXT("/Script/Engine.AnimMontage'/Game/BluePrint/MainCharacter/Joyce/JoyceOrigin/JoyceAttack.JoyceAttack'"));
 	if (ATTACK_MONTAGE_HERO.Succeeded())
 	{
 		AttackMontage_Hero = ATTACK_MONTAGE_HERO.Object;

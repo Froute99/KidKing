@@ -18,5 +18,9 @@ class KIDKING_API AMainCharacter : public ACharacterBase
 public:
 	AMainCharacter();
 
-	virtual void PostInitializeComponents()override;
+	virtual void PostInitializeComponents() override;
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Multiplay")
+	int32 TeamCode;
 };
