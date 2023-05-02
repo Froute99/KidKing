@@ -59,7 +59,7 @@ void AController_StartMenu::ShowPauseMenu()
 			uiPauseMenuWidget->AddToViewport();
 		}
 		isShowPauseMenu = true;
-		bShowMouseCursor = true;
+		//bShowMouseCursor = true;
 	}
 
 }
