@@ -21,7 +21,10 @@ protected:
 
 
 public:
+	UFUNCTION(BlueprintCallable, Category = "UI")
 	void ShowPauseMenu();
+
+	UFUNCTION(BlueprintCallable, Category = "UI")
 	void ClosePauseMenu();
 
 	void ShowCredits();

@@ -23,6 +23,6 @@ protected:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 		UButton* Btn_PauseMenu_Close = nullptr;
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category = "UI")
 		void Btn_PauseMenu_CloseWindow();
 };

@@ -23,6 +23,6 @@ protected:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 		UButton* Btn_Credits_Close = nullptr;
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "UI")
 		void Btn_Credits_CloseWindow();
 };
