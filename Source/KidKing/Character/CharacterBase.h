@@ -38,10 +38,10 @@ public:
 
 	// Must be overrided
 	// https://docs.unrealengine.com/5.1/en-US/gameplay-ability-system-component-and-gameplay-attributes-in-unreal-engine/
-	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override
+	/*virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override
 	{
 		return AbilitySystemComponent;
-	}
+	}*/
 
 	UPROPERTY(EditDefaultsOnly, Category = "Abilities")
 	UAbilitySystemComponent* AbilitySystemComponent;
