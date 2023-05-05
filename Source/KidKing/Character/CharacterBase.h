@@ -74,6 +74,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = State)
 	float Hp;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = State)
+	float Stamina;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = State)
 	float MaxHp;
 
