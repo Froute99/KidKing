@@ -96,6 +96,9 @@ public:
 	UFUNCTION()
 	void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted);
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = State)
+	bool IsBlocking;
+
 	bool IsAttacking;
 
 	float get_Health()const;

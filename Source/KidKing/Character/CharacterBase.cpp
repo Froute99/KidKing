@@ -65,7 +65,7 @@ ACharacterBase::ACharacterBase() : Widget_Component(CreateDefaultSubobject<UWidg
 	}
 
 	IsAttacking = false;
-
+	IsBlocking = false;
 }
 
 
@@ -319,7 +319,7 @@ float ACharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 
 	const float myGetDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 
-	if (myGetDamage > 0.f)
+	if (myGetDamage > 0.f && IsBlocking == false)
 	{
 		Hp -= myGetDamage;
 	}
