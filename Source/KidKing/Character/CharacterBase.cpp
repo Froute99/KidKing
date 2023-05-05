@@ -65,7 +65,8 @@ ACharacterBase::ACharacterBase() : Widget_Component(CreateDefaultSubobject<UWidg
 	}
 
 	IsAttacking = false;
-
+	IsBlocking = false;
+	Stamina = 100.0f;
 }
 
 
@@ -321,7 +322,16 @@ float ACharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 
 	if (myGetDamage > 0.f)
 	{
-		Hp -= myGetDamage;
+		if (IsBlocking == false)
+		{
+			Hp -= myGetDamage;
+			OnHit(myGetDamage, DamageEvent, EventInstigator ? EventInstigator->GetPawn() : NULL, DamageCauser);
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("HP is : %f"), Hp));
+		}
+		else if (IsBlocking == true)
+		{
+			Stamina -= 10.0f;
+		}
 	}
 
 
@@ -352,12 +362,6 @@ float ACharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 			BotDie(myGetDamage, DamageEvent, EventInstigator, DamageCauser);
 		}
 	}
-	else
-	{
-		OnHit(myGetDamage, DamageEvent, EventInstigator ? EventInstigator->GetPawn() : NULL, DamageCauser);
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("HP is : %f"), Hp));
-	}
-
 
 	return myGetDamage;
 }
