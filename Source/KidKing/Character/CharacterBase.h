@@ -74,6 +74,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = State)
 	float Hp;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = State)
+	float Stamina;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = State)
 	float MaxHp;
 
@@ -95,6 +98,9 @@ public:
 
 	UFUNCTION()
 	void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = State)
+	bool IsBlocking;
 
 	bool IsAttacking;
 
