@@ -6,6 +6,9 @@
 #include "GameFramework/PlayerState.h"
 #include "AbilitySystemInterface.h"
 #include "CharacterAttributeSetBase.h"
+
+#include "GameplayEffectTypes.h"
+
 #include "KidKingPlayerState.generated.h"
 
 /**
@@ -21,7 +24,7 @@ public:
 
 	class UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
-	class CharacterAttributeSetBase* GetAttributeSetBase() const;
+	class UCharacterAttributeSetBase* GetAttributeSetBase() const;
 
 
 	UFUNCTION(BlueprintCallable, Category = "KidKing|KidKingPlayerState")
@@ -48,11 +51,15 @@ protected:
 
 	FDelegateHandle HealthChangedDelegateHandle;
 	FDelegateHandle MaxHealthChangedDelegateHandle;
+	FDelegateHandle CharacterLevelChangedDelegateHandle;
 
 	
 	virtual void BeginPlay() override;
 
 	virtual void HealthChanged(const FOnAttributeChangeData& Data);
 	virtual void MaxHealthChanged(const FOnAttributeChangeData& Data);
+	virtual void CharacterLevelChanged(const FOnAttributeChangeData& Data);
+
+	virtual void StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
 
 };

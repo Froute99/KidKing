@@ -4,11 +4,13 @@
 #include "Controller_StartMenu.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Runtime/UMG/Public/Blueprint/UserWidget.h"
+#include "KidKingPlayerState.h"
+#include "AbilitySystemComponent.h"
 #include "CharacterBase.h"
 
 AController_StartMenu::AController_StartMenu()
 {
-	
+
 	isShowPauseMenu = false;
 	isShowCredits = false;
 
@@ -34,6 +36,18 @@ AController_StartMenu::AController_StartMenu()
 	if (FinalStageDieUI.Succeeded())
 	{
 		uiFinalStageDieBPClass = FinalStageDieUI.Class;
+	}
+
+}
+
+void AController_StartMenu::OnPossess(APawn* InPawn)
+{
+	Super::OnPossess(InPawn);
+
+	AKidKingPlayerState* PS = GetPlayerState<AKidKingPlayerState>();
+	if (PS)
+	{
+		PS->GetAbilitySystemComponent()->InitAbilityActorInfo(PS, InPawn);
 	}
 
 }

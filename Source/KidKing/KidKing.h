@@ -10,5 +10,6 @@ enum class KidKingAbilityID : uint8
 	None UMETA(DisplayName = "None"),
 	Confirm UMETA(DisplayName  = "Confirm"),
 	Cancel UMETA(DisplayName = "Cancel"),
+	Fireball
 };
 

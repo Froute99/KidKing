@@ -17,7 +17,9 @@ class KIDKING_API AController_StartMenu : public APlayerController
 	
 		AController_StartMenu();
 protected:
-	void SetupInputComponent()override;
+	void SetupInputComponent() override;
+
+	virtual void OnPossess(APawn* InPawn) override;
 
 
 public:

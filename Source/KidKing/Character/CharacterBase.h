@@ -9,10 +9,11 @@
 #include "GameplayTagContainer.h"
 
 #include "ItemInterface.h"
-//#include "SkillInterface.h"
 
 #include "AbilitySystemInterface.h"
 #include "AbilitySystemComponent.h"
+#include "CharacterAbilitySystemComponent.h"
+#include "KidKingPlayerState.h"
 
 #include "KidKing.h"
 
@@ -62,13 +63,15 @@ public:
 	float GetMaxHealth() const;
 
 
+	virtual void OnRep_PlayerState() override;
+
 	bool ASCInputBound = false;
 
 	void BindASCInput();
 
+	void InitializeStartingValues(AKidKingPlayerState* PS);
 
 //**********************************************************
-
 
 
 	USkeletalMeshComponent* GetSpesificPawnMesh()const;
@@ -119,6 +122,7 @@ public:
 
 	virtual void SetHealth(float Health);
 
+	virtual void PossessedBy(AController* NewController) override;
 
 //**********************************************************
 
