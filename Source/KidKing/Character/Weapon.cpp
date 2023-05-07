@@ -4,9 +4,9 @@
 #include "Engine.h"
 
 // Sets default values
-AWeapon::AWeapon(const class FObjectInitializer& ObjectInitializer):Super(ObjectInitializer)
+AWeapon::AWeapon(const class FObjectInitializer& ObjectInitializer) :Super(ObjectInitializer)
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	WeaponMesh = ObjectInitializer.CreateDefaultSubobject<USkeletalMeshComponent>(this, TEXT("WeaponMesh"));
@@ -15,7 +15,7 @@ AWeapon::AWeapon(const class FObjectInitializer& ObjectInitializer):Super(Object
 
 	WeaponCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("WeaponCollision"));
 	WeaponCollision->SetBoxExtent(FVector(3.f, 3.f, 3.f));
-	WeaponCollision->AttachToComponent(WeaponMesh, FAttachmentTransformRules::KeepRelativeTransform,"DamageSocket");
+	WeaponCollision->AttachToComponent(WeaponMesh, FAttachmentTransformRules::KeepRelativeTransform, "DamageSocket");
 }
 
 void AWeapon::SetOwningPawn(ACharacterBase* NewOwner)
@@ -43,10 +43,12 @@ void AWeapon::OnEquip(const AWeapon* LastWeapon)
 
 void AWeapon::NotifyActorBeginOverlap(AActor* OtherActor)
 {
-	if (OtherActor->IsA(AActor::StaticClass()) && MyPawn->IsAttacking && OtherActor != MyPawn)
+	if (MyPawn)
 	{
-		UGameplayStatics::ApplyDamage(OtherActor, 10.f, NULL, this, UDamageType::StaticClass());
-		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, "ApplyDamage");
+		if (OtherActor->IsA(AActor::StaticClass()) && MyPawn->IsAttacking && OtherActor != MyPawn)
+		{
+			UGameplayStatics::ApplyDamage(OtherActor, 10.f, NULL, this, UDamageType::StaticClass());
+			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, "ApplyDamage");
+		}
 	}
-
 }
