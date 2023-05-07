@@ -567,6 +567,7 @@ void ACharacterBase::SpawnDefaultInventory()
 		FActorSpawnParameters SpawnInfo;
 		UWorld* WRLD = GetWorld();
 		AWeapon* NewWeapon = WRLD->SpawnActor<AWeapon>(DefaultInventoryClasses[i], SpawnInfo);
+		NewWeapon->SetOwner(this);
 		AddWeapon(NewWeapon);
 	}
 
@@ -680,6 +681,13 @@ float ACharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 		}
 		else
 		{
+			
+			UE_LOG(LogTemp, Log, TEXT("BoeDie"));
+
+			UE_LOG(LogTemp, Log, TEXT("%s"), *DamageCauser->GetOwner()->GetName());
+			
+			Cast<ACharacterBase>(DamageCauser->GetOwner())->Gold += 30;
+			
 			BotDie(myGetDamage, DamageEvent, EventInstigator, DamageCauser);
 		}
 	}
@@ -749,6 +757,7 @@ void ACharacterBase::BotDie(float KillingDamage, FDamageEvent const& DamageEvent
 	UDamageType const* const DamageType = DamageEvent.DamageTypeClass ? Cast<const UDamageType>(DamageEvent.DamageTypeClass->GetDefaultObject()) : GetDefault<UDamageType>();
 
 	Killer = GetDamageInstigator(Killer, *DamageType);
+
 
 	GetWorldTimerManager().ClearTimer(DeathAnimationTimer);
 
