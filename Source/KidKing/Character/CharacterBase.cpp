@@ -22,11 +22,19 @@
 #include "GameFramework/Actor.h"
 //#include "CharacterWidget.h"
 
+#include "KidKingPlayerState.h"
+
+#include "Components/CapsuleComponent.h"
+#include "CharacterAbilitySystemComponent.h"
+#include "CharacterAttributeSetBase.h"
+#include "CharacterGameplayAbility.h"
+
 #include "Weapon.h"
 #include "Engine/World.h"
 
 // Sets default values
-ACharacterBase::ACharacterBase() : Widget_Component(CreateDefaultSubobject<UWidgetComponent>(TEXT("HealthValue")))
+ACharacterBase::ACharacterBase()
+	: Widget_Component(CreateDefaultSubobject<UWidgetComponent>(TEXT("HealthValue")))
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -65,8 +73,228 @@ ACharacterBase::ACharacterBase() : Widget_Component(CreateDefaultSubobject<UWidg
 	}
 
 	IsAttacking = false;
-	IsBlocking = false;
-	Stamina = 100.0f;
+
+
+
+
+
+
+	DeadTag = FGameplayTag::RequestGameplayTag(FName("State.Dead"));
+
+	BindASCInput();
+
+}
+
+ACharacterBase::ACharacterBase(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer.SetDefaultSubobjectClass<UCharacterMovementComponent>(ACharacter::CharacterMovementComponentName)),
+	Widget_Component(CreateDefaultSubobject<UWidgetComponent>(TEXT("HealthValue")))
+{
+	PrimaryActorTick.bCanEverTick = true;
+
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Overlap);
+	bAlwaysRelevant = true;
+
+
+
+	//****************************************************************************
+
+
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SPRINGARM"));
+	SpringArm->SetupAttachment(GetCapsuleComponent());
+	SpringArm->TargetArmLength = 400.0f;
+	SpringArm->SetRelativeRotation(FRotator(-15.0f, 0.0f, 0.0f));
+
+	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("CAMERA"));
+	Camera->SetupAttachment(SpringArm);
+
+
+	AIControllerClass = ACustomAIController::StaticClass();
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+
+	MaxHp = 100.0f;
+	Hp = MaxHp;
+
+
+	//myHPbar_Text = FString::SanitizeFloat(MyHealth) + "/" + FString::SanitizeFloat(MyMaxHealth);
+
+	//make HPbar on the head
+	if (Widget_Component)
+	{
+		Widget_Component->SetupAttachment(RootComponent);
+		Widget_Component->SetWidgetSpace(EWidgetSpace::Screen);
+		Widget_Component->SetRelativeLocation(FVector(0.0f, 0.0f, 50.0f));
+		static ConstructorHelpers::FClassFinder<UUserWidget> widget_class(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/HPbar_BP.HPbar_BP_C'"));
+
+		if (widget_class.Succeeded())
+		{
+			//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Magenta, __FUNCTION__);
+			Widget_Component->SetWidgetClass(widget_class.Class);
+
+		}
+	}
+
+	IsAttacking = false;
+
+
+
+
+	DeadTag = FGameplayTag::RequestGameplayTag(FName("State.Dead"));
+	EffectRemoveOnDeathTag = FGameplayTag::RequestGameplayTag(FName("State.RemoveOnDeath"));
+
+
+	BindASCInput();
+
+}
+
+bool ACharacterBase::IsAlive() const
+{
+	return GetHealth() > 0.0f;
+}
+
+int32 ACharacterBase::GetAbilityLevel(KidKingAbilityID AbilityID) const
+{
+	return 1;
+}
+
+void ACharacterBase::RemoveCharacterAbilities()
+{
+	if (GetLocalRole() != ROLE_Authority || !AbilitySystemComponent.IsValid() || !AbilitySystemComponent->CharacterAbilitiesGiven)
+	{
+		return;
+	}
+
+	TArray<FGameplayAbilitySpecHandle> AbilitiesToRemove;
+	for (const FGameplayAbilitySpec& Spec : AbilitySystemComponent->GetActivatableAbilities())
+	{
+		if ((Spec.SourceObject == this) && CharacterAbilities.Contains(Spec.Ability->GetClass()))
+		{
+			AbilitiesToRemove.Add(Spec.Handle);
+		}
+	}
+
+
+	for (int32 i = 0; i < AbilitiesToRemove.Num(); ++i)
+	{
+		AbilitySystemComponent->ClearAbility(AbilitiesToRemove[i]);
+	}
+
+	AbilitySystemComponent->CharacterAbilitiesGiven = false;
+}
+
+void ACharacterBase::GSADie()
+{
+	RemoveCharacterAbilities();
+
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetCharacterMovement()->GravityScale = 0;
+	GetCharacterMovement()->Velocity = FVector(0);
+
+	OnCharacterDied.Broadcast(this);
+
+	if (AbilitySystemComponent.IsValid())
+	{
+		AbilitySystemComponent->CancelAbilities();
+
+		FGameplayTagContainer EffectsTagsToRemove;
+
+		EffectsTagsToRemove.AddTag(EffectRemoveOnDeathTag);
+		int32 NumEffectEremoved = AbilitySystemComponent->RemoveActiveEffectsWithTags(EffectsTagsToRemove);
+		AbilitySystemComponent->AddLooseGameplayTag(DeadTag);
+
+		if (DeathMontage)
+		{
+			PlayAnimMontage(DeathMontage);
+		}
+		else
+		{
+			FinishDying();
+		}
+	}
+
+}
+
+void ACharacterBase::FinishDying()
+{
+	Destroy();
+}
+
+float ACharacterBase::GetCharacterLevel() const
+{
+	if (AttributeSetBase.IsValid())
+	{
+		return AttributeSetBase->GetLevel();
+	}
+
+	return 0.0f;
+}
+
+float ACharacterBase::GetHealth() const
+{
+	if (AttributeSetBase.IsValid())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("AttributeSetBase is valid"));
+		return AttributeSetBase->GetHealth();
+	}
+
+	return 0.f;
+}
+
+float ACharacterBase::GetMaxHealth() const
+{
+	if (AttributeSetBase.IsValid())
+	{
+		return AttributeSetBase->GetMaxHealth();
+	}
+
+	return 0.f;
+}
+
+void ACharacterBase::OnRep_PlayerState()
+{
+	AKidKingPlayerState* PS = GetPlayerState<AKidKingPlayerState>();
+	if (PS)
+	{
+		InitializeStartingValues(PS);
+		BindASCInput();
+		InitializeAttributes();
+	}
+}
+
+void ACharacterBase::BindASCInput()
+{
+	if (!ASCInputBound && AbilitySystemComponent.IsValid() && IsValid(InputComponent))
+	{
+		AbilitySystemComponent->BindAbilityActivationToInputComponent(InputComponent, FGameplayAbilityInputBinds(FString("ConfirmTarget"), FString("CancelTarget"), FString("DemoAbilityID"), static_cast<int32>(KidKingAbilityID::Confirm), static_cast<int32>(KidKingAbilityID::Cancel)));
+	}
+
+	ASCInputBound = true;
+}
+
+void ACharacterBase::InitializeStartingValues(AKidKingPlayerState* PS)
+{
+	AbilitySystemComponent = Cast<UCharacterAbilitySystemComponent>(PS->GetAbilitySystemComponent());
+	PS->GetAbilitySystemComponent()->InitAbilityActorInfo(PS, this);
+
+	AttributeSetBase = PS->GetAttributeSetBase();
+
+	if (AttributeSetBase.IsValid())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("AttributeSetBase is valid"));
+	}
+
+
+	AbilitySystemComponent->SetTagMapCount(DeadTag, 0);
+
+	InitializeAttributes();
+
+
+	AttributeSetBase->SetHealth(100.0f);
+	//SetHealth(100.0f);
+	//SetHealth(GetMaxHealth());
+
+
+	//AddStartupEffects();
+	//AddCharacterAbilities();
 }
 
 
@@ -77,12 +305,17 @@ void ACharacterBase::Tick(float DeltaTime)
 
 	HpRate = (Hp / MaxHp);
 
-	auto const uw = Cast<UHPbar>(Widget_Component->GetUserWidgetObject());
-	if (uw)
-	{
-		uw->set_bar_value_percent(HpRate);
-	}
+	//auto const uw = Cast<UHPbar>(Widget_Component->GetUserWidgetObject());
+	//if (uw)
+	//{
+	//	uw->set_bar_value_percent(HpRate);
+	//}
 
+}
+
+UAbilitySystemComponent* ACharacterBase::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent.Get();
 }
 
 // Called when the game starts or when spawned
@@ -106,6 +339,91 @@ void ACharacterBase::BeginPlay()
 
 }
 
+void ACharacterBase::AddCharacterAbilities()
+{
+	if (GetLocalRole() != ROLE_Authority || !AbilitySystemComponent.IsValid() || AbilitySystemComponent->CharacterAbilitiesGiven)
+	{
+		return;
+	}
+
+	for (TSubclassOf<UCharacterGameplayAbility>& StartupAbility : CharacterAbilities)
+	{
+		AbilitySystemComponent->GiveAbility(FGameplayAbilitySpec(StartupAbility, GetAbilityLevel(StartupAbility.GetDefaultObject()->AbilityID), static_cast<int32>(StartupAbility.GetDefaultObject()->AbilityInputID), this));
+	}
+
+	AbilitySystemComponent->CharacterAbilitiesGiven = true;
+}
+
+void ACharacterBase::InitializeAttributes()
+{
+	if (!AbilitySystemComponent.IsValid())
+	{
+		return;
+	}
+
+	if (!DefaultAttributes)
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s() Missing DefaultAttributes for %s. Please fill in the character's Blueprint."), *FString(__FUNCTION__), *GetName());
+		return;
+	}
+
+	FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
+	EffectContext.AddSourceObject(this);
+
+	FGameplayEffectSpecHandle NewHandle = AbilitySystemComponent->MakeOutgoingSpec(DefaultAttributes, GetCharacterLevel(), EffectContext);
+
+	if (NewHandle.IsValid())
+	{
+		FActiveGameplayEffectHandle ActiveGEHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToTarget(*NewHandle.Data.Get(), AbilitySystemComponent.Get());
+	}
+
+}
+
+void ACharacterBase::AddStartupEffects()
+{
+	if (GetLocalRole() != ROLE_Authority || !AbilitySystemComponent.IsValid() || AbilitySystemComponent->StartupEffectApplied)
+	{
+		return;
+	}
+
+	FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
+	EffectContext.AddSourceObject(this);
+
+	for (TSubclassOf<UGameplayEffect> GameplayEffect : StartupEffects)
+	{
+		FGameplayEffectSpecHandle NewHandle = AbilitySystemComponent->MakeOutgoingSpec(GameplayEffect, GetCharacterLevel(), EffectContext);
+
+		if (NewHandle.IsValid())
+		{
+			FActiveGameplayEffectHandle ActiveGEHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToTarget(*NewHandle.Data.Get(), AbilitySystemComponent.Get());
+		}
+	}
+
+	AbilitySystemComponent->StartupEffectApplied = true;
+}
+
+void ACharacterBase::SetHealth(float Health)
+{
+	if (AttributeSetBase.IsValid())
+	{
+		AttributeSetBase->SetHealth(100.0f);
+	}
+}
+
+void ACharacterBase::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	AKidKingPlayerState* PS = GetPlayerState<AKidKingPlayerState>();
+	if (PS)
+	{
+		InitializeStartingValues(PS);
+		AddStartupEffects();
+		AddCharacterAbilities();
+	}
+
+}
+
 // Called to bind functionality to input
 void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -122,6 +440,8 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	}
 
 	PlayerInputComponent->BindAction(TEXT("Attack"), EInputEvent::IE_Pressed, this, &ACharacterBase::Attack);
+
+	BindASCInput();
 }
 
 
@@ -160,6 +480,7 @@ void ACharacterBase::Attack()
 		MyAnim->PlayAttackMontage_Bot();
 		MyAnim->PlayAttackMontage_Poprika();
 		
+		OnAttackStart();
 	}
 }
 
@@ -203,7 +524,7 @@ void ACharacterBase::Respawn()
 
 	Hp = MaxHp;
 	MyAnim->SetDeadAnim(false);
-	
+
 
 	TeleportTo(SpawnLocation, SpawnRotator, false, false);
 
@@ -270,7 +591,7 @@ void ACharacterBase::AttackHitCheck()
 		GetActorLocation(),
 		GetActorLocation() + GetActorForwardVector() * AttackRange,
 		FQuat::Identity,
-		ECollisionChannel::ECC_GameTraceChannel1,
+		ECollisionChannel::ECC_Pawn,
 		FCollisionShape::MakeSphere(AttackRadius),
 		Params);
 
@@ -343,7 +664,7 @@ float ACharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 			auto World = GetWorld();
 			FString CurrentLevel = World->GetMapName();
 			AController_StartMenu* con = Cast<AController_StartMenu>(GetOwner());
-			
+
 			if (CurrentLevel == "UEDPIE_0_stage_01")
 			{
 				//con->ShowDieUI();

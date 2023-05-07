@@ -5,25 +5,74 @@
 #include "EngineMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputAction.h"
-#include "AbilitySystemInterface.h"
+
+#include "GameplayTagContainer.h"
 
 #include "ItemInterface.h"
-//#include "SkillInterface.h"
 
+#include "AbilitySystemInterface.h"
 #include "AbilitySystemComponent.h"
+#include "CharacterAbilitySystemComponent.h"
+#include "KidKingPlayerState.h"
+
+#include "KidKing.h"
 
 #include "CharacterBase.generated.h"
 
 DECLARE_MULTICAST_DELEGATE(FOnAttackEndDelegate);
 
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCharacterDiedDelegate,
+	ACharacterBase*, Character);
+
+
 UCLASS()
-class KIDKING_API ACharacterBase : public ACharacter
+class KIDKING_API ACharacterBase : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this character's properties
 	ACharacterBase();
+	ACharacterBase(const class FObjectInitializer& ObjectInitializer);
+
+	UPROPERTY(BlueprintAssignable, Category = "KidKing|Character")
+	FCharacterDiedDelegate OnCharacterDied;
+
+
+	UFUNCTION(BlueprintCallable, Category = "KidKing|Character")
+	virtual bool IsAlive() const;
+
+	// Later, want some additive features something like "Skill Tier", edit this
+	UFUNCTION(BlueprintCallable, Category = "KidKing|Character")
+	virtual int32 GetAbilityLevel(KidKingAbilityID AbilityID) const;
+
+	virtual void RemoveCharacterAbilities();
+
+	virtual void GSADie();
+
+	UFUNCTION(BlueprintCallable, Category = "KidKing|Character")
+	virtual void FinishDying();
+
+
+	UFUNCTION(BlueprintCallable, Category = "KidKing|Character|Attributes")
+	float GetCharacterLevel() const;
+	UFUNCTION(BlueprintCallable, Category = "KidKing|Character|Attributes")
+	float GetHealth() const;
+	UFUNCTION(BlueprintCallable, Category = "KidKing|Character|Attributes")
+	float GetMaxHealth() const;
+
+
+	virtual void OnRep_PlayerState() override;
+
+	bool ASCInputBound = false;
+
+	void BindASCInput();
+
+	void InitializeStartingValues(AKidKingPlayerState* PS);
+
+//**********************************************************
+
 
 	USkeletalMeshComponent* GetSpesificPawnMesh()const;
 
@@ -36,15 +85,47 @@ public:
 
 
 
-	// Must be overrided
-	// https://docs.unrealengine.com/5.1/en-US/gameplay-ability-system-component-and-gameplay-attributes-in-unreal-engine/
-	/*virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override
-	{
-		return AbilitySystemComponent;
-	}*/
-
 	UPROPERTY(EditDefaultsOnly, Category = "Abilities")
-	UAbilitySystemComponent* AbilitySystemComponent;
+	TWeakObjectPtr<class UCharacterAbilitySystemComponent> AbilitySystemComponent;
+	UPROPERTY(EditDefaultsOnly, Category = "Abilities")
+	TWeakObjectPtr<class UCharacterAttributeSetBase> AttributeSetBase;
+
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+
+
+	FGameplayTag DeadTag;
+	FGameplayTag EffectRemoveOnDeathTag;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "KidKing|Character")
+	FText CharacterName;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "KidKing|Animation")
+	UAnimMontage* DeathMontage;
+
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "KidKing|Abilities")
+	TArray<TSubclassOf<class UCharacterGameplayAbility>> CharacterAbilities;
+
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "KidKing|Abilities")
+	TSubclassOf<class UGameplayEffect> DefaultAttributes;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "KidKing|Abilities")
+	TArray<TSubclassOf<class UGameplayEffect>> StartupEffects;
+
+	virtual void AddCharacterAbilities();
+
+	virtual void InitializeAttributes();
+
+	virtual void AddStartupEffects();
+
+
+	virtual void SetHealth(float Health);
+
+	virtual void PossessedBy(AController* NewController) override;
+
+//**********************************************************
+
 
 
 	// Called to bind functionality to input
@@ -153,7 +234,11 @@ protected:
 	void OnCharacterDie();
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnRespawn();
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnAttackStart();
 
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
 	TArray<class AWeapon*> Inventory;
 
 
@@ -171,6 +256,7 @@ protected:
 	//class USkillInterface* Ultimate;
 
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
 	class AWeapon* CurrentWeapon;
 
 	void AddWeapon(class AWeapon* Weapon);
