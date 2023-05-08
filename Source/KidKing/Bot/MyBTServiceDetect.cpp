@@ -40,15 +40,20 @@ void UMyBTServiceDetect::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* Node
 	{
 		for (auto const& OverlapResult : OverlapResults)
 		{
-			AMainCharacter* MyCharacter = Cast<AMainCharacter>(OverlapResult.GetActor());
-			if (MyCharacter && MyCharacter->GetController()->IsPlayerController() && MyCharacter->Hp != 0)
-			{
-				OwnerComp.GetBlackboardComponent()->SetValueAsObject(ACustomAIController::TargetKey, MyCharacter);
-				DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Green, false, 0.2f);
+			TOptional<FOverlapResult> ToCheck(OverlapResult);
 
-				DrawDebugPoint(World, MyCharacter->GetActorLocation(), 10.0f, FColor::Blue, false, 0.2f);
-				DrawDebugLine(World, ControllingPawn->GetActorLocation(), MyCharacter->GetActorLocation(), FColor::Blue, false, 0.27f);
-				return;
+			if (ToCheck.IsSet())
+			{
+				AMainCharacter* MyCharacter = Cast<AMainCharacter>(OverlapResult.GetActor());
+				if (MyCharacter && MyCharacter->GetController()->IsPlayerController() && MyCharacter->Hp != 0)
+				{
+					OwnerComp.GetBlackboardComponent()->SetValueAsObject(ACustomAIController::TargetKey, MyCharacter);
+					DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Green, false, 0.2f);
+
+					DrawDebugPoint(World, MyCharacter->GetActorLocation(), 10.0f, FColor::Blue, false, 0.2f);
+					DrawDebugLine(World, ControllingPawn->GetActorLocation(), MyCharacter->GetActorLocation(), FColor::Blue, false, 0.27f);
+					return;
+				}
 			}
 		}
 	}

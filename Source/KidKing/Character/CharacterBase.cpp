@@ -677,11 +677,14 @@ float ACharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 		}
 		else
 		{
-			UE_LOG(LogTemp, Log, TEXT("BoeDie"));
-
-			UE_LOG(LogTemp, Log, TEXT("%s"), *DamageCauser->GetOwner()->GetName());
-			
-			Cast<ACharacterBase>(DamageCauser->GetOwner())->Gold += 30;
+			if (DamageCauser->IsA(AWeapon::StaticClass()))
+			{
+				Cast<ACharacterBase>(DamageCauser->GetOwner())->Gold += 30;
+			}
+			else
+			{
+				Cast<ACharacterBase>(DamageCauser)->Gold += 30;
+			}
 			
 			BotDie(myGetDamage, DamageEvent, EventInstigator, DamageCauser);
 		}
