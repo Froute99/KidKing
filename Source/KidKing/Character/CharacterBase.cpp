@@ -674,11 +674,9 @@ float ACharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 				Die(myGetDamage, DamageEvent, EventInstigator, DamageCauser);
 			}
 
-
 		}
 		else
 		{
-			
 			UE_LOG(LogTemp, Log, TEXT("BoeDie"));
 
 			UE_LOG(LogTemp, Log, TEXT("%s"), *DamageCauser->GetOwner()->GetName());

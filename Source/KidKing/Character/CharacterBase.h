@@ -280,4 +280,8 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Respawn")
 	FRotator SpawnRotator;
 
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool IsSkillPurchased = false;
+
 };
