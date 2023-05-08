@@ -73,11 +73,8 @@ ACharacterBase::ACharacterBase()
 	}
 
 	IsAttacking = false;
-
-
-
-
-
+	IsBlocking = false;
+	Stamina = 100.0f;
 
 	DeadTag = FGameplayTag::RequestGameplayTag(FName("State.Dead"));
 
@@ -305,11 +302,11 @@ void ACharacterBase::Tick(float DeltaTime)
 
 	HpRate = (Hp / MaxHp);
 
-	//auto const uw = Cast<UHPbar>(Widget_Component->GetUserWidgetObject());
-	//if (uw)
-	//{
-	//	uw->set_bar_value_percent(HpRate);
-	//}
+	auto const uw = Cast<UHPbar>(Widget_Component->GetUserWidgetObject());
+	if (uw)
+	{
+		uw->set_bar_value_percent(HpRate);
+	}
 
 }
 

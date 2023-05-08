@@ -27,8 +27,8 @@ void UStartMenu_UI::NativeConstruct()
 
 void UStartMenu_UI::Bnt_StartGame_ButtonClicked()
 {
-	//UGameplayStatics::OpenLevel(GetWorld(), "/Game/Map/ServerEntry");
-	UGameplayStatics::OpenLevel(GetWorld(), "127.0.0.1");
+	UGameplayStatics::OpenLevel(GetWorld(), "/Game/Map/CharacterSelection");
+	//UGameplayStatics::OpenLevel(GetWorld(), "127.0.0.1");
 }
 
 void UStartMenu_UI::Bnt_Credits_ButtonClicked()
