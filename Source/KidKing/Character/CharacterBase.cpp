@@ -39,16 +39,16 @@ ACharacterBase::ACharacterBase()
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SPRINGARM"));
-	SpringArm->SetupAttachment(GetCapsuleComponent());
-	SpringArm->TargetArmLength = 400.0f;
-	SpringArm->SetRelativeRotation(FRotator(-15.0f, 0.0f, 0.0f));
+	//SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SPRINGARM"));
+	//SpringArm->SetupAttachment(GetCapsuleComponent());
+	//SpringArm->TargetArmLength = 400.0f;
+	//SpringArm->SetRelativeRotation(FRotator(-15.0f, 0.0f, 0.0f));
 
-	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("CAMERA"));
-	Camera->SetupAttachment(SpringArm);
+	//Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("CAMERA"));
+	//Camera->SetupAttachment(SpringArm);
 
-	AIControllerClass = ACustomAIController::StaticClass();
-	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+	//AIControllerClass = ACustomAIController::StaticClass();
+	//AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
 	MaxHp = 100.0f;
 	Hp = MaxHp;
@@ -96,17 +96,17 @@ ACharacterBase::ACharacterBase(const FObjectInitializer& ObjectInitializer)
 	//****************************************************************************
 
 
-	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SPRINGARM"));
-	SpringArm->SetupAttachment(GetCapsuleComponent());
-	SpringArm->TargetArmLength = 400.0f;
-	SpringArm->SetRelativeRotation(FRotator(-15.0f, 0.0f, 0.0f));
+	//SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SPRINGARM"));
+	//SpringArm->SetupAttachment(GetCapsuleComponent());
+	//SpringArm->TargetArmLength = 400.0f;
+	//SpringArm->SetRelativeRotation(FRotator(-15.0f, 0.0f, 0.0f));
 
-	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("CAMERA"));
-	Camera->SetupAttachment(SpringArm);
+	//Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("CAMERA"));
+	//Camera->SetupAttachment(SpringArm);
 
 
-	AIControllerClass = ACustomAIController::StaticClass();
-	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+	//AIControllerClass = ACustomAIController::StaticClass();
+	//AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
 	MaxHp = 100.0f;
 	Hp = MaxHp;
@@ -326,13 +326,13 @@ void ACharacterBase::BeginPlay()
 		MyAnim->OnAttackHitCheck.AddUObject(this, &ACharacterBase::AttackHitCheck);
 	}
 
-	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
-	{
-		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
-		{
-			Subsystem->AddMappingContext(MovementContext, 0);
-		}
-	}
+	//if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+	//{
+	//	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+	//	{
+	//		Subsystem->AddMappingContext(MovementContext, 0);
+	//	}
+	//}
 
 }
 
@@ -426,48 +426,48 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
-	{
+	//if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
+	//{
 
-		EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ACharacterBase::EnhancedMove);
+	//	EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ACharacterBase::EnhancedMove);
 
-		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACharacterBase::EnhancedLook);
+	//	EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACharacterBase::EnhancedLook);
 
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacterBase::Jump);
-	}
+	//	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacterBase::Jump);
+	//}
 
-	PlayerInputComponent->BindAction(TEXT("Attack"), EInputEvent::IE_Pressed, this, &ACharacterBase::Attack);
+	//PlayerInputComponent->BindAction(TEXT("Attack"), EInputEvent::IE_Pressed, this, &ACharacterBase::Attack);
 
 	BindASCInput();
 }
 
 
-void ACharacterBase::EnhancedMove(const FInputActionValue& Value)
-{
-	const FVector2D MovementVector = Value.Get<FVector2D>();
+//void ACharacterBase::EnhancedMove(const FInputActionValue& Value)
+//{
+//	const FVector2D MovementVector = Value.Get<FVector2D>();
+//
+//	const FRotator Rotation = Controller->GetControlRotation();
+//	const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
+//
+//	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+//	AddMovementInput(ForwardDirection, MovementVector.Y);
+//	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+//	AddMovementInput(RightDirection, MovementVector.X);
+//
+//
+//	/*const FVector Forward = GetActorForwardVector();
+//	AddMovementInput(Forward, MovementVector.Y);
+//	const FVector Right = GetActorRightVector();
+//	AddMovementInput(Right, MovementVector.X);*/
+//}
 
-	const FRotator Rotation = Controller->GetControlRotation();
-	const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
-
-	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-	AddMovementInput(ForwardDirection, MovementVector.Y);
-	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-	AddMovementInput(RightDirection, MovementVector.X);
-
-
-	/*const FVector Forward = GetActorForwardVector();
-	AddMovementInput(Forward, MovementVector.Y);
-	const FVector Right = GetActorRightVector();
-	AddMovementInput(Right, MovementVector.X);*/
-}
-
-void ACharacterBase::EnhancedLook(const FInputActionValue& Value)
-{
-	const FVector2D LookAxisVector = Value.Get<FVector2D>();
-	AddControllerYawInput(LookAxisVector.X);
-	AddControllerPitchInput(LookAxisVector.Y);
-
-}
+//void ACharacterBase::EnhancedLook(const FInputActionValue& Value)
+//{
+//	const FVector2D LookAxisVector = Value.Get<FVector2D>();
+//	AddControllerYawInput(LookAxisVector.X);
+//	AddControllerPitchInput(LookAxisVector.Y);
+//
+//}
 
 void ACharacterBase::Attack()
 {
@@ -698,20 +698,20 @@ void ACharacterBase::OnHit(float DamageTaken, FDamageEvent const& DamageEvent, A
 	PlayAnimMontage(BeHit_AnimMontage);
 }
 
-void ACharacterBase::Die(float KillingDamage, FDamageEvent const& DamageEvent, AController* Killer, AActor* DamageCauser)
+void ACharacterBase::Die(float Damage, FDamageEvent const& DamageEvent, AController* Killer, AActor* DamageCauser)
 {
-	Hp = FMath::Min(0.f, Hp);		// ?
+	//Hp = FMath::Min(0.f, Hp);		// ?
 
-	UDamageType const* const DamageType = DamageEvent.DamageTypeClass ? Cast<const UDamageType>(DamageEvent.DamageTypeClass->GetDefaultObject()) : GetDefault<UDamageType>();
+	//UDamageType const* const DamageType = DamageEvent.DamageTypeClass ? Cast<const UDamageType>(DamageEvent.DamageTypeClass->GetDefaultObject()) : GetDefault<UDamageType>();
 
-	Killer = GetDamageInstigator(Killer, *DamageType);
+	//Killer = GetDamageInstigator(Killer, *DamageType);
 
-	GetWorldTimerManager().ClearTimer(DeathAnimationTimer);
+	//GetWorldTimerManager().ClearTimer(DeathAnimationTimer);
 
-	PlayAnimMontage(BeDeath_AnimMontage);
+	//PlayAnimMontage(BeDeath_AnimMontage);
 
 
-	OnCharacterDie();
+	//OnCharacterDie();
 
 
 	//GetWorldTimerManager().ClearAllTimersForObject(this);

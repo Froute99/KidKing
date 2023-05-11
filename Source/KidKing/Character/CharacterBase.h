@@ -36,9 +36,14 @@ public:
 	ACharacterBase();
 	ACharacterBase(const class FObjectInitializer& ObjectInitializer);
 
+
+
+/***********************************************************
+ *	Abilities
+ ***********************************************************/
+
 	UPROPERTY(BlueprintAssignable, Category = "KidKing|Character")
 	FCharacterDiedDelegate OnCharacterDied;
-
 
 	UFUNCTION(BlueprintCallable, Category = "KidKing|Character")
 	virtual bool IsAlive() const;
@@ -71,19 +76,6 @@ public:
 
 	void InitializeStartingValues(AKidKingPlayerState* PS);
 
-//**********************************************************
-
-
-	USkeletalMeshComponent* GetSpesificPawnMesh()const;
-
-	FName GetWeaponAttachPoint()const;
-
-	void EquipWeapon(class AWeapon* Weapon);
-
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-
 
 	UPROPERTY(EditDefaultsOnly, Category = "Abilities")
 	TWeakObjectPtr<class UCharacterAbilitySystemComponent> AbilitySystemComponent;
@@ -106,7 +98,6 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "KidKing|Abilities")
 	TArray<TSubclassOf<class UCharacterGameplayAbility>> CharacterAbilities;
 
-
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "KidKing|Abilities")
 	TSubclassOf<class UGameplayEffect> DefaultAttributes;
 
@@ -124,8 +115,20 @@ public:
 
 	virtual void PossessedBy(AController* NewController) override;
 
+
+
+
+
 //**********************************************************
 
+	USkeletalMeshComponent* GetSpesificPawnMesh()const;
+
+	FName GetWeaponAttachPoint()const;
+
+	void EquipWeapon(class AWeapon* Weapon);
+
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
 
 
 	// Called to bind functionality to input
@@ -137,13 +140,15 @@ public:
 
 	virtual void OnHit(float DamageTaken, struct FDamageEvent const& DamageEvent, class APawn* PawnInstigator, class AActor* DamageCauser);
 
-	virtual void Die(float KillingDamage, struct FDamageEvent const& DamageEvent, AController* Killer, AActor* DamageCauser);
+	virtual void Die(float Damage, struct FDamageEvent const& DamageEvent, AController* Killer, AActor* DamageCauser);
+
+
 	virtual void BotDie(float KillingDamage, struct FDamageEvent const& DamageEvent, AController* Killer, AActor* DamageCauser);
 
 	void DeathAnimationEnd();
 
-	void EnhancedMove(const FInputActionValue& Value);
-	void EnhancedLook(const FInputActionValue& Value);
+	//void EnhancedMove(const FInputActionValue& Value);
+	//void EnhancedLook(const FInputActionValue& Value);
 	void Attack();
 	void AttackHitCheck();
 
@@ -198,31 +203,28 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UCharacterAnimInstance* MyAnim;
 
-private:
+protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(VisibleAnywhere, Category = Camera)
-	class USpringArmComponent* SpringArm;
+	//UPROPERTY(VisibleAnywhere, Category = Camera)
+	//class USpringArmComponent* SpringArm;
 
-	UPROPERTY(VisibleAnywhere, Category = Camera)
-	class UCameraComponent* Camera;
+	//UPROPERTY(VisibleAnywhere, Category = Camera)
+	//class UCameraComponent* Camera;
 
 	const float DeathAnimDuration = 5.0f;
 	FTimerHandle DeathAnimationTimer;
 
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	class UInputMappingContext* MovementContext;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	class UInputAction* MovementAction;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	class UInputAction* LookAction;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	class UInputAction* JumpAction;
+	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	//class UInputMappingContext* MovementContext;
+	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	//class UInputAction* MovementAction;
+	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	//class UInputAction* LookAction;
+	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	//class UInputAction* JumpAction;
 
 	UPROPERTY(EditDefaultsOnly, Category = Inventory)
 	FName WeaponAttachPoint;
