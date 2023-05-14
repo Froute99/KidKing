@@ -7,6 +7,9 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubSystems.h"
 
+#include "PlayerWidget.h"
+#include "Blueprint/UserWidget.h"
+
 
 AMainCharacter::AMainCharacter()
 {
@@ -23,19 +26,36 @@ AMainCharacter::AMainCharacter()
 
 	MaxHp = 100.0f;
 	Hp = MaxHp;
+
+
+	PlayerWidgetClass = nullptr;
+	PlayerWidget = nullptr;
+
+
 }
 
 void AMainCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
-	{
-		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
-		{
-			Subsystem->AddMappingContext(MovementContext, 0);
-		}
-	}
+	//if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+	//{
+	//	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+	//	{
+	//		Subsystem->AddMappingContext(MovementContext, 0);
+	//	}
+	//}
+
+
+	//if (IsLocallyControlled() && PlayerWidget)
+	//{
+	//	APlayerController* PC = GetController<APlayerController>();
+	//	check(PC);
+	//	PlayerWidget = CreateWidget<UPlayerWidget>(PC, PlayerWidgetClass);
+	//	check(PlayerWidget);
+	//	PlayerWidget->AddToPlayerScreen();
+	//}
+
 }
 
 void AMainCharacter::PostInitializeComponents()
@@ -62,6 +82,13 @@ void AMainCharacter::Die(float Damage, const FDamageEvent& DamageEvent, AControl
 
 	OnCharacterDie();
 }
+
+//void AMainCharacter::UpdateHealth(float Delta)
+//{
+//	Super::UpdateHealth(Delta);
+//
+//	PlayerWidget->SetHealth(Delta, MaxHp);
+//}
 
 void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {

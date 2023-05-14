@@ -22,6 +22,8 @@
 #include "GameFramework/Actor.h"
 //#include "CharacterWidget.h"
 
+#include "PlayerWidget.h"
+
 #include "KidKingPlayerState.h"
 
 #include "Components/CapsuleComponent.h"
@@ -482,6 +484,29 @@ void ACharacterBase::Attack()
 }
 
 
+void ACharacterBase::UpdateHealth(float Delta)
+{
+	float maxHp = GetMaxHealth();
+
+	SetHealth(FMath::Clamp(GetHealth() + Delta, 0, GetMaxHealth()));
+
+	float hp = GetHealth();
+	UE_LOG(LogTemp, Warning, TEXT("Hp: %f"), hp);
+
+
+	if (PlayerWidget)
+	{
+		PlayerWidget->SetHealth(hp, maxHp);
+	}
+
+
+	if (hp == 0.f)
+	{
+		// Handle player elimination
+	}
+
+}
+
 void ACharacterBase::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted)
 {
 	OnAttackEnd.Broadcast();
@@ -492,7 +517,6 @@ void ACharacterBase::PostInitializeComponents()
 	Super::PostInitializeComponents();
 
 }
-
 
 
 //*******************************************************************
@@ -573,7 +597,7 @@ void ACharacterBase::SpawnDefaultInventory()
 		EquipWeapon(Inventory[0]);
 	}
 }
-//*********************************************************************************
+
 void ACharacterBase::AttackHitCheck()
 {
 	float AttackRange = 200.0f;
@@ -629,6 +653,14 @@ void ACharacterBase::AttackHitCheck()
 	}
 
 }
+
+//void ACharacterBase::OnRepHealth()
+//{
+//	if (PlayerWidget)
+//	{
+//		PlayerWidget->SetHealth(GetHealth(), GetMaxHealth());
+//	}
+//}
 
 float ACharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
@@ -696,6 +728,11 @@ float ACharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 void ACharacterBase::OnHit(float DamageTaken, FDamageEvent const& DamageEvent, APawn* PawnInstigator, AActor* DamageCauser)
 {
 	PlayAnimMontage(BeHit_AnimMontage);
+
+
+
+
+
 }
 
 void ACharacterBase::Die(float Damage, FDamageEvent const& DamageEvent, AController* Killer, AActor* DamageCauser)

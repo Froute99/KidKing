@@ -36,6 +36,7 @@ public:
 	ACharacterBase();
 	ACharacterBase(const class FObjectInitializer& ObjectInitializer);
 
+	//virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifeTimeProps) const;
 
 
 /***********************************************************
@@ -117,8 +118,6 @@ public:
 
 
 
-
-
 //**********************************************************
 
 	USkeletalMeshComponent* GetSpesificPawnMesh()const;
@@ -157,8 +156,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = State)
 	FName MyCharacterName;
 
+	//UPROPERTY(EditAnywhere, BlueprintReadOnly, ReplicatedUsing = OnRepHealth, Category = State)
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = State)
 	float Hp;
+	//UFUNCTION()
+	//virtual void OnRepHealth();
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = State)
 	float Stamina;
@@ -173,8 +176,34 @@ public:
 	float Gold;
 
 
+
+/***********************************************************
+ * Widget
+ ***********************************************************/
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UPlayerWidget> PlayerWidgetClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = HUD)
+	class UPlayerWidget* PlayerWidget;
+
+
+	void UpdateHealth(float Delta);
+
+
 	UPROPERTY(VisibleAnywhere, Category = UI)
 	class UWidgetComponent* HPBarWidget;
+
+
+
+
+
+
+
+
+
+
+
 
 	UPROPERTY(EditDefaultsOnly, Category = Anim)
 	UAnimMontage* BeHit_AnimMontage;

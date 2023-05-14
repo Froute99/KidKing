@@ -53,4 +53,19 @@ public:
 	// Killer is the "Pawn" which actually killed. DamageCauser can be a "Weapon or Some Object"
 	virtual void Die(float Damage, const FDamageEvent& DamageEvent, AController* Killer, AActor* DamgeCauser);
 
+
+
+
+/***********************************************************
+ *	Widget
+ ***********************************************************/
+
+	//UPROPERTY(EditAnywhere)
+	//TSubclassOf<class UPlayerWidget> PlayerWidgetClass;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite,Category = HUD)
+	//class UPlayerWidget* PlayerWidget;
+
+
+	//virtual void UpdateHealth(float Delta);
+
 };
