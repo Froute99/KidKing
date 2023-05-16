@@ -710,9 +710,7 @@ void ACharacterBase::Die(float KillingDamage, FDamageEvent const& DamageEvent, A
 
 	PlayAnimMontage(BeDeath_AnimMontage);
 
-
 	OnCharacterDie();
-
 
 	//GetWorldTimerManager().ClearAllTimersForObject(this);
 
