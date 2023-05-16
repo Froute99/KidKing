@@ -117,7 +117,7 @@ public:
 	virtual void PossessedBy(AController* NewController) override;
 
 
-
+	bool bIsCurrentlyPossessed;
 //**********************************************************
 
 	USkeletalMeshComponent* GetSpesificPawnMesh()const;
@@ -146,8 +146,10 @@ public:
 
 	void DeathAnimationEnd();
 
-	//void EnhancedMove(const FInputActionValue& Value);
-	//void EnhancedLook(const FInputActionValue& Value);
+	void EnhancedMove(const FInputActionValue& Value);
+	void EnhancedLook(const FInputActionValue& Value);
+
+
 	void Attack();
 	void AttackHitCheck();
 

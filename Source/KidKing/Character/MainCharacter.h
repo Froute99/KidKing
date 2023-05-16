@@ -30,9 +30,14 @@ public:
 
 	UPROPERTY(VisibleAnywhere, Category = Camera)
 	class USpringArmComponent* SpringArm;
-
 	UPROPERTY(VisibleAnywhere, Category = Camera)
 	class UCameraComponent* Camera;
+
+
+	UFUNCTION()
+	void MoveForward(float Value);
+	UFUNCTION()
+	void MoveRight(float Value);
 
 
 	void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent);
@@ -40,9 +45,9 @@ public:
 	void EnhancedLook(const FInputActionValue& Value);
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	class UInputMappingContext* MovementContext;
+	class UInputMappingContext* MappingContext;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	class UInputAction* MovementAction;
+	class UInputAction* MoveAction;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	class UInputAction* LookAction;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)

@@ -10,9 +10,13 @@
 #include "PlayerWidget.h"
 #include "Blueprint/UserWidget.h"
 
+#include "CharacterController.h"
+
 
 AMainCharacter::AMainCharacter()
 {
+	PrimaryActorTick.bCanEverTick = true;
+
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SPRINGARM"));
 	SpringArm->SetupAttachment(GetCapsuleComponent());
 	SpringArm->TargetArmLength = 400.0f;
@@ -90,23 +94,49 @@ void AMainCharacter::Die(float Damage, const FDamageEvent& DamageEvent, AControl
 //	PlayerWidget->SetHealth(Delta, MaxHp);
 //}
 
+void AMainCharacter::MoveForward(float Value)
+{
+	FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::X);
+	AddMovementInput(Direction, Value);
+}
+
+void AMainCharacter::MoveRight(float Value)
+{
+	FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);
+	AddMovementInput(Direction, Value);
+}
+
 void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
-	{
 
-		EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &AMainCharacter::EnhancedMove);
+	//PlayerInputComponent->BindAxis("MoveForward", this, &AMainCharacter::MoveForward);
+	//PlayerInputComponent->BindAxis("MoveRight", this, &AMainCharacter::MoveRight);
 
-		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AMainCharacter::EnhancedLook);
 
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &AMainCharacter::Jump);
-	}
+	//UEnhancedInputComponent* EIC = CastChecked<UEnhancedInputComponent>(PlayerInputComponent);
+	//ACharacterController* PC = CastChecked<ACharacterController>(Controller);
 
-	//PlayerInputComponent->BindAction(TEXT("Attack"), EInputEvent::IE_Pressed, this, &AMainCharacter::Attack);
+	//check(EIC && PC);
 
-	//BindASCInput();
+	//EIC->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ACharacterBase::EnhancedMove);
+	//EIC->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACharacterBase::EnhancedLook);
+	//EIC->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacterBase::Jump);
+
+
+	//ULocalPlayer* LocalPlayer = PC->GetLocalPlayer();
+	//check(LocalPlayer);
+
+	//UEnhancedInputLocalPlayerSubsystem* Subsystem = LocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
+	//check(Subsystem);
+	//Subsystem->ClearAllMappings();
+	//Subsystem->AddMappingContext(MappingContext, 0);
+
+
+	//PlayerInputComponent->BindAction(TEXT("Attack"), EInputEvent::IE_Pressed, this, &ACharacterBase::Attack);
+
+	BindASCInput();
 }
 
 void AMainCharacter::EnhancedMove(const FInputActionValue& Value)

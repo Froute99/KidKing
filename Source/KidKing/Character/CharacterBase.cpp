@@ -7,8 +7,10 @@
 #include "Components/CapsuleComponent.h"
 
 #include "Components/InputComponent.h"
+
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubSystems.h"
+#include "CharacterController.h"
 
 #include "CustomAIController.h"
 #include "CharacterAnimInstance.h"
@@ -79,6 +81,15 @@ ACharacterBase::ACharacterBase()
 	Stamina = 100.0f;
 
 	DeadTag = FGameplayTag::RequestGameplayTag(FName("State.Dead"));
+
+
+
+
+
+
+
+
+
 
 	BindASCInput();
 
@@ -413,6 +424,8 @@ void ACharacterBase::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 
+	//Controller = NewController;
+
 	AKidKingPlayerState* PS = GetPlayerState<AKidKingPlayerState>();
 	if (PS)
 	{
@@ -428,48 +441,58 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	//if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
-	//{
 
-	//	EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ACharacterBase::EnhancedMove);
+	//UEnhancedInputComponent* EIC = CastChecked<UEnhancedInputComponent>(PlayerInputComponent);
+	//ACharacterController* PC = CastChecked<ACharacterController>(Controller);
 
-	//	EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACharacterBase::EnhancedLook);
+	//check(EIC && PC);
 
-	//	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacterBase::Jump);
-	//}
+	//EIC->BindAction(PC->MoveAction, ETriggerEvent::Triggered, this, &ACharacterBase::EnhancedMove);
+	//EIC->BindAction(PC->LookAction, ETriggerEvent::Triggered, this, &ACharacterBase::EnhancedLook);
+	//EIC->BindAction(PC->JumpAction, ETriggerEvent::Triggered, this, &ACharacterBase::Jump);
 
-	//PlayerInputComponent->BindAction(TEXT("Attack"), EInputEvent::IE_Pressed, this, &ACharacterBase::Attack);
 
-	BindASCInput();
+	//ULocalPlayer* LocalPlayer = PC->GetLocalPlayer();
+	//check(LocalPlayer);
+
+	//UEnhancedInputLocalPlayerSubsystem* Subsystem = LocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
+	//check(Subsystem);
+	//Subsystem->ClearAllMappings();
+	//Subsystem->AddMappingContext(PC->MappingContext, 0);
+
+
+	////PlayerInputComponent->BindAction(TEXT("Attack"), EInputEvent::IE_Pressed, this, &ACharacterBase::Attack);
+
+	//BindASCInput();
 }
 
 
-//void ACharacterBase::EnhancedMove(const FInputActionValue& Value)
-//{
-//	const FVector2D MovementVector = Value.Get<FVector2D>();
-//
-//	const FRotator Rotation = Controller->GetControlRotation();
-//	const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
-//
-//	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-//	AddMovementInput(ForwardDirection, MovementVector.Y);
-//	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-//	AddMovementInput(RightDirection, MovementVector.X);
-//
-//
-//	/*const FVector Forward = GetActorForwardVector();
-//	AddMovementInput(Forward, MovementVector.Y);
-//	const FVector Right = GetActorRightVector();
-//	AddMovementInput(Right, MovementVector.X);*/
-//}
+void ACharacterBase::EnhancedMove(const FInputActionValue& Value)
+{
+	const FVector2D MovementVector = Value.Get<FVector2D>();
 
-//void ACharacterBase::EnhancedLook(const FInputActionValue& Value)
-//{
-//	const FVector2D LookAxisVector = Value.Get<FVector2D>();
-//	AddControllerYawInput(LookAxisVector.X);
-//	AddControllerPitchInput(LookAxisVector.Y);
-//
-//}
+	const FRotator Rotation = Controller->GetControlRotation();
+	const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
+
+	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+	AddMovementInput(ForwardDirection, MovementVector.Y);
+	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+	AddMovementInput(RightDirection, MovementVector.X);
+
+
+	/*const FVector Forward = GetActorForwardVector();
+	AddMovementInput(Forward, MovementVector.Y);
+	const FVector Right = GetActorRightVector();
+	AddMovementInput(Right, MovementVector.X);*/
+}
+
+void ACharacterBase::EnhancedLook(const FInputActionValue& Value)
+{
+	const FVector2D LookAxisVector = Value.Get<FVector2D>();
+	AddControllerYawInput(LookAxisVector.X);
+	AddControllerPitchInput(LookAxisVector.Y);
+
+}
 
 void ACharacterBase::Attack()
 {
