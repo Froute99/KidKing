@@ -665,12 +665,12 @@ float ACharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 
 			if (CurrentLevel == "UEDPIE_0_stage_01")
 			{
-				//con->ShowDieUI();
+				con->ShowDieUI();
 				Die(myGetDamage, DamageEvent, EventInstigator, DamageCauser);
 			}
 			else
 			{
-				con->ShowFinalStageDieUI();
+				//con->ShowFinalStageDieUI();
 				Die(myGetDamage, DamageEvent, EventInstigator, DamageCauser);
 			}
 
@@ -708,7 +708,7 @@ void ACharacterBase::Die(float KillingDamage, FDamageEvent const& DamageEvent, A
 
 	GetWorldTimerManager().ClearTimer(DeathAnimationTimer);
 
-	PlayAnimMontage(BeDeath_AnimMontage);
+	//PlayAnimMontage(BeDeath_AnimMontage);
 
 	OnCharacterDie();
 
