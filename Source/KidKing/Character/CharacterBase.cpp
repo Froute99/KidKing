@@ -597,8 +597,8 @@ void ACharacterBase::SetCurrentWeapon(AWeapon* NewWeapon, AWeapon* LastWeapon)
 
 	if (NewWeapon)
 	{
-		NewWeapon->SetOwningPawn(this);
-		NewWeapon->OnEquip(LastWeapon);
+		//NewWeapon->SetOwningPawn(this);
+		//NewWeapon->OnEquip(LastWeapon);
 
 	}
 }

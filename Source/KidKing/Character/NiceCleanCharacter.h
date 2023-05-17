@@ -40,6 +40,17 @@ public:
 
 	virtual void PossessedBy(AController* NewController) override;
 
+	void OnActorHit(class AActor* SelfActor, class AActor* OtherActor,
+		FVector NormalImpulse, struct FHitResult Hit);
+
+
+	void AttackHitCheck();
+	float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent,
+		AController* EventInstigator, AActor* DamageCauser);
+
+	//UFUNCTION(BlueprintImplementableEvent)
+	//void ShouldApplyDamage(FHitResult HitResult);
+
 
 /***********************************************************
  * View
@@ -108,11 +119,12 @@ public:
 	virtual void InitializeAttributes();
 	virtual void AddStartupEffects();
 
-	virtual void SetHealth(float Value);
+	UFUNCTION(BlueprintCallable, Category = "KidKing|Character")
+	void SetHealth(float Value);
 
 
 /***********************************************************
- * Movement
+ * Input
  ***********************************************************/
 
 	// Called to bind functionality to input
@@ -120,6 +132,10 @@ public:
 
 	void EnhancedMove(const FInputActionValue& Value);
 	void EnhancedLook(const FInputActionValue& Value);
+	void DebugAttack();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Input)
+	bool IsAttacking = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	class UInputMappingContext* MappingContext;
@@ -129,6 +145,8 @@ public:
 	class UInputAction* LookAction;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	class UInputAction* JumpAction;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	class UInputAction* AttackAction;
 
 
 
@@ -136,8 +154,12 @@ public:
  * Animation
  ***********************************************************/
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "KidKing|Animation")
+	class UCharacterAnimInstance* AnimInstance;
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "KidKing|Animation")
 	UAnimMontage* DeathMontage;
+
 
 
 /***********************************************************

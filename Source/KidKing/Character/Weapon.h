@@ -18,22 +18,22 @@ class KIDKING_API AWeapon : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AWeapon(const class FObjectInitializer& ObjectInitializer);
-	void SetOwningPawn(ACharacterBase* NewOwner);
-	void AttachMeshToPawn();
-	void OnEquip(const AWeapon* LastWeapon);
+	//void SetOwningPawn(ACharacter* NewOwner);
+	//void AttachMeshToPawn();
+	//void OnEquip(const AWeapon* LastWeapon);
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	USkeletalMeshComponent* WeaponMesh;
+	class USkeletalMeshComponent* WeaponMesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UBoxComponent* WeaponCollision;
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class ACharacterBase* MyPawn;
+	class ACharacter* OwningCharacter;
 
 public:
-	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+	//virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 
 };

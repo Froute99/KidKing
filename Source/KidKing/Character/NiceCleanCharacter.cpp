@@ -21,6 +21,10 @@
 
 #include "PlayerWidget.h"
 
+#include "CharacterAnimInstance.h"
+
+#include "Engine/EngineTypes.h"
+
 
 // Sets default values
 ANiceCleanCharacter::ANiceCleanCharacter()
@@ -67,6 +71,11 @@ void ANiceCleanCharacter::PossessedBy(AController* NewController)
 		AddStartupEffects();
 		AddCharacterAbilities();
 	}
+
+}
+
+void ANiceCleanCharacter::OnActorHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, FHitResult Hit)
+{
 
 }
 
@@ -310,6 +319,7 @@ void ANiceCleanCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	EIC->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ANiceCleanCharacter::EnhancedMove);
 	EIC->BindAction(LookAction, ETriggerEvent::Triggered, this, &ANiceCleanCharacter::EnhancedLook);
 	EIC->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ANiceCleanCharacter::Jump);
+	EIC->BindAction(AttackAction, ETriggerEvent::Triggered, this, &ANiceCleanCharacter::DebugAttack);
 
 
 	ULocalPlayer* LocalPlayer = PC->GetLocalPlayer();
@@ -320,6 +330,7 @@ void ANiceCleanCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	Subsystem->ClearAllMappings();
 	Subsystem->AddMappingContext(MappingContext, 0);
 
+	BindASCInput();
 }
 
 void ANiceCleanCharacter::EnhancedMove(const FInputActionValue& Value)
@@ -349,6 +360,14 @@ void ANiceCleanCharacter::EnhancedLook(const FInputActionValue& Value)
 
 }
 
+void ANiceCleanCharacter::DebugAttack()
+{
+	if (IsAttacking != true)
+	{
+		IsAttacking = true;
+	}
+}
+
 void ANiceCleanCharacter::UpdateHealth(float Delta)
 {
 	float maxHp = GetMaxHealth();
@@ -372,4 +391,124 @@ void ANiceCleanCharacter::UpdateHealth(float Delta)
 	}
 
 }
+
+void ANiceCleanCharacter::AttackHitCheck()
+{
+	float AttackRange = 200.0f;
+	float AttackRadius = 50.0f;
+
+	if (GEngine)
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("AMyCharacter::AttackHitCheck()"));
+
+	FHitResult HitResult;
+	FCollisionQueryParams Params(NAME_None, false, this);
+	bool bResult = GetWorld()->SweepSingleByChannel(
+		HitResult,
+		GetActorLocation(),
+		GetActorLocation() + GetActorForwardVector() * AttackRange,
+		FQuat::Identity,
+		ECollisionChannel::ECC_Pawn,
+		FCollisionShape::MakeSphere(AttackRadius),
+		Params);
+
+#if ENABLE_DRAW_DEBUG
+
+	FVector TraceVec = GetActorForwardVector() * AttackRange;
+	FVector Center = GetActorLocation() + TraceVec * 0.5f;
+	float HalfHeight = AttackRange * 0.5f + AttackRadius;
+
+	FQuat CapsuleRot = FRotationMatrix::MakeFromZ(TraceVec).ToQuat();
+	FColor DrawColor = bResult ? FColor::Green : FColor::Red;
+
+
+	float DebugLifeTime = 5.0f;
+
+	DrawDebugCapsule(GetWorld(),
+		Center,
+		HalfHeight,
+		AttackRadius,
+		CapsuleRot,
+		DrawColor,
+		false,
+		DebugLifeTime);
+
+#endif
+
+	if (bResult)
+	{
+		if (HitResult.GetActor())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Hit Actor Name : %s"), *HitResult.GetActor()->GetName());
+
+			//FDamageEvent DamageEvent;
+			//HitResult.GetActor()->TakeDamage(10.0f, DamageEvent, GetController(), this);
+		}
+	}
+
+}
+
+float ANiceCleanCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	//if (Hp <= 0.0f)
+	//{
+	//	return 0.0f;
+	//}
+
+	//const float DamageGot = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+
+	//if (DamageGot > 0.f)
+	//{
+	//	if (IsBlocking == false)
+	//	{
+	//		Hp -= DamageGot;
+	//		OnActorHit(DamageGot, DamageEvent, EventInstigator ? EventInstigator->GetPawn() : NULL, DamageCauser);
+	//		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("HP is : %f"), Hp));
+	//	}
+	//	else if (IsBlocking == true)
+	//	{
+	//		Stamina -= 10.0f;
+	//	}
+	//}
+
+
+	//if (Hp <= 0)
+	//{
+	//	MyAnim->SetDeadAnim(true);
+	//	if (MyCharacterName == "Player")
+	//	{
+	//		auto World = GetWorld();
+	//		FString CurrentLevel = World->GetMapName();
+	//		AController_StartMenu* con = Cast<AController_StartMenu>(GetOwner());
+
+	//		if (CurrentLevel == "UEDPIE_0_stage_01")
+	//		{
+	//			//con->ShowDieUI();
+	//			Die(myGetDamage, DamageEvent, EventInstigator, DamageCauser);
+	//		}
+	//		else
+	//		{
+	//			con->ShowFinalStageDieUI();
+	//			Die(myGetDamage, DamageEvent, EventInstigator, DamageCauser);
+	//		}
+
+	//	}
+	//	else
+	//	{
+	//		if (DamageCauser->IsA(AWeapon::StaticClass()))
+	//		{
+	//			Cast<ACharacterBase>(DamageCauser->GetOwner())->Gold += 30;
+	//		}
+	//		else
+	//		{
+	//			Cast<ACharacterBase>(DamageCauser)->Gold += 30;
+	//		}
+
+	//		BotDie(myGetDamage, DamageEvent, EventInstigator, DamageCauser);
+	//	}
+	//}
+
+	//return myGetDamage;
+	return 0;
+}
+
 
