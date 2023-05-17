@@ -22,7 +22,7 @@
 DECLARE_MULTICAST_DELEGATE(FOnAttackEndDelegate);
 
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCharacterDiedDelegate,
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOldCharacterDiedDelegate,
 	ACharacterBase*, Character);
 
 
@@ -44,7 +44,7 @@ public:
  ***********************************************************/
 
 	UPROPERTY(BlueprintAssignable, Category = "KidKing|Character")
-	FCharacterDiedDelegate OnCharacterDied;
+	FOldCharacterDiedDelegate OnCharacterDied;
 
 	UFUNCTION(BlueprintCallable, Category = "KidKing|Character")
 	virtual bool IsAlive() const;

@@ -12,6 +12,16 @@
 #include "EnhancedInputSubSystems.h"
 
 
+#include "CharacterAbilitySystemComponent.h"
+#include "CharacterAttributeSetBase.h"
+#include "CharacterGameplayAbility.h"
+
+
+#include "GameFramework/CharacterMovementComponent.h"
+
+#include "PlayerWidget.h"
+
+
 // Sets default values
 ANiceCleanCharacter::ANiceCleanCharacter()
 {
@@ -34,7 +44,7 @@ ANiceCleanCharacter::ANiceCleanCharacter()
 void ANiceCleanCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame
@@ -42,6 +52,248 @@ void ANiceCleanCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ANiceCleanCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	//Controller = NewController;
+
+	AKidKingPlayerState* PS = GetPlayerState<AKidKingPlayerState>();
+	if (PS)
+	{
+		InitializeStartingValues(PS);
+		AddStartupEffects();
+		AddCharacterAbilities();
+	}
+
+}
+
+bool ANiceCleanCharacter::IsAlive() const
+{
+	return GetHealth() > 0.0f;
+}
+
+int32 ANiceCleanCharacter::GetAbilityLevel(KidKingAbilityID AbilityID) const
+{
+	return 1;
+}
+
+UAbilitySystemComponent* ANiceCleanCharacter::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent.Get();
+}
+
+void ANiceCleanCharacter::RemoveCharacterAbilities()
+{
+	if (GetLocalRole() != ROLE_Authority || !AbilitySystemComponent.IsValid() || !AbilitySystemComponent->CharacterAbilitiesGiven)
+	{
+		return;
+	}
+
+	TArray<FGameplayAbilitySpecHandle> AbilitiesToRemove;
+	for (const FGameplayAbilitySpec& Spec : AbilitySystemComponent->GetActivatableAbilities())
+	{
+		if ((Spec.SourceObject == this) && CharacterAbilities.Contains(Spec.Ability->GetClass()))
+		{
+			AbilitiesToRemove.Add(Spec.Handle);
+		}
+	}
+
+
+	for (int32 i = 0; i < AbilitiesToRemove.Num(); ++i)
+	{
+		AbilitySystemComponent->ClearAbility(AbilitiesToRemove[i]);
+	}
+
+	AbilitySystemComponent->CharacterAbilitiesGiven = false;
+
+}
+
+// OnActorHit -> Check Hp -> Call Die
+void ANiceCleanCharacter::Die()
+{
+	RemoveCharacterAbilities();
+
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetCharacterMovement()->GravityScale = 0;
+	GetCharacterMovement()->Velocity = FVector(0);
+
+	OnCharacterDied.Broadcast(this);
+
+	if (AbilitySystemComponent.IsValid())
+	{
+		AbilitySystemComponent->CancelAbilities();
+
+		FGameplayTagContainer EffectsTagsToRemove;
+
+		EffectsTagsToRemove.AddTag(EffectRemoveOnDeathTag);
+		int32 NumEffectEremoved = AbilitySystemComponent->RemoveActiveEffectsWithTags(EffectsTagsToRemove);
+		AbilitySystemComponent->AddLooseGameplayTag(DeadTag);
+
+		if (DeathMontage)
+		{
+			PlayAnimMontage(DeathMontage);
+		}
+		else
+		{
+			FinishDying();
+		}
+	}
+}
+
+void ANiceCleanCharacter::FinishDying()
+{
+	Destroy();
+}
+
+float ANiceCleanCharacter::GetCharacterLevel() const
+{
+	if (AttributeSetBase.IsValid())
+	{
+		return AttributeSetBase->GetLevel();
+	}
+
+	return 0.0f;
+}
+
+float ANiceCleanCharacter::GetHealth() const
+{
+	if (AttributeSetBase.IsValid())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("AttributeSetBase is valid"));
+		return AttributeSetBase->GetHealth();
+	}
+
+	return 0.f;
+}
+
+float ANiceCleanCharacter::GetMaxHealth() const
+{
+	if (AttributeSetBase.IsValid())
+	{
+		return AttributeSetBase->GetMaxHealth();
+	}
+
+	return 0.0f;
+}
+
+void ANiceCleanCharacter::OnRep_PlayerState()
+{
+	AKidKingPlayerState* PS = GetPlayerState<AKidKingPlayerState>();
+	if (PS)
+	{
+		InitializeStartingValues(PS);
+		BindASCInput();
+		InitializeAttributes();
+	}
+}
+
+void ANiceCleanCharacter::BindASCInput()
+{
+	if (!ASCInputBound && AbilitySystemComponent.IsValid() && IsValid(InputComponent))
+	{
+		AbilitySystemComponent->BindAbilityActivationToInputComponent(InputComponent, FGameplayAbilityInputBinds(FString("ConfirmTarget"), FString("CancelTarget"), FString("DemoAbilityID"), static_cast<int32>(KidKingAbilityID::Confirm), static_cast<int32>(KidKingAbilityID::Cancel)));
+	}
+
+	ASCInputBound = true;
+
+}
+
+void ANiceCleanCharacter::InitializeStartingValues(AKidKingPlayerState* PS)
+{
+	AbilitySystemComponent = Cast<UCharacterAbilitySystemComponent>(PS->GetAbilitySystemComponent());
+	PS->GetAbilitySystemComponent()->InitAbilityActorInfo(PS, this);
+
+	AttributeSetBase = PS->GetAttributeSetBase();
+
+	if (AttributeSetBase.IsValid())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("AttributeSetBase is valid"));
+	}
+
+
+	AbilitySystemComponent->SetTagMapCount(DeadTag, 0);
+
+	InitializeAttributes();
+
+
+	AttributeSetBase->SetHealth(100.0f);
+
+}
+
+void ANiceCleanCharacter::AddCharacterAbilities()
+{
+	if (GetLocalRole() != ROLE_Authority || !AbilitySystemComponent.IsValid() || AbilitySystemComponent->CharacterAbilitiesGiven)
+	{
+		return;
+	}
+
+	for (TSubclassOf<UCharacterGameplayAbility>& StartupAbility : CharacterAbilities)
+	{
+		AbilitySystemComponent->GiveAbility(FGameplayAbilitySpec(StartupAbility, GetAbilityLevel(StartupAbility.GetDefaultObject()->AbilityID), static_cast<int32>(StartupAbility.GetDefaultObject()->AbilityInputID), this));
+	}
+
+	AbilitySystemComponent->CharacterAbilitiesGiven = true;
+
+}
+
+void ANiceCleanCharacter::InitializeAttributes()
+{
+	if (!AbilitySystemComponent.IsValid())
+	{
+		return;
+	}
+
+	if (!DefaultAttributes)
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s() Missing DefaultAttributes for %s. Please fill in the character's Blueprint."), *FString(__FUNCTION__), *GetName());
+		return;
+	}
+
+	FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
+	EffectContext.AddSourceObject(this);
+
+	FGameplayEffectSpecHandle NewHandle = AbilitySystemComponent->MakeOutgoingSpec(DefaultAttributes, GetCharacterLevel(), EffectContext);
+
+	if (NewHandle.IsValid())
+	{
+		FActiveGameplayEffectHandle ActiveGEHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToTarget(*NewHandle.Data.Get(), AbilitySystemComponent.Get());
+	}
+
+}
+
+void ANiceCleanCharacter::AddStartupEffects()
+{
+	if (GetLocalRole() != ROLE_Authority || !AbilitySystemComponent.IsValid() || AbilitySystemComponent->StartupEffectApplied)
+	{
+		return;
+	}
+
+	FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
+	EffectContext.AddSourceObject(this);
+
+	for (TSubclassOf<UGameplayEffect> GameplayEffect : StartupEffects)
+	{
+		FGameplayEffectSpecHandle NewHandle = AbilitySystemComponent->MakeOutgoingSpec(GameplayEffect, GetCharacterLevel(), EffectContext);
+
+		if (NewHandle.IsValid())
+		{
+			FActiveGameplayEffectHandle ActiveGEHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToTarget(*NewHandle.Data.Get(), AbilitySystemComponent.Get());
+		}
+	}
+
+	AbilitySystemComponent->StartupEffectApplied = true;
+
+}
+
+void ANiceCleanCharacter::SetHealth(float Value)
+{
+	if (AttributeSetBase.IsValid())
+	{
+		AttributeSetBase->SetHealth(Value);
+	}
 }
 
 // Called to bind functionality to input
@@ -97,4 +349,27 @@ void ANiceCleanCharacter::EnhancedLook(const FInputActionValue& Value)
 
 }
 
+void ANiceCleanCharacter::UpdateHealth(float Delta)
+{
+	float maxHp = GetMaxHealth();
+
+	SetHealth(FMath::Clamp(GetHealth() + Delta, 0, GetMaxHealth()));
+
+	float hp = GetHealth();
+	UE_LOG(LogTemp, Warning, TEXT("Hp: %f"), hp);
+
+
+	if (PlayerWidget)
+	{
+		PlayerWidget->SetHealth(hp, maxHp);
+	}
+
+
+	if (hp == 0.f)
+	{
+		// Handle player elimination
+		//Die();
+	}
+
+}
 

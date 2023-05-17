@@ -416,7 +416,7 @@ void ACharacterBase::SetHealth(float Health)
 {
 	if (AttributeSetBase.IsValid())
 	{
-		AttributeSetBase->SetHealth(100.0f);
+		AttributeSetBase->SetHealth(Health);
 	}
 }
 
@@ -751,8 +751,6 @@ float ACharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 void ACharacterBase::OnHit(float DamageTaken, FDamageEvent const& DamageEvent, APawn* PawnInstigator, AActor* DamageCauser)
 {
 	PlayAnimMontage(BeHit_AnimMontage);
-
-
 
 
 

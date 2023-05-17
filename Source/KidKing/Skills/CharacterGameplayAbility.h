@@ -21,7 +21,6 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Ability")
 	KidKingAbilityID AbilityInputID = KidKingAbilityID::None;
 
-
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Ability")
 	KidKingAbilityID AbilityID = KidKingAbilityID::None;
 
