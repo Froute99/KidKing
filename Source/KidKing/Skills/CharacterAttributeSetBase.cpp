@@ -3,6 +3,7 @@
 
 #include "Skills/CharacterAttributeSetBase.h"
 #include "Net/UnrealNetwork.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 void UCharacterAttributeSetBase::OnRep_Level(const FGameplayAttributeData& OldLevel)
 {
@@ -11,6 +12,7 @@ void UCharacterAttributeSetBase::OnRep_Level(const FGameplayAttributeData& OldLe
 
 void UCharacterAttributeSetBase::OnRep_Health(const FGameplayAttributeData& OldHealth)
 {
+	UKismetSystemLibrary::PrintString(GetWorld(), FString::SanitizeFloat(Health.GetCurrentValue()));
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UCharacterAttributeSetBase, Health, OldHealth);
 }
 

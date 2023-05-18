@@ -99,13 +99,13 @@ public:
 	void InitializeStartingValues(AKidKingPlayerState* PS);
 
 
-	UPROPERTY(EditDefaultsOnly, Category = "Abilities")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Abilities")
 	TWeakObjectPtr<class UCharacterAbilitySystemComponent> AbilitySystemComponent;
 	UPROPERTY(EditDefaultsOnly, Category = "Abilities")
 	TWeakObjectPtr<class UCharacterAttributeSetBase> AttributeSetBase;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "KidKing|Abilities")
 	TArray<TSubclassOf<class UCharacterGameplayAbility>> CharacterAbilities;
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "KidKing|Abilities")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "KidKing|Abilities")
 	TSubclassOf<class UGameplayEffect> DefaultAttributes;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "KidKing|Abilities")
 	TArray<TSubclassOf<class UGameplayEffect>> StartupEffects;
@@ -182,6 +182,7 @@ public:
 	class UPlayerWidget* PlayerWidget;
 
 
+	UFUNCTION(BlueprintCallable, Category = HUD)
 	void UpdateHealth(float Delta);
 
 

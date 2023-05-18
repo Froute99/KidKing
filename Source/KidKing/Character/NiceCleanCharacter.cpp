@@ -62,8 +62,6 @@ void ANiceCleanCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 
-	//Controller = NewController;
-
 	AKidKingPlayerState* PS = GetPlayerState<AKidKingPlayerState>();
 	if (PS)
 	{
@@ -171,7 +169,6 @@ float ANiceCleanCharacter::GetHealth() const
 {
 	if (AttributeSetBase.IsValid())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("AttributeSetBase is valid"));
 		return AttributeSetBase->GetHealth();
 	}
 
@@ -303,6 +300,8 @@ void ANiceCleanCharacter::SetHealth(float Value)
 	{
 		AttributeSetBase->SetHealth(Value);
 	}
+
+	UpdateHealth(Value);
 }
 
 // Called to bind functionality to input
@@ -330,7 +329,7 @@ void ANiceCleanCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	Subsystem->ClearAllMappings();
 	Subsystem->AddMappingContext(MappingContext, 0);
 
-	BindASCInput();
+	//BindASCInput();
 }
 
 void ANiceCleanCharacter::EnhancedMove(const FInputActionValue& Value)
@@ -372,10 +371,9 @@ void ANiceCleanCharacter::UpdateHealth(float Delta)
 {
 	float maxHp = GetMaxHealth();
 
-	SetHealth(FMath::Clamp(GetHealth() + Delta, 0, GetMaxHealth()));
+	//SetHealth(FMath::Clamp(GetHealth() + Delta, 0, GetMaxHealth()));
 
 	float hp = GetHealth();
-	UE_LOG(LogTemp, Warning, TEXT("Hp: %f"), hp);
 
 
 	if (PlayerWidget)
