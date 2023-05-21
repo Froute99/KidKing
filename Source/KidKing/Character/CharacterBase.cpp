@@ -145,9 +145,6 @@ ACharacterBase::ACharacterBase(const FObjectInitializer& ObjectInitializer)
 
 	IsAttacking = false;
 
-
-
-
 	DeadTag = FGameplayTag::RequestGameplayTag(FName("State.Dead"));
 	EffectRemoveOnDeathTag = FGameplayTag::RequestGameplayTag(FName("State.RemoveOnDeath"));
 
@@ -720,12 +717,12 @@ float ACharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 
 			if (CurrentLevel == "UEDPIE_0_stage_01")
 			{
-				//con->ShowDieUI();
+				con->ShowDieUI();
 				Die(myGetDamage, DamageEvent, EventInstigator, DamageCauser);
 			}
 			else
 			{
-				con->ShowFinalStageDieUI();
+				//con->ShowFinalStageDieUI();
 				Die(myGetDamage, DamageEvent, EventInstigator, DamageCauser);
 			}
 
@@ -770,7 +767,6 @@ void ACharacterBase::Die(float Damage, FDamageEvent const& DamageEvent, AControl
 
 
 	//OnCharacterDie();
-
 
 	//GetWorldTimerManager().ClearAllTimersForObject(this);
 
