@@ -2,7 +2,7 @@
 
 
 #include "CharacterAttackNotify.h"
-#include "CharacterBase.h"
+#include "NiceCleanCharacter.h"
 
 
 void UCharacterAttackNotify::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration)
@@ -11,7 +11,7 @@ void UCharacterAttackNotify::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnim
 	
 	if (MeshComp != NULL && MeshComp->GetOwner() != NULL)
 	{
-		ACharacterBase* Player = Cast<ACharacterBase>(MeshComp->GetOwner());
+		ANiceCleanCharacter* Player = Cast<ANiceCleanCharacter>(MeshComp->GetOwner());
 		if (Player != NULL)
 		{
 			Player->IsAttacking = true;
@@ -26,7 +26,7 @@ void UCharacterAttackNotify::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSe
 
 	if (MeshComp != NULL && MeshComp->GetOwner() != NULL)
 	{
-		ACharacterBase* Player = Cast<ACharacterBase>(MeshComp->GetOwner());
+		ANiceCleanCharacter* Player = Cast<ANiceCleanCharacter>(MeshComp->GetOwner());
 		if (Player != NULL)
 		{
 			Player->IsAttacking = false;

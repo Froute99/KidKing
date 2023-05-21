@@ -16,6 +16,7 @@ UCLASS()
 class KIDKING_API UCharacterAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
+
 public:
 	UCharacterAnimInstance();
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
@@ -24,10 +25,13 @@ public:
 	void PlayAttackMontage_Bot();
 	void PlayAttackMontage_Poprika();
 	void SetDeadAnim(bool Value);
-	
+
 
 	UFUNCTION()
 	void AnimNotify_AttackHitCheck();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Attack)
+	bool Attacking;
 
 	FOnAttackHitCheckDelegate OnAttackHitCheck;
 

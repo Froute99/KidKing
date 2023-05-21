@@ -7,8 +7,10 @@
 #include "Components/CapsuleComponent.h"
 
 #include "Components/InputComponent.h"
+
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubSystems.h"
+#include "CharacterController.h"
 
 #include "CustomAIController.h"
 #include "CharacterAnimInstance.h"
@@ -21,6 +23,8 @@
 #include "Controller_StartMenu.h"
 #include "GameFramework/Actor.h"
 //#include "CharacterWidget.h"
+
+#include "PlayerWidget.h"
 
 #include "KidKingPlayerState.h"
 
@@ -39,16 +43,16 @@ ACharacterBase::ACharacterBase()
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SPRINGARM"));
-	SpringArm->SetupAttachment(GetCapsuleComponent());
-	SpringArm->TargetArmLength = 400.0f;
-	SpringArm->SetRelativeRotation(FRotator(-15.0f, 0.0f, 0.0f));
+	//SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SPRINGARM"));
+	//SpringArm->SetupAttachment(GetCapsuleComponent());
+	//SpringArm->TargetArmLength = 400.0f;
+	//SpringArm->SetRelativeRotation(FRotator(-15.0f, 0.0f, 0.0f));
 
-	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("CAMERA"));
-	Camera->SetupAttachment(SpringArm);
+	//Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("CAMERA"));
+	//Camera->SetupAttachment(SpringArm);
 
-	AIControllerClass = ACustomAIController::StaticClass();
-	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+	//AIControllerClass = ACustomAIController::StaticClass();
+	//AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
 	MaxHp = 100.0f;
 	Hp = MaxHp;
@@ -78,6 +82,15 @@ ACharacterBase::ACharacterBase()
 
 	DeadTag = FGameplayTag::RequestGameplayTag(FName("State.Dead"));
 
+
+
+
+
+
+
+
+
+
 	BindASCInput();
 
 }
@@ -96,17 +109,17 @@ ACharacterBase::ACharacterBase(const FObjectInitializer& ObjectInitializer)
 	//****************************************************************************
 
 
-	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SPRINGARM"));
-	SpringArm->SetupAttachment(GetCapsuleComponent());
-	SpringArm->TargetArmLength = 400.0f;
-	SpringArm->SetRelativeRotation(FRotator(-15.0f, 0.0f, 0.0f));
+	//SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SPRINGARM"));
+	//SpringArm->SetupAttachment(GetCapsuleComponent());
+	//SpringArm->TargetArmLength = 400.0f;
+	//SpringArm->SetRelativeRotation(FRotator(-15.0f, 0.0f, 0.0f));
 
-	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("CAMERA"));
-	Camera->SetupAttachment(SpringArm);
+	//Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("CAMERA"));
+	//Camera->SetupAttachment(SpringArm);
 
 
-	AIControllerClass = ACustomAIController::StaticClass();
-	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+	//AIControllerClass = ACustomAIController::StaticClass();
+	//AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
 	MaxHp = 100.0f;
 	Hp = MaxHp;
@@ -131,9 +144,6 @@ ACharacterBase::ACharacterBase(const FObjectInitializer& ObjectInitializer)
 	}
 
 	IsAttacking = false;
-
-
-
 
 	DeadTag = FGameplayTag::RequestGameplayTag(FName("State.Dead"));
 	EffectRemoveOnDeathTag = FGameplayTag::RequestGameplayTag(FName("State.RemoveOnDeath"));
@@ -326,13 +336,13 @@ void ACharacterBase::BeginPlay()
 		MyAnim->OnAttackHitCheck.AddUObject(this, &ACharacterBase::AttackHitCheck);
 	}
 
-	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
-	{
-		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
-		{
-			Subsystem->AddMappingContext(MovementContext, 0);
-		}
-	}
+	//if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+	//{
+	//	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+	//	{
+	//		Subsystem->AddMappingContext(MovementContext, 0);
+	//	}
+	//}
 
 }
 
@@ -403,13 +413,15 @@ void ACharacterBase::SetHealth(float Health)
 {
 	if (AttributeSetBase.IsValid())
 	{
-		AttributeSetBase->SetHealth(100.0f);
+		AttributeSetBase->SetHealth(Health);
 	}
 }
 
 void ACharacterBase::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
+
+	//Controller = NewController;
 
 	AKidKingPlayerState* PS = GetPlayerState<AKidKingPlayerState>();
 	if (PS)
@@ -426,19 +438,29 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
-	{
 
-		EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ACharacterBase::EnhancedMove);
+	//UEnhancedInputComponent* EIC = CastChecked<UEnhancedInputComponent>(PlayerInputComponent);
+	//ACharacterController* PC = CastChecked<ACharacterController>(Controller);
 
-		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACharacterBase::EnhancedLook);
+	//check(EIC && PC);
 
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacterBase::Jump);
-	}
+	//EIC->BindAction(PC->MoveAction, ETriggerEvent::Triggered, this, &ACharacterBase::EnhancedMove);
+	//EIC->BindAction(PC->LookAction, ETriggerEvent::Triggered, this, &ACharacterBase::EnhancedLook);
+	//EIC->BindAction(PC->JumpAction, ETriggerEvent::Triggered, this, &ACharacterBase::Jump);
 
-	PlayerInputComponent->BindAction(TEXT("Attack"), EInputEvent::IE_Pressed, this, &ACharacterBase::Attack);
 
-	BindASCInput();
+	//ULocalPlayer* LocalPlayer = PC->GetLocalPlayer();
+	//check(LocalPlayer);
+
+	//UEnhancedInputLocalPlayerSubsystem* Subsystem = LocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
+	//check(Subsystem);
+	//Subsystem->ClearAllMappings();
+	//Subsystem->AddMappingContext(PC->MappingContext, 0);
+
+
+	////PlayerInputComponent->BindAction(TEXT("Attack"), EInputEvent::IE_Pressed, this, &ACharacterBase::Attack);
+
+	//BindASCInput();
 }
 
 
@@ -482,6 +504,29 @@ void ACharacterBase::Attack()
 }
 
 
+void ACharacterBase::UpdateHealth(float Delta)
+{
+	float maxHp = GetMaxHealth();
+
+	SetHealth(FMath::Clamp(GetHealth() + Delta, 0, GetMaxHealth()));
+
+	float hp = GetHealth();
+	UE_LOG(LogTemp, Warning, TEXT("Hp: %f"), hp);
+
+
+	if (PlayerWidget)
+	{
+		PlayerWidget->SetHealth(hp, maxHp);
+	}
+
+
+	if (hp == 0.f)
+	{
+		// Handle player elimination
+	}
+
+}
+
 void ACharacterBase::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted)
 {
 	OnAttackEnd.Broadcast();
@@ -492,7 +537,6 @@ void ACharacterBase::PostInitializeComponents()
 	Super::PostInitializeComponents();
 
 }
-
 
 
 //*******************************************************************
@@ -550,8 +594,8 @@ void ACharacterBase::SetCurrentWeapon(AWeapon* NewWeapon, AWeapon* LastWeapon)
 
 	if (NewWeapon)
 	{
-		NewWeapon->SetOwningPawn(this);
-		NewWeapon->OnEquip(LastWeapon);
+		//NewWeapon->SetOwningPawn(this);
+		//NewWeapon->OnEquip(LastWeapon);
 
 	}
 }
@@ -573,7 +617,7 @@ void ACharacterBase::SpawnDefaultInventory()
 		EquipWeapon(Inventory[0]);
 	}
 }
-//*********************************************************************************
+
 void ACharacterBase::AttackHitCheck()
 {
 	float AttackRange = 200.0f;
@@ -630,6 +674,14 @@ void ACharacterBase::AttackHitCheck()
 
 }
 
+//void ACharacterBase::OnRepHealth()
+//{
+//	if (PlayerWidget)
+//	{
+//		PlayerWidget->SetHealth(GetHealth(), GetMaxHealth());
+//	}
+//}
+
 float ACharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	if (Hp <= 0.0f)
@@ -665,12 +717,12 @@ float ACharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 
 			if (CurrentLevel == "UEDPIE_0_stage_01")
 			{
-				//con->ShowDieUI();
+				con->ShowDieUI();
 				Die(myGetDamage, DamageEvent, EventInstigator, DamageCauser);
 			}
 			else
 			{
-				con->ShowFinalStageDieUI();
+				//con->ShowFinalStageDieUI();
 				Die(myGetDamage, DamageEvent, EventInstigator, DamageCauser);
 			}
 
@@ -696,23 +748,25 @@ float ACharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 void ACharacterBase::OnHit(float DamageTaken, FDamageEvent const& DamageEvent, APawn* PawnInstigator, AActor* DamageCauser)
 {
 	PlayAnimMontage(BeHit_AnimMontage);
+
+
+
 }
 
-void ACharacterBase::Die(float KillingDamage, FDamageEvent const& DamageEvent, AController* Killer, AActor* DamageCauser)
+void ACharacterBase::Die(float Damage, FDamageEvent const& DamageEvent, AController* Killer, AActor* DamageCauser)
 {
-	Hp = FMath::Min(0.f, Hp);		// ?
+	//Hp = FMath::Min(0.f, Hp);		// ?
 
-	UDamageType const* const DamageType = DamageEvent.DamageTypeClass ? Cast<const UDamageType>(DamageEvent.DamageTypeClass->GetDefaultObject()) : GetDefault<UDamageType>();
+	//UDamageType const* const DamageType = DamageEvent.DamageTypeClass ? Cast<const UDamageType>(DamageEvent.DamageTypeClass->GetDefaultObject()) : GetDefault<UDamageType>();
 
-	Killer = GetDamageInstigator(Killer, *DamageType);
+	//Killer = GetDamageInstigator(Killer, *DamageType);
 
-	GetWorldTimerManager().ClearTimer(DeathAnimationTimer);
+	//GetWorldTimerManager().ClearTimer(DeathAnimationTimer);
 
-	PlayAnimMontage(BeDeath_AnimMontage);
+	//PlayAnimMontage(BeDeath_AnimMontage);
 
 
-	OnCharacterDie();
-
+	//OnCharacterDie();
 
 	//GetWorldTimerManager().ClearAllTimersForObject(this);
 

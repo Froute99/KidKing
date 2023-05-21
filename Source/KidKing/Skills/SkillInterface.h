@@ -24,11 +24,14 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 
+	void OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FName SkillName;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Cost;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Damage;
 
 };

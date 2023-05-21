@@ -20,7 +20,7 @@ UCLASS()
 class KIDKING_API UCharacterAttributeSetBase : public UAttributeSet
 {
 	GENERATED_BODY()
-	
+
 public:
 	UPROPERTY(BlueprintReadOnly, Category = "Level", ReplicatedUsing = OnRep_Level)
 	FGameplayAttributeData Level;
@@ -34,7 +34,6 @@ public:
 	FGameplayAttributeData MaxHealth;
 	ATTRIBUTE_ACCESSORS(UCharacterAttributeSetBase, MaxHealth)
 
-
 	UPROPERTY(BlueprintReadOnly, Category = "Damage")
 	FGameplayAttributeData Damage;
 	ATTRIBUTE_ACCESSORS(UCharacterAttributeSetBase, Damage)
@@ -42,10 +41,8 @@ public:
 
 	UFUNCTION()
 	virtual void OnRep_Level(const FGameplayAttributeData& OldLevel);
-
 	UFUNCTION()
 	virtual void OnRep_Health(const FGameplayAttributeData& OldHealth);
-	
 	UFUNCTION()
 	virtual void OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth);
 

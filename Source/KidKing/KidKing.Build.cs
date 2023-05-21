@@ -28,6 +28,7 @@ public class KidKing : ModuleRules
 
 
 		PublicIncludePaths.AddRange(new string[] {
+			"EnhancedInput/Public",
 			"KidKing/",
 			"KidKing/Animation/",
 			"KidKing/BlueprintFunctionLibrary/",

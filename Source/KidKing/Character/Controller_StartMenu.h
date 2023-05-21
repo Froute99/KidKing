@@ -36,10 +36,10 @@ public:
 	void ShowFinalStageDieUI();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		bool isShowPauseMenu;
+	bool isShowPauseMenu;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		bool isShowCredits;
+	bool isShowCredits;
 
 private:
 	

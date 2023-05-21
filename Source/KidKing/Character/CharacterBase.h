@@ -22,7 +22,7 @@
 DECLARE_MULTICAST_DELEGATE(FOnAttackEndDelegate);
 
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCharacterDiedDelegate,
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOldCharacterDiedDelegate,
 	ACharacterBase*, Character);
 
 
@@ -36,9 +36,15 @@ public:
 	ACharacterBase();
 	ACharacterBase(const class FObjectInitializer& ObjectInitializer);
 
-	UPROPERTY(BlueprintAssignable, Category = "KidKing|Character")
-	FCharacterDiedDelegate OnCharacterDied;
+	//virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifeTimeProps) const;
 
+
+/***********************************************************
+ *	Abilities
+ ***********************************************************/
+
+	UPROPERTY(BlueprintAssignable, Category = "KidKing|Character")
+	FOldCharacterDiedDelegate OnCharacterDied;
 
 	UFUNCTION(BlueprintCallable, Category = "KidKing|Character")
 	virtual bool IsAlive() const;
@@ -71,19 +77,6 @@ public:
 
 	void InitializeStartingValues(AKidKingPlayerState* PS);
 
-//**********************************************************
-
-
-	USkeletalMeshComponent* GetSpesificPawnMesh()const;
-
-	FName GetWeaponAttachPoint()const;
-
-	void EquipWeapon(class AWeapon* Weapon);
-
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-
 
 	UPROPERTY(EditDefaultsOnly, Category = "Abilities")
 	TWeakObjectPtr<class UCharacterAbilitySystemComponent> AbilitySystemComponent;
@@ -106,7 +99,6 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "KidKing|Abilities")
 	TArray<TSubclassOf<class UCharacterGameplayAbility>> CharacterAbilities;
 
-
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "KidKing|Abilities")
 	TSubclassOf<class UGameplayEffect> DefaultAttributes;
 
@@ -124,8 +116,18 @@ public:
 
 	virtual void PossessedBy(AController* NewController) override;
 
+
+	bool bIsCurrentlyPossessed;
 //**********************************************************
 
+	USkeletalMeshComponent* GetSpesificPawnMesh()const;
+
+	FName GetWeaponAttachPoint()const;
+
+	void EquipWeapon(class AWeapon* Weapon);
+
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
 
 
 	// Called to bind functionality to input
@@ -137,13 +139,17 @@ public:
 
 	virtual void OnHit(float DamageTaken, struct FDamageEvent const& DamageEvent, class APawn* PawnInstigator, class AActor* DamageCauser);
 
-	virtual void Die(float KillingDamage, struct FDamageEvent const& DamageEvent, AController* Killer, AActor* DamageCauser);
+	virtual void Die(float Damage, struct FDamageEvent const& DamageEvent, AController* Killer, AActor* DamageCauser);
+
+
 	virtual void BotDie(float KillingDamage, struct FDamageEvent const& DamageEvent, AController* Killer, AActor* DamageCauser);
 
 	void DeathAnimationEnd();
 
 	void EnhancedMove(const FInputActionValue& Value);
 	void EnhancedLook(const FInputActionValue& Value);
+
+
 	void Attack();
 	void AttackHitCheck();
 
@@ -152,8 +158,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = State)
 	FName MyCharacterName;
 
+	//UPROPERTY(EditAnywhere, BlueprintReadOnly, ReplicatedUsing = OnRepHealth, Category = State)
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = State)
 	float Hp;
+	//UFUNCTION()
+	//virtual void OnRepHealth();
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = State)
 	float Stamina;
@@ -168,8 +178,34 @@ public:
 	float Gold;
 
 
+
+/***********************************************************
+ * Widget
+ ***********************************************************/
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UPlayerWidget> PlayerWidgetClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = HUD)
+	class UPlayerWidget* PlayerWidget;
+
+
+	void UpdateHealth(float Delta);
+
+
 	UPROPERTY(VisibleAnywhere, Category = UI)
 	class UWidgetComponent* HPBarWidget;
+
+
+
+
+
+
+
+
+
+
+
 
 	UPROPERTY(EditDefaultsOnly, Category = Anim)
 	UAnimMontage* BeHit_AnimMontage;
@@ -198,31 +234,28 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UCharacterAnimInstance* MyAnim;
 
-private:
+protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(VisibleAnywhere, Category = Camera)
-	class USpringArmComponent* SpringArm;
+	//UPROPERTY(VisibleAnywhere, Category = Camera)
+	//class USpringArmComponent* SpringArm;
 
-	UPROPERTY(VisibleAnywhere, Category = Camera)
-	class UCameraComponent* Camera;
+	//UPROPERTY(VisibleAnywhere, Category = Camera)
+	//class UCameraComponent* Camera;
 
 	const float DeathAnimDuration = 5.0f;
 	FTimerHandle DeathAnimationTimer;
 
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	class UInputMappingContext* MovementContext;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	class UInputAction* MovementAction;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	class UInputAction* LookAction;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	class UInputAction* JumpAction;
+	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	//class UInputMappingContext* MovementContext;
+	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	//class UInputAction* MovementAction;
+	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	//class UInputAction* LookAction;
+	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	//class UInputAction* JumpAction;
 
 	UPROPERTY(EditDefaultsOnly, Category = Inventory)
 	FName WeaponAttachPoint;

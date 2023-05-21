@@ -13,5 +13,12 @@ UCLASS()
 class KIDKING_API ABotCharacter : public ACharacterBase
 {
 	GENERATED_BODY()
-	
+public:
+
+	virtual void Die(float Damage, FDamageEvent const& DamageEvent, AController* Killer, AActor* DamageCauser);
+
+
+
+
+
 };
