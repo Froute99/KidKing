@@ -89,6 +89,11 @@ public:
 	float GetHealth() const;
 	UFUNCTION(BlueprintCallable, Category = "KidKing|Character|Attributes")
 	float GetMaxHealth() const;
+	UFUNCTION(BlueprintCallable, Category = "KidKing|Character|Attributes")
+	float GetStamina() const;
+	UFUNCTION(BlueprintCallable, Category = "KidKing|Character|Attributes")
+	float GetMaxStamina() const;
+
 
 	virtual void OnRep_PlayerState() override;
 
@@ -147,6 +152,8 @@ public:
 	class UInputAction* JumpAction;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	class UInputAction* AttackAction;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	class UInputAction* RunAction;
 
 
 
@@ -184,6 +191,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = HUD)
 	void UpdateHealth(float Delta);
+	UFUNCTION(BlueprintCallable, Category = HUD)
+	void UpdateStamina(float Delta);
 
 
 	UPROPERTY(VisibleAnywhere, Category = UI)

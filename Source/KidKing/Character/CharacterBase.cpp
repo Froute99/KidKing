@@ -296,6 +296,7 @@ void ACharacterBase::InitializeStartingValues(AKidKingPlayerState* PS)
 
 
 	AttributeSetBase->SetHealth(100.0f);
+	AttributeSetBase->SetStamina(100.0f);
 	//SetHealth(100.0f);
 	//SetHealth(GetMaxHealth());
 

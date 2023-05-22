@@ -21,6 +21,17 @@ void UCharacterAttributeSetBase::OnRep_MaxHealth(const FGameplayAttributeData& O
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UCharacterAttributeSetBase, MaxHealth, OldMaxHealth);
 }
 
+void UCharacterAttributeSetBase::OnRep_Stamina(const FGameplayAttributeData& OldStamina)
+{
+	UKismetSystemLibrary::PrintString(GetWorld(), FString::SanitizeFloat(Stamina.GetCurrentValue()));
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UCharacterAttributeSetBase, Stamina, OldStamina);
+}
+
+void UCharacterAttributeSetBase::OnRep_MaxStamina(const FGameplayAttributeData& OldMaxStamina)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UCharacterAttributeSetBase, MaxStamina, OldMaxStamina);
+}
+
 void UCharacterAttributeSetBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
