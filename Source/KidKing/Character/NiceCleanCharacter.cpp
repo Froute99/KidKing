@@ -184,6 +184,26 @@ float ANiceCleanCharacter::GetMaxHealth() const
 	return 0.0f;
 }
 
+float ANiceCleanCharacter::GetStamina() const
+{
+	if (AttributeSetBase.IsValid())
+	{
+		return AttributeSetBase->GetStamina();
+	}
+
+	return 0.0f;
+}
+
+float ANiceCleanCharacter::GetMaxStamina() const
+{
+	if (AttributeSetBase.IsValid())
+	{
+		return AttributeSetBase->GetMaxStamina();
+	}
+
+	return 0.0f;
+}
+
 void ANiceCleanCharacter::OnRep_PlayerState()
 {
 	AKidKingPlayerState* PS = GetPlayerState<AKidKingPlayerState>();
@@ -225,6 +245,7 @@ void ANiceCleanCharacter::InitializeStartingValues(AKidKingPlayerState* PS)
 
 
 	AttributeSetBase->SetHealth(100.0f);
+	AttributeSetBase->SetStamina(100.0f);
 
 }
 
@@ -387,12 +408,20 @@ void ANiceCleanCharacter::UpdateHealth(float Delta)
 	}
 
 
-	if (hp == 0.f)
+	if (hp < 0.f)
 	{
 		// Handle player elimination
-		//Die();
+		Die();
 	}
 
+}
+
+void ANiceCleanCharacter::UpdateStamina(float Delta)
+{
+	if (PlayerWidget)
+	{
+		PlayerWidget->SetStamina(GetStamina(), GetMaxStamina());
+	}
 }
 
 void ANiceCleanCharacter::AttackHitCheck()

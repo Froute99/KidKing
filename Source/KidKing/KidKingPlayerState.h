@@ -39,6 +39,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "KidKing|KidKingPlayerState|Attributes")
 	float GetMaxHealth() const;
 	UFUNCTION(BlueprintCallable, Category = "KidKing|KidKingPlayerState|Attributes")
+	float GetStamina() const;
+	UFUNCTION(BlueprintCallable, Category = "KidKing|KidKingPlayerState|Attributes")
+	float GetMaxStamina() const;
+	UFUNCTION(BlueprintCallable, Category = "KidKing|KidKingPlayerState|Attributes")
 	int32 GetCharacterLevel() const;
 
 protected:
@@ -58,6 +62,8 @@ protected:
 
 	virtual void HealthChanged(const FOnAttributeChangeData& Data);
 	virtual void MaxHealthChanged(const FOnAttributeChangeData& Data);
+	virtual void StaminaChanged(const FOnAttributeChangeData& Data);
+	virtual void MaxStaminaChanged(const FOnAttributeChangeData& Data);
 	virtual void CharacterLevelChanged(const FOnAttributeChangeData& Data);
 
 	virtual void StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount);

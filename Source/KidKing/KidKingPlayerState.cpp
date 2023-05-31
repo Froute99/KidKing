@@ -48,6 +48,16 @@ float AKidKingPlayerState::GetMaxHealth() const
 	return AttributeSetBase->GetMaxHealth();
 }
 
+float AKidKingPlayerState::GetStamina() const
+{
+	return AttributeSetBase->GetStamina();
+}
+
+float AKidKingPlayerState::GetMaxStamina() const
+{
+	return AttributeSetBase->GetMaxStamina();
+}
+
 int32 AKidKingPlayerState::GetCharacterLevel() const
 {
 	return AttributeSetBase->GetLevel();
@@ -76,6 +86,16 @@ void AKidKingPlayerState::HealthChanged(const FOnAttributeChangeData& Data)
 void AKidKingPlayerState::MaxHealthChanged(const FOnAttributeChangeData& Data)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Max Health Changed!"));
+}
+
+void AKidKingPlayerState::StaminaChanged(const FOnAttributeChangeData& Data)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Stamina Changed!"));
+}
+
+void AKidKingPlayerState::MaxStaminaChanged(const FOnAttributeChangeData& Data)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Max Stamina Changed!"));
 }
 
 void AKidKingPlayerState::CharacterLevelChanged(const FOnAttributeChangeData& Data)
