@@ -122,6 +122,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "KidKing|Character")
 	void SetHealth(float Value);
 
+	UFUNCTION(BlueprintCallable)
+	void InitHealthWidget();
 
 /***********************************************************
  * Input

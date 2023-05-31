@@ -8,6 +8,7 @@ void UPlayerWidget::SetHealth(float Value, float MaxHealth)
 {
 	if (HealthBar)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("In HealthBar"));
 		HealthBar->SetPercent(Value / MaxHealth);
 	}
 }

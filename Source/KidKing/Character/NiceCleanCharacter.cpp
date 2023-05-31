@@ -69,7 +69,6 @@ void ANiceCleanCharacter::PossessedBy(AController* NewController)
 		AddStartupEffects();
 		AddCharacterAbilities();
 	}
-
 }
 
 void ANiceCleanCharacter::OnActorHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, FHitResult Hit)
@@ -304,6 +303,12 @@ void ANiceCleanCharacter::SetHealth(float Value)
 	UpdateHealth(Value);
 }
 
+void ANiceCleanCharacter::InitHealthWidget()
+{
+	PlayerWidget->SetHealth(GetMaxHealth(), GetMaxHealth());
+	UE_LOG(LogTemp, Warning, TEXT("Health bar initialized"));
+}
+
 // Called to bind functionality to input
 void ANiceCleanCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -318,7 +323,7 @@ void ANiceCleanCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	EIC->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ANiceCleanCharacter::EnhancedMove);
 	EIC->BindAction(LookAction, ETriggerEvent::Triggered, this, &ANiceCleanCharacter::EnhancedLook);
 	EIC->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ANiceCleanCharacter::Jump);
-	EIC->BindAction(AttackAction, ETriggerEvent::Triggered, this, &ANiceCleanCharacter::DebugAttack);
+	//EIC->BindAction(AttackAction, ETriggerEvent::Triggered, this, &ANiceCleanCharacter::DebugAttack);
 
 
 	ULocalPlayer* LocalPlayer = PC->GetLocalPlayer();
