@@ -8,7 +8,7 @@
 
 AStartMenu_HUD::AStartMenu_HUD()
 {
-	static ConstructorHelpers::FClassFinder<UUserWidget> ui(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/StartMenu_BP.StartMenu_BP_C'"));
+	static ConstructorHelpers::FClassFinder<UUserWidget> ui(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/BluePrint/UI/StartMenu_BP.StartMenu_BP_C'"));
 	
 	if (ui.Succeeded())
 	{

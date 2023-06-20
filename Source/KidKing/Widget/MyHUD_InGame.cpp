@@ -8,7 +8,7 @@
 
 AMyHUD_InGame::AMyHUD_InGame()
 {
-	static ConstructorHelpers::FClassFinder<UUserWidget> obj(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/HUD.HUD_C'"));
+	static ConstructorHelpers::FClassFinder<UUserWidget> obj(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/BluePrint/UI/HUD.HUD_C'"));
 	if (obj.Succeeded())
 	{
 		uiBPClass = obj.Class;

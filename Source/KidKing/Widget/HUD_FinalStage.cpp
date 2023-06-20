@@ -7,7 +7,7 @@
 
 AHUD_FinalStage::AHUD_FinalStage()
 {
-	static ConstructorHelpers::FClassFinder<UUserWidget> obj(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/HUD_FinalStage.HUD_FinalStage_C'"));
+	static ConstructorHelpers::FClassFinder<UUserWidget> obj(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/BluePrint/UI/HUD_FinalStage.HUD_FinalStage_C'"));
 	if (obj.Succeeded())
 	{
 		uiBPClass = obj.Class;

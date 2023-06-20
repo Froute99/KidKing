@@ -66,7 +66,7 @@ ACharacterBase::ACharacterBase()
 		Widget_Component->SetupAttachment(RootComponent);
 		Widget_Component->SetWidgetSpace(EWidgetSpace::Screen);
 		Widget_Component->SetRelativeLocation(FVector(0.0f, 0.0f, 50.0f));
-		static ConstructorHelpers::FClassFinder<UUserWidget> widget_class(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/HPbar_BP.HPbar_BP_C'"));
+		static ConstructorHelpers::FClassFinder<UUserWidget> widget_class(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/BluePrint/UI/HPbar_BP.HPbar_BP_C'"));
 
 		if (widget_class.Succeeded())
 		{
@@ -133,7 +133,7 @@ ACharacterBase::ACharacterBase(const FObjectInitializer& ObjectInitializer)
 		Widget_Component->SetupAttachment(RootComponent);
 		Widget_Component->SetWidgetSpace(EWidgetSpace::Screen);
 		Widget_Component->SetRelativeLocation(FVector(0.0f, 0.0f, 50.0f));
-		static ConstructorHelpers::FClassFinder<UUserWidget> widget_class(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/HPbar_BP.HPbar_BP_C'"));
+		static ConstructorHelpers::FClassFinder<UUserWidget> widget_class(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/BluePrint/UI/HPbar_BP.HPbar_BP_C'"));
 
 		if (widget_class.Succeeded())
 		{
