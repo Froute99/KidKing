@@ -188,6 +188,7 @@ float ANiceCleanCharacter::GetStamina() const
 {
 	if (AttributeSetBase.IsValid())
 	{
+		UE_LOG(LogTemp, Log, TEXT("%s"), *FString{__FUNCTION__});
 		return AttributeSetBase->GetStamina();
 	}
 
@@ -244,8 +245,8 @@ void ANiceCleanCharacter::InitializeStartingValues(AKidKingPlayerState* PS)
 	InitializeAttributes();
 
 
-	AttributeSetBase->SetHealth(100.0f);
-	AttributeSetBase->SetStamina(100.0f);
+	AttributeSetBase->SetHealth(GetMaxHealth());
+	AttributeSetBase->SetStamina(GetMaxHealth());
 
 }
 

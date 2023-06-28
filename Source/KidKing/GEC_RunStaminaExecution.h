@@ -4,20 +4,21 @@
 
 #include "CoreMinimal.h"
 #include "GameplayEffectExecutionCalculation.h"
-#include "GEC_DamageExecution.generated.h"
+#include "GEC_RunStaminaExecution.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class KIDKING_API UGEC_DamageExecution : public UGameplayEffectExecutionCalculation
+class KIDKING_API UGEC_RunStaminaExecution : public UGameplayEffectExecutionCalculation
 {
 	GENERATED_BODY()
 
 public:
-
-	UGEC_DamageExecution();
+	
+	UGEC_RunStaminaExecution();
 
 	virtual void Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams, OUT FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const override;
+
 
 };
