@@ -22,8 +22,8 @@ struct FStaminaStatics
 
 static const FStaminaStatics& StaminaStatics()
 {
-	static FStaminaStatics DmgStatics;
-	return DmgStatics;
+	static FStaminaStatics StaminaStatics;
+	return StaminaStatics;
 }
 
 UGEC_RunStaminaExecution::UGEC_RunStaminaExecution()
@@ -48,7 +48,7 @@ void UGEC_RunStaminaExecution::Execute_Implementation(const FGameplayEffectCusto
 	EvaluationParamaters.TargetTags = TargetTags;
 
 
-	float ConsumeStamina = 0.13f;
+	float ConsumeStamina = 0.1f;
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(StaminaStatics().StaminaDef, EvaluationParamaters, ConsumeStamina);
 
 	OutExecutionOutput.AddOutputModifier(FGameplayModifierEvaluatedData(StaminaStatics().StaminaProperty, EGameplayModOp::Additive, -ConsumeStamina));
