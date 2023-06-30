@@ -14,6 +14,7 @@ struct FStaminaStatics
 	FStaminaStatics()
 	{
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UCharacterAttributeSetBase, Stamina, Source, false);
+		DEFINE_ATTRIBUTE_CAPTUREDEF(UCharacterAttributeSetBase, Stamina, Target, false);
 		//DEFINE_ATTRIBUTE_CAPTUREDEF(UCharacterAttributeSetBase, Damage, Source, false);
 
 		//DEFINE_ATTRIBUTE_CAPTUREDEF(UCharacterAttributeSetBase, Health, Target, false);
@@ -47,9 +48,15 @@ void UGEC_RunStaminaExecution::Execute_Implementation(const FGameplayEffectCusto
 	EvaluationParamaters.SourceTags = SourceTags;
 	EvaluationParamaters.TargetTags = TargetTags;
 
+	//Character.SprintStaminaConsume
+	//float BaseDamage = FMath::Max<float>(Spec.GetSetByCallerMagnitude(FGameplayTag::RequestGameplayTag(FName("Data.Damage")), false, -1.0f), 0.0f);
 
-	float ConsumeStamina = 0.1f;
-	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(StaminaStatics().StaminaDef, EvaluationParamaters, ConsumeStamina);
+	float ConsumeStamina = 0.f;
+	if (ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(StaminaStatics().StaminaDef, EvaluationParamaters, ConsumeStamina) == false)
+	{
+		UE_LOG(LogTemp, Log, TEXT("Failed in %s"), *FString{ __FUNCTION__ });
+	}
+	UE_LOG(LogTemp, Log, TEXT("%f"), ConsumeStamina);
 
 	OutExecutionOutput.AddOutputModifier(FGameplayModifierEvaluatedData(StaminaStatics().StaminaProperty, EGameplayModOp::Additive, -ConsumeStamina));
 
