@@ -7,17 +7,17 @@ UCharacterAnimInstance::UCharacterAnimInstance()
 {
 	CurrentPawnSpeed = 0.0f;
 
-	static ConstructorHelpers::FObjectFinder<UAnimMontage> ATTACK_MONTAGE_HERO(TEXT("/Script/Engine.AnimMontage'/Game/BluePrint/MainCharacter/Joyce/JoyceOrigin/JoyceAttack.JoyceAttack'"));
-	if (ATTACK_MONTAGE_HERO.Succeeded())
-	{
-		AttackMontage_Hero = ATTACK_MONTAGE_HERO.Object;
-	}
+	//static ConstructorHelpers::FObjectFinder<UAnimMontage> ATTACK_MONTAGE_HERO(TEXT("/Script/Engine.AnimMontage'/Game/BluePrint/MainCharacter/Joyce/JoyceOrigin/JoyceAttack.JoyceAttack'"));
+	//if (ATTACK_MONTAGE_HERO.Succeeded())
+	//{
+	//	AttackMontage_Hero = ATTACK_MONTAGE_HERO.Object;
+	//}
 
-	static ConstructorHelpers::FObjectFinder<UAnimMontage> ATTACK_MONTAGE_BOT(TEXT("/Script/Engine.AnimMontage'/Game/BluePrint/Bot/Poprika_Attack_Montage.Poprika_Attack_Montage'"));
-	if (ATTACK_MONTAGE_BOT.Succeeded())
-	{
-		AttackMontage_Bot = ATTACK_MONTAGE_BOT.Object;
-	}
+	//static ConstructorHelpers::FObjectFinder<UAnimMontage> ATTACK_MONTAGE_BOT(TEXT("/Script/Engine.AnimMontage'/Game/BluePrint/Bot/Poprika_Attack_Montage.Poprika_Attack_Montage'"));
+	//if (ATTACK_MONTAGE_BOT.Succeeded())
+	//{
+	//	AttackMontage_Bot = ATTACK_MONTAGE_BOT.Object;
+	//}
 
 }
 
