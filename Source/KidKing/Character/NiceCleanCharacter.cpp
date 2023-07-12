@@ -19,11 +19,14 @@
 
 #include "GameFramework/CharacterMovementComponent.h"
 
+#include "PlayerHUD.h"
+
 #include "PlayerWidget.h"
 
 #include "CharacterAnimInstance.h"
 
 #include "Engine/EngineTypes.h"
+
 
 
 // Sets default values
@@ -327,7 +330,8 @@ void ANiceCleanCharacter::SetHealth(float Value)
 
 void ANiceCleanCharacter::InitHealthWidget()
 {
-	PlayerWidget->SetHealth(GetMaxHealth(), GetMaxHealth());
+	UPlayerWidget* PlayerWidget = Cast<APlayerHUD>((Cast<APlayerController>(GetController())->GetHUD()))->PlayerWidget;
+	PlayerWidget->SetHealth(PlayerWidget->MaxHealth);
 	UE_LOG(LogTemp, Warning, TEXT("Health bar initialized"));
 }
 
@@ -396,6 +400,9 @@ void ANiceCleanCharacter::DebugAttack()
 
 void ANiceCleanCharacter::UpdateHealth(float Delta)
 {
+	// Don't work
+
+
 	float maxHp = GetMaxHealth();
 
 	//SetHealth(FMath::Clamp(GetHealth() + Delta, 0, GetMaxHealth()));
@@ -403,10 +410,11 @@ void ANiceCleanCharacter::UpdateHealth(float Delta)
 	float hp = GetHealth();
 
 
-	if (PlayerWidget)
-	{
-		PlayerWidget->SetHealth(hp, maxHp);
-	}
+	//if (PlayerWidget)
+	//{
+	//	UE_LOG(LogTemp, Warning, TEXT("Player Widget Alive"))
+	//	PlayerWidget->SetHealth(hp, maxHp);
+	//}
 
 
 	if (hp < 0.f)
@@ -419,10 +427,10 @@ void ANiceCleanCharacter::UpdateHealth(float Delta)
 
 void ANiceCleanCharacter::UpdateStamina(float Delta)
 {
-	if (PlayerWidget)
-	{
-		PlayerWidget->SetStamina(GetStamina(), GetMaxStamina());
-	}
+	//if (PlayerWidget)
+	//{
+	//	PlayerWidget->SetStamina(GetStamina(), GetMaxStamina());
+	//}
 }
 
 void ANiceCleanCharacter::AttackHitCheck()

@@ -517,7 +517,7 @@ void ACharacterBase::UpdateHealth(float Delta)
 
 	if (PlayerWidget)
 	{
-		PlayerWidget->SetHealth(hp, maxHp);
+		PlayerWidget->SetHealth(hp);
 	}
 
 

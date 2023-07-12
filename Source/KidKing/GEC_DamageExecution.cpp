@@ -44,15 +44,14 @@ void UGEC_DamageExecution::Execute_Implementation(const FGameplayEffectCustomExe
 	const FGameplayTagContainer* SourceTags = Spec.CapturedSourceTags.GetAggregatedTags();
 	const FGameplayTagContainer* TargetTags = Spec.CapturedTargetTags.GetAggregatedTags();
 
-	FAggregatorEvaluateParameters EvaluationParamaters;
-	EvaluationParamaters.SourceTags = SourceTags;
-	EvaluationParamaters.TargetTags = TargetTags;
+	FAggregatorEvaluateParameters EvaluationParameters;
+	EvaluationParameters.SourceTags = SourceTags;
+	EvaluationParameters.TargetTags = TargetTags;
 
 
 	//float BaseDamage = FMath::Max<float>(Spec.GetSetByCallerMagnitude(FGameplayTag::RequestGameplayTag(FName("Data.Damage")), false, -1.0f), 0.0f);
 	float BaseDamage = 0.f;
-	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().DamageDef, EvaluationParamaters, BaseDamage);
-
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().DamageDef, EvaluationParameters, BaseDamage);
 
 	float DamageDone = BaseDamage;
 
@@ -62,5 +61,4 @@ void UGEC_DamageExecution::Execute_Implementation(const FGameplayEffectCustomExe
 	}
 
 	OutExecutionOutput.AddOutputModifier(FGameplayModifierEvaluatedData(DamageStatics().HealthProperty, EGameplayModOp::Additive, -DamageDone));
-	
 }

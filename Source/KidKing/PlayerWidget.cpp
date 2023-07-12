@@ -4,7 +4,7 @@
 #include "PlayerWidget.h"
 #include "Components/ProgressBar.h"
 
-void UPlayerWidget::SetHealth(float Value, float MaxHealth)
+void UPlayerWidget::SetHealth(float Value)
 {
 	if (HealthBar)
 	{
@@ -13,10 +13,11 @@ void UPlayerWidget::SetHealth(float Value, float MaxHealth)
 	}
 }
 
-void UPlayerWidget::SetStamina(float Value, float MaxStamina)
+void UPlayerWidget::SetStamina(float Value)
 {
 	if (StaminaBar)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("In StaminaBar"));
 		StaminaBar->SetPercent(Value / MaxStamina);
 	}
 }
