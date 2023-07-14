@@ -5,6 +5,12 @@
 #include "CharacterAttributeSetBase.h"
 #include "CharacterAbilitySystemComponent.h"
 
+#include "NiceCleanCharacter.h"
+#include "Components/ProgressBar.h"
+
+#include "PlayerWidget.h"
+#include "PlayerHUD.h"
+
 AKidKingPlayerState::AKidKingPlayerState()
 {
 	AbilitySystemComponent = CreateDefaultSubobject<UCharacterAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
@@ -70,8 +76,10 @@ void AKidKingPlayerState::BeginPlay()
 	if (AbilitySystemComponent)
 	{
 		HealthChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSetBase->GetHealthAttribute()).AddUObject(this, &AKidKingPlayerState::HealthChanged);
-		MaxHealthChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSetBase->GetHealthAttribute()).AddUObject(this, &AKidKingPlayerState::MaxHealthChanged);
-		CharacterLevelChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSetBase->GetHealthAttribute()).AddUObject(this, &AKidKingPlayerState::CharacterLevelChanged);
+		MaxHealthChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSetBase->GetMaxHealthAttribute()).AddUObject(this, &AKidKingPlayerState::MaxHealthChanged);
+		StaminaChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSetBase->GetStaminaAttribute()).AddUObject(this, &AKidKingPlayerState::StaminaChanged);
+		MaxStaminaChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSetBase->GetMaxStaminaAttribute()).AddUObject(this, &AKidKingPlayerState::MaxStaminaChanged);
+		CharacterLevelChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSetBase->GetLevelAttribute()).AddUObject(this, &AKidKingPlayerState::CharacterLevelChanged);
 
 		AbilitySystemComponent->RegisterGameplayTagEvent(FGameplayTag::RequestGameplayTag(FName("state.Debuff.Stun")), EGameplayTagEventType::NewOrRemoved).AddUObject(this, &AKidKingPlayerState::StunTagChanged);
 	}
@@ -80,6 +88,13 @@ void AKidKingPlayerState::BeginPlay()
 
 void AKidKingPlayerState::HealthChanged(const FOnAttributeChangeData& Data)
 {
+	UPlayerWidget* PlayerWidget = Cast<APlayerHUD>(Cast<APlayerController>(GetOwningController())->GetHUD())->PlayerWidget;
+	if (IsValid(PlayerWidget))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%f"), Data.NewValue);
+		PlayerWidget->SetHealth(Data.NewValue);
+	}
+
 	UE_LOG(LogTemp, Warning, TEXT("Health Changed!"));
 }
 
@@ -90,6 +105,13 @@ void AKidKingPlayerState::MaxHealthChanged(const FOnAttributeChangeData& Data)
 
 void AKidKingPlayerState::StaminaChanged(const FOnAttributeChangeData& Data)
 {
+	UPlayerWidget* PlayerWidget = Cast<APlayerHUD>(Cast<APlayerController>(GetOwningController())->GetHUD())->PlayerWidget;
+	if (IsValid(PlayerWidget))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%f"), Data.NewValue);
+		PlayerWidget->SetStamina(Data.NewValue);
+	}
+
 	UE_LOG(LogTemp, Warning, TEXT("Stamina Changed!"));
 }
 
@@ -109,7 +131,7 @@ void AKidKingPlayerState::StunTagChanged(const FGameplayTag CallbackTag, int32 N
 	{
 		FGameplayTagContainer AbilityTagsToCancel;
 		AbilityTagsToCancel.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability")));
-		
+
 		FGameplayTagContainer AbilityTagsToIgnore;
 		AbilityTagsToIgnore.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.NotCanceledByStun")));
 

@@ -55,6 +55,8 @@ protected:
 
 	FDelegateHandle HealthChangedDelegateHandle;
 	FDelegateHandle MaxHealthChangedDelegateHandle;
+	FDelegateHandle StaminaChangedDelegateHandle;
+	FDelegateHandle MaxStaminaChangedDelegateHandle;
 	FDelegateHandle CharacterLevelChangedDelegateHandle;
 
 	

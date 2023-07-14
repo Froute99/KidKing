@@ -187,8 +187,8 @@ public:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class UPlayerWidget> PlayerWidgetClass;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = HUD)
-	class UPlayerWidget* PlayerWidget;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = HUD)
+	//class UPlayerWidget* PlayerWidget;
 
 
 	UFUNCTION(BlueprintCallable, Category = HUD)

@@ -15,9 +15,13 @@ class KIDKING_API UPlayerWidget : public UUserWidget
 	GENERATED_BODY()
 public:
 
-	void SetHealth(float Value, float MaxHealth);
-	void SetStamina(float Value, float MaxStamina);
+	void SetHealth(float Value);
+	void SetStamina(float Value);
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float MaxHealth;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float MaxStamina;
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
