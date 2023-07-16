@@ -88,14 +88,26 @@ void AKidKingPlayerState::BeginPlay()
 
 void AKidKingPlayerState::HealthChanged(const FOnAttributeChangeData& Data)
 {
-	UPlayerWidget* PlayerWidget = Cast<APlayerHUD>(Cast<APlayerController>(GetOwningController())->GetHUD())->PlayerWidget;
+	UPlayerWidget* PlayerWidget = Cast<APlayerHUD>(GetPlayerController()->GetHUD())->PlayerWidget;
 	if (IsValid(PlayerWidget))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%f"), Data.NewValue);
 		PlayerWidget->SetHealth(Data.NewValue);
+		if (FMath::IsNearlyZero(Data.NewValue))
+		{
+			APlayerController* PC = GetPlayerController();
+
+			if (IsValid(PC->GetCharacter()))
+			{
+				UE_LOG(LogTemp, Warning, TEXT("PC Valid"));
+			}
+
+
+			Cast<ANiceCleanCharacter>(PC->GetCharacter())->Die();
+		}
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("Health Changed!"));
+	//UE_LOG(LogTemp, Warning, TEXT("Health Changed!"));
 }
 
 void AKidKingPlayerState::MaxHealthChanged(const FOnAttributeChangeData& Data)
@@ -105,14 +117,14 @@ void AKidKingPlayerState::MaxHealthChanged(const FOnAttributeChangeData& Data)
 
 void AKidKingPlayerState::StaminaChanged(const FOnAttributeChangeData& Data)
 {
-	UPlayerWidget* PlayerWidget = Cast<APlayerHUD>(Cast<APlayerController>(GetOwningController())->GetHUD())->PlayerWidget;
+	UPlayerWidget* PlayerWidget = Cast<APlayerHUD>(GetPlayerController()->GetHUD())->PlayerWidget;
 	if (IsValid(PlayerWidget))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%f"), Data.NewValue);
 		PlayerWidget->SetStamina(Data.NewValue);
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("Stamina Changed!"));
+	//UE_LOG(LogTemp, Warning, TEXT("Stamina Changed!"));
 }
 
 void AKidKingPlayerState::MaxStaminaChanged(const FOnAttributeChangeData& Data)
