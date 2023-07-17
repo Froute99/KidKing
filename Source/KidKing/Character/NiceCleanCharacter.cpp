@@ -44,7 +44,7 @@ ANiceCleanCharacter::ANiceCleanCharacter()
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("CAMERA"));
 	Camera->SetupAttachment(SpringArm);
 
-
+	IsDead = false;
 }
 
 // Called when the game starts or when spawned
@@ -123,11 +123,14 @@ void ANiceCleanCharacter::RemoveCharacterAbilities()
 // OnActorHit -> Check Hp -> Call Die
 void ANiceCleanCharacter::Die()
 {
+	IsDead = true;
 	RemoveCharacterAbilities();
 
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	GetCharacterMovement()->GravityScale = 0;
-	GetCharacterMovement()->Velocity = FVector(0);
+	//GetCharacterMovement()->GravityScale = 0;
+	GetCharacterMovement()->StopMovementImmediately();
+	//GetCharacterMovement()->Velocity = FVector(0);
+	DisableInput(Cast<APlayerController>(GetController()));
 
 	OnCharacterDied.Broadcast(this);
 
@@ -141,20 +144,8 @@ void ANiceCleanCharacter::Die()
 		int32 NumEffectEremoved = AbilitySystemComponent->RemoveActiveEffectsWithTags(EffectsTagsToRemove);
 		AbilitySystemComponent->AddLooseGameplayTag(DeadTag);
 
-		if (DeathMontage)
-		{
-			PlayAnimMontage(DeathMontage);
-		}
-		else
-		{
-			FinishDying();
-		}
+		OnDyingBP();
 	}
-}
-
-void ANiceCleanCharacter::FinishDying()
-{
-	Destroy();
 }
 
 float ANiceCleanCharacter::GetCharacterLevel() const

@@ -36,7 +36,7 @@ public class KidKing : ModuleRules
 			"KidKing/Widget/",
 			"KidKing/Core/",
 			"KidKing/Items/",
-			"KidKing/Skills/"
+			"KidKing/Ability/"
 		});
 
 	}

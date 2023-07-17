@@ -44,12 +44,16 @@ public:
 		FVector NormalImpulse, struct FHitResult Hit);
 
 
-	void AttackHitCheck();
-	float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent,
-		AController* EventInstigator, AActor* DamageCauser);
+	//void AttackHitCheck();
+	//float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent,
+	//	AController* EventInstigator, AActor* DamageCauser);
 
 	//UFUNCTION(BlueprintImplementableEvent)
 	//void ShouldApplyDamage(FHitResult HitResult);
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool IsDead;
 
 
 /***********************************************************
@@ -80,8 +84,8 @@ public:
 	virtual void RemoveCharacterAbilities();
 
 	virtual void Die();
-	UFUNCTION(BlueprintCallable, Category = "KidKing|Character")
-	virtual void FinishDying();
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnDyingBP();
 
 	UFUNCTION(BlueprintCallable, Category = "KidKing|Character|Attributes")
 	float GetCharacterLevel() const;
@@ -139,7 +143,7 @@ public:
 
 	void EnhancedMove(const FInputActionValue& Value);
 	void EnhancedLook(const FInputActionValue& Value);
-	void DebugAttack();
+	//void DebugAttack();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Input)
 	bool IsAttacking = false;
@@ -156,18 +160,6 @@ public:
 	class UInputAction* AttackAction;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	class UInputAction* RunAction;
-
-
-
-/***********************************************************
- * Animation
- ***********************************************************/
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "KidKing|Animation")
-	class UCharacterAnimInstance* AnimInstance;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "KidKing|Animation")
-	UAnimMontage* DeathMontage;
 
 
 
