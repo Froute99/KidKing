@@ -191,11 +191,6 @@ public:
 	//class UPlayerWidget* PlayerWidget;
 
 
-	UFUNCTION(BlueprintCallable, Category = HUD)
-	void UpdateHealth(float Delta);
-	UFUNCTION(BlueprintCallable, Category = HUD)
-	void UpdateStamina(float Delta);
-
 
 	UPROPERTY(VisibleAnywhere, Category = UI)
 	class UWidgetComponent* HPBarWidget;
