@@ -5,14 +5,14 @@
 
 UKidKingGameInstance::UKidKingGameInstance()
 {
-	FString CharacterDataPath = TEXT("/Script/Engine.DataTable'/Game/GameData/MyCharacterData.MyCharacterData'");
-	static ConstructorHelpers::FObjectFinder<UDataTable> DT_MYCHARACTER(*CharacterDataPath);
+	//FString CharacterDataPath = TEXT("/Script/Engine.DataTable'/Game/GameData/MyCharacterData.MyCharacterData'");
+	//static ConstructorHelpers::FObjectFinder<UDataTable> DT_MYCHARACTER(*CharacterDataPath);
 
-	if (DT_MYCHARACTER.Succeeded())
-	{
-		MyCharacterTable = DT_MYCHARACTER.Object;
-		ensure(MyCharacterTable->GetRowMap().Num() > 0);
-	}
+	//if (DT_MYCHARACTER.Succeeded())
+	//{
+	//	MyCharacterTable = DT_MYCHARACTER.Object;
+	//	ensure(MyCharacterTable->GetRowMap().Num() > 0);
+	//}
 }
 
 void UKidKingGameInstance::Init()
