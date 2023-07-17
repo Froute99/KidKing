@@ -603,20 +603,20 @@ void ACharacterBase::SetCurrentWeapon(AWeapon* NewWeapon, AWeapon* LastWeapon)
 
 void ACharacterBase::SpawnDefaultInventory()
 {
-	int32 NumWeaponClasses = DefaultInventoryClasses.Num();
-	for (int32 i = 0; i < NumWeaponClasses; i++)
-	{
-		FActorSpawnParameters SpawnInfo;
-		UWorld* WRLD = GetWorld();
-		AWeapon* NewWeapon = WRLD->SpawnActor<AWeapon>(DefaultInventoryClasses[i], SpawnInfo);
-		NewWeapon->SetOwner(this);
-		AddWeapon(NewWeapon);
-	}
+	//int32 NumWeaponClasses = DefaultInventoryClasses.Num();
+	//for (int32 i = 0; i < NumWeaponClasses; i++)
+	//{
+	//	FActorSpawnParameters SpawnInfo;
+	//	UWorld* WRLD = GetWorld();
+	//	AWeapon* NewWeapon = WRLD->SpawnActor<AWeapon>(DefaultInventoryClasses[i], SpawnInfo);
+	//	NewWeapon->SetOwner(this);
+	//	AddWeapon(NewWeapon);
+	//}
 
-	if (Inventory.Num() > 0)
-	{
-		EquipWeapon(Inventory[0]);
-	}
+	//if (Inventory.Num() > 0)
+	//{
+	//	EquipWeapon(Inventory[0]);
+	//}
 }
 
 void ACharacterBase::AttackHitCheck()
