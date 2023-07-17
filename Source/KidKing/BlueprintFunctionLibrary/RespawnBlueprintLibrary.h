@@ -16,9 +16,9 @@ class UKidKingBlueprintLibrary : public UBlueprintFunctionLibrary
 public:
 	// When Character Die, Register to respawn in 5sec.
 	UFUNCTION(BlueprintCallable)
-	static void RegisterRespawn(class ACharacterBase* Character);
+	static void RegisterRespawn(class ACharacter* Character);
 	
 
 	UFUNCTION(BlueprintCallable)
-	static bool Purchase(class ACharacterBase* Character, int Cost);
+	static bool Purchase(class ACharacter* Character, int Cost);
 };

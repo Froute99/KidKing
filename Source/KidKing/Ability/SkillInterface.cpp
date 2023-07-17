@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Skills/SkillInterface.h"
-#include "CharacterBase.h"
+#include "SkillInterface.h"
+#include "BaseCharacter.h"
 
 // Sets default values
 ASkillInterface::ASkillInterface()
@@ -31,17 +31,17 @@ void ASkillInterface::Tick(float DeltaTime)
 
 void ASkillInterface::OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	ACharacterBase* Target = Cast<ACharacterBase>(OtherActor);
-	ACharacterBase* Shooter = GetInstigator<ACharacterBase>();
+	//ACharacterBase* Target = Cast<ACharacterBase>(OtherActor);
+	//ACharacterBase* Shooter = GetInstigator<ACharacterBase>();
 
 
-	if (Target && Target != Shooter && Target->GetLocalRole() == ROLE_Authority)
-	{
-		float HealthDelta = -Damage;
-		Target->UpdateHealth(HealthDelta);
-	}
+	//if (Target && Target != Shooter && Target->GetLocalRole() == ROLE_Authority)
+	//{
+	//	float HealthDelta = -Damage;
+	//	Target->UpdateHealth(HealthDelta);
+	//}
 
 
-	Destroy();
+	//Destroy();
 }
 

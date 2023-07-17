@@ -4,7 +4,7 @@
 #include "GameHUD_UI.h"
 #include "GameFramework/PlayerController.h"
 #include "Controller_StartMenu.h"
-#include "CharacterBase.h"
+//#include "CharacterBase.h"
 
 void UGameHUD_UI::NativeConstruct()
 {

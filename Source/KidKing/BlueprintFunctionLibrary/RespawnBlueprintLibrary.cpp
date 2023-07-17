@@ -3,34 +3,34 @@
 
 #include "RespawnBlueprintLibrary.h"
 #include "GameFramework/Character.h"
-#include "CharacterBase.h"
 #include "TimerManager.h"
 
 
-void UKidKingBlueprintLibrary::RegisterRespawn(ACharacterBase* Character)
+void UKidKingBlueprintLibrary::RegisterRespawn(ACharacter* Character)
 {
-	UWorld* World = GEngine->GameViewport->GetWorld();
+	//UWorld* World = GEngine->GameViewport->GetWorld();
 
-	FTimerHandle RespawnHandle;
-	
-	FTimerDelegate Delegate;
-	Delegate.BindUFunction(Character, "Respawn");
+	//FTimerHandle RespawnHandle;
+	//
+	//FTimerDelegate Delegate;
+	//Delegate.BindUFunction(Character, "Respawn");
 
 
-	World->GetTimerManager().SetTimer(RespawnHandle, Delegate, 5.0f, false);
+	//World->GetTimerManager().SetTimer(RespawnHandle, Delegate, 5.0f, false);
 	
 }
 
-bool UKidKingBlueprintLibrary::Purchase(ACharacterBase* Character, int Cost)
+bool UKidKingBlueprintLibrary::Purchase(ACharacter* Character, int Cost)
 {
-	if (Character->Gold >= Cost)
-	{
-		Character->Gold -= Cost;
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	//if (Character->Gold >= Cost)
+	//{
+	//	Character->Gold -= Cost;
+	//	return true;
+	//}
+	//else
+	//{
+	//	return false;
+	//}
+	return false;
 }
 

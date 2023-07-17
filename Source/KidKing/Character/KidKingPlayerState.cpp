@@ -5,7 +5,7 @@
 #include "CharacterAttributeSetBase.h"
 #include "CharacterAbilitySystemComponent.h"
 
-#include "NiceCleanCharacter.h"
+#include "BaseCharacter.h"
 #include "Components/ProgressBar.h"
 
 #include "PlayerWidget.h"
@@ -103,7 +103,7 @@ void AKidKingPlayerState::HealthChanged(const FOnAttributeChangeData& Data)
 			}
 
 
-			Cast<ANiceCleanCharacter>(PC->GetCharacter())->Die();
+			Cast<ABaseCharacter>(PC->GetCharacter())->Die();
 		}
 	}
 

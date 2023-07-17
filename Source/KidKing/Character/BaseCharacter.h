@@ -14,21 +14,21 @@
 
 #include "KidKingPlayerState.h"
 
-#include "NiceCleanCharacter.generated.h"
+#include "BaseCharacter.generated.h"
 
 
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCharacterDiedDelegate, ANiceCleanCharacter*, Character);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCharacterDiedDelegate, ABaseCharacter*, Character);
 
 
 UCLASS()
-class KIDKING_API ANiceCleanCharacter : public ACharacter, public IAbilitySystemInterface
+class KIDKING_API ABaseCharacter : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this character's properties
-	ANiceCleanCharacter();
+	ABaseCharacter();
 
 protected:
 	// Called when the game starts or when spawned

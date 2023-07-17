@@ -3,7 +3,7 @@
 
 #include "BTTask_Attack.h"
 #include "CustomAIController.h"
-#include "CharacterBase.h"
+#include "BaseCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
 UBTTask_Attack::UBTTask_Attack()
@@ -14,23 +14,23 @@ UBTTask_Attack::UBTTask_Attack()
 
 EBTNodeResult::Type UBTTask_Attack::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	EBTNodeResult::Type Result = Super::ExecuteTask(OwnerComp, NodeMemory);
-	
-	auto MyCharacter = Cast<ACharacterBase>(OwnerComp.GetAIOwner()->GetPawn());
-	if (nullptr == MyCharacter)
-		return EBTNodeResult::Failed;
+	//EBTNodeResult::Type Result = Super::ExecuteTask(OwnerComp, NodeMemory);
+	//
+	//auto MyCharacter = Cast<ACharacterBase>(OwnerComp.GetAIOwner()->GetPawn());
+	//if (nullptr == MyCharacter)
+	//	return EBTNodeResult::Failed;
 
-	auto Target = Cast<ACharacterBase>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(ACustomAIController::TargetKey));
-	if (nullptr == Target)
-		return EBTNodeResult::Failed;
+	//auto Target = Cast<ACharacterBase>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(ACustomAIController::TargetKey));
+	//if (nullptr == Target)
+	//	return EBTNodeResult::Failed;
 
-	FVector LookVector = Target->GetActorLocation() - MyCharacter->GetActorLocation();
-	LookVector.Z = 0.0f;
-	FRotator TargetRot = FRotationMatrix::MakeFromX(LookVector).Rotator();
-	MyCharacter->SetActorRotation(TargetRot);
+	//FVector LookVector = Target->GetActorLocation() - MyCharacter->GetActorLocation();
+	//LookVector.Z = 0.0f;
+	//FRotator TargetRot = FRotationMatrix::MakeFromX(LookVector).Rotator();
+	//MyCharacter->SetActorRotation(TargetRot);
 
-	MyCharacter->Attack();
-	
+	//MyCharacter->Attack();
+	//
 
 	return EBTNodeResult::InProgress;
 }

@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Character/NiceCleanCharacter.h"
+#include "Character/BaseCharacter.h"
 
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
@@ -30,7 +30,7 @@
 
 
 // Sets default values
-ANiceCleanCharacter::ANiceCleanCharacter()
+ABaseCharacter::ABaseCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -48,20 +48,20 @@ ANiceCleanCharacter::ANiceCleanCharacter()
 }
 
 // Called when the game starts or when spawned
-void ANiceCleanCharacter::BeginPlay()
+void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
 }
 
 // Called every frame
-void ANiceCleanCharacter::Tick(float DeltaTime)
+void ABaseCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 }
 
-void ANiceCleanCharacter::PossessedBy(AController* NewController)
+void ABaseCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 
@@ -74,27 +74,27 @@ void ANiceCleanCharacter::PossessedBy(AController* NewController)
 	}
 }
 
-void ANiceCleanCharacter::OnActorHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, FHitResult Hit)
+void ABaseCharacter::OnActorHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, FHitResult Hit)
 {
 
 }
 
-bool ANiceCleanCharacter::IsAlive() const
+bool ABaseCharacter::IsAlive() const
 {
 	return GetHealth() > 0.0f;
 }
 
-int32 ANiceCleanCharacter::GetAbilityLevel(KidKingAbilityID AbilityID) const
+int32 ABaseCharacter::GetAbilityLevel(KidKingAbilityID AbilityID) const
 {
 	return 1;
 }
 
-UAbilitySystemComponent* ANiceCleanCharacter::GetAbilitySystemComponent() const
+UAbilitySystemComponent* ABaseCharacter::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent.Get();
 }
 
-void ANiceCleanCharacter::RemoveCharacterAbilities()
+void ABaseCharacter::RemoveCharacterAbilities()
 {
 	if (GetLocalRole() != ROLE_Authority || !AbilitySystemComponent.IsValid() || !AbilitySystemComponent->CharacterAbilitiesGiven)
 	{
@@ -121,7 +121,7 @@ void ANiceCleanCharacter::RemoveCharacterAbilities()
 }
 
 // OnActorHit -> Check Hp -> Call Die
-void ANiceCleanCharacter::Die()
+void ABaseCharacter::Die()
 {
 	IsDead = true;
 	RemoveCharacterAbilities();
@@ -148,7 +148,7 @@ void ANiceCleanCharacter::Die()
 	}
 }
 
-float ANiceCleanCharacter::GetCharacterLevel() const
+float ABaseCharacter::GetCharacterLevel() const
 {
 	if (AttributeSetBase.IsValid())
 	{
@@ -158,7 +158,7 @@ float ANiceCleanCharacter::GetCharacterLevel() const
 	return 0.0f;
 }
 
-float ANiceCleanCharacter::GetHealth() const
+float ABaseCharacter::GetHealth() const
 {
 	if (AttributeSetBase.IsValid())
 	{
@@ -168,7 +168,7 @@ float ANiceCleanCharacter::GetHealth() const
 	return 0.f;
 }
 
-float ANiceCleanCharacter::GetMaxHealth() const
+float ABaseCharacter::GetMaxHealth() const
 {
 	if (AttributeSetBase.IsValid())
 	{
@@ -178,7 +178,7 @@ float ANiceCleanCharacter::GetMaxHealth() const
 	return 0.0f;
 }
 
-float ANiceCleanCharacter::GetStamina() const
+float ABaseCharacter::GetStamina() const
 {
 	if (AttributeSetBase.IsValid())
 	{
@@ -189,7 +189,7 @@ float ANiceCleanCharacter::GetStamina() const
 	return 0.0f;
 }
 
-float ANiceCleanCharacter::GetMaxStamina() const
+float ABaseCharacter::GetMaxStamina() const
 {
 	if (AttributeSetBase.IsValid())
 	{
@@ -199,7 +199,7 @@ float ANiceCleanCharacter::GetMaxStamina() const
 	return 0.0f;
 }
 
-void ANiceCleanCharacter::OnRep_PlayerState()
+void ABaseCharacter::OnRep_PlayerState()
 {
 	AKidKingPlayerState* PS = GetPlayerState<AKidKingPlayerState>();
 	if (PS)
@@ -210,7 +210,7 @@ void ANiceCleanCharacter::OnRep_PlayerState()
 	}
 }
 
-void ANiceCleanCharacter::BindASCInput()
+void ABaseCharacter::BindASCInput()
 {
 	if (!ASCInputBound && AbilitySystemComponent.IsValid() && IsValid(InputComponent))
 	{
@@ -221,7 +221,7 @@ void ANiceCleanCharacter::BindASCInput()
 
 }
 
-void ANiceCleanCharacter::InitializeStartingValues(AKidKingPlayerState* PS)
+void ABaseCharacter::InitializeStartingValues(AKidKingPlayerState* PS)
 {
 	AbilitySystemComponent = Cast<UCharacterAbilitySystemComponent>(PS->GetAbilitySystemComponent());
 	PS->GetAbilitySystemComponent()->InitAbilityActorInfo(PS, this);
@@ -244,7 +244,7 @@ void ANiceCleanCharacter::InitializeStartingValues(AKidKingPlayerState* PS)
 
 }
 
-void ANiceCleanCharacter::AddCharacterAbilities()
+void ABaseCharacter::AddCharacterAbilities()
 {
 	if (GetLocalRole() != ROLE_Authority || !AbilitySystemComponent.IsValid() || AbilitySystemComponent->CharacterAbilitiesGiven)
 	{
@@ -260,7 +260,7 @@ void ANiceCleanCharacter::AddCharacterAbilities()
 
 }
 
-void ANiceCleanCharacter::InitializeAttributes()
+void ABaseCharacter::InitializeAttributes()
 {
 	if (!AbilitySystemComponent.IsValid())
 	{
@@ -285,7 +285,7 @@ void ANiceCleanCharacter::InitializeAttributes()
 
 }
 
-void ANiceCleanCharacter::AddStartupEffects()
+void ABaseCharacter::AddStartupEffects()
 {
 	if (GetLocalRole() != ROLE_Authority || !AbilitySystemComponent.IsValid() || AbilitySystemComponent->StartupEffectApplied)
 	{
@@ -309,7 +309,7 @@ void ANiceCleanCharacter::AddStartupEffects()
 
 }
 
-void ANiceCleanCharacter::SetHealth(float Value)
+void ABaseCharacter::SetHealth(float Value)
 {
 	if (AttributeSetBase.IsValid())
 	{
@@ -317,7 +317,7 @@ void ANiceCleanCharacter::SetHealth(float Value)
 	}
 }
 
-void ANiceCleanCharacter::InitHealthWidget()
+void ABaseCharacter::InitHealthWidget()
 {
 	UPlayerWidget* PlayerWidget = Cast<APlayerHUD>((Cast<APlayerController>(GetController())->GetHUD()))->PlayerWidget;
 	PlayerWidget->SetHealth(PlayerWidget->MaxHealth);
@@ -325,7 +325,7 @@ void ANiceCleanCharacter::InitHealthWidget()
 }
 
 // Called to bind functionality to input
-void ANiceCleanCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
@@ -335,10 +335,10 @@ void ANiceCleanCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 
 	check(EIC && PC);
 
-	EIC->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ANiceCleanCharacter::EnhancedMove);
-	EIC->BindAction(LookAction, ETriggerEvent::Triggered, this, &ANiceCleanCharacter::EnhancedLook);
-	EIC->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ANiceCleanCharacter::Jump);
-	//EIC->BindAction(AttackAction, ETriggerEvent::Triggered, this, &ANiceCleanCharacter::DebugAttack);
+	EIC->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ABaseCharacter::EnhancedMove);
+	EIC->BindAction(LookAction, ETriggerEvent::Triggered, this, &ABaseCharacter::EnhancedLook);
+	EIC->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ABaseCharacter::Jump);
+	//EIC->BindAction(AttackAction, ETriggerEvent::Triggered, this, &ABaseCharacter::DebugAttack);
 
 
 	ULocalPlayer* LocalPlayer = PC->GetLocalPlayer();
@@ -352,7 +352,7 @@ void ANiceCleanCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	//BindASCInput();
 }
 
-void ANiceCleanCharacter::EnhancedMove(const FInputActionValue& Value)
+void ABaseCharacter::EnhancedMove(const FInputActionValue& Value)
 {
 	const FVector2D MovementVector = Value.Get<FVector2D>();
 
@@ -371,7 +371,7 @@ void ANiceCleanCharacter::EnhancedMove(const FInputActionValue& Value)
 	AddMovementInput(Right, MovementVector.X);*/
 }
 
-void ANiceCleanCharacter::EnhancedLook(const FInputActionValue& Value)
+void ABaseCharacter::EnhancedLook(const FInputActionValue& Value)
 {
 	const FVector2D LookAxisVector = Value.Get<FVector2D>();
 	AddControllerYawInput(LookAxisVector.X);

@@ -6,37 +6,37 @@
 #include "Runtime/UMG/Public/Blueprint/UserWidget.h"
 #include "KidKingPlayerState.h"
 #include "AbilitySystemComponent.h"
-#include "CharacterBase.h"
+//#include "CharacterBase.h"
 
 AController_StartMenu::AController_StartMenu()
 {
 
-	isShowPauseMenu = false;
-	isShowCredits = false;
+	//isShowPauseMenu = false;
+	//isShowCredits = false;
 
-	static ConstructorHelpers::FClassFinder<UUserWidget> GamePauseUI(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/BluePrint/UI/Pause_BP.Pause_BP_C'"));
-	if (GamePauseUI.Succeeded())
-	{
-		uiGamePauseBPClass = GamePauseUI.Class;
-	}
+	//static ConstructorHelpers::FClassFinder<UUserWidget> GamePauseUI(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/BluePrint/UI/Pause_BP.Pause_BP_C'"));
+	//if (GamePauseUI.Succeeded())
+	//{
+	//	uiGamePauseBPClass = GamePauseUI.Class;
+	//}
 
-	static ConstructorHelpers::FClassFinder<UUserWidget> GameCreditsUI(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/BluePrint/UI/Credits_BP.Credits_BP_C'"));
-	if (GameCreditsUI.Succeeded())
-	{
-		uiCreditsBPClass = GameCreditsUI.Class;
-	}
+	//static ConstructorHelpers::FClassFinder<UUserWidget> GameCreditsUI(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/BluePrint/UI/Credits_BP.Credits_BP_C'"));
+	//if (GameCreditsUI.Succeeded())
+	//{
+	//	uiCreditsBPClass = GameCreditsUI.Class;
+	//}
 
-	static ConstructorHelpers::FClassFinder<UUserWidget> DieUI(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/BluePrint/UI/DieUI_BP.DieUI_BP_C'"));
-	if (DieUI.Succeeded())
-	{
-		uiDieBPClass = DieUI.Class;
-	}
+	//static ConstructorHelpers::FClassFinder<UUserWidget> DieUI(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/BluePrint/UI/DieUI_BP.DieUI_BP_C'"));
+	//if (DieUI.Succeeded())
+	//{
+	//	uiDieBPClass = DieUI.Class;
+	//}
 
-	static ConstructorHelpers::FClassFinder<UUserWidget> FinalStageDieUI(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/BluePrint/UI/FinalStageLoser.FinalStageLoser_C'"));
-	if (FinalStageDieUI.Succeeded())
-	{
-		uiFinalStageDieBPClass = FinalStageDieUI.Class;
-	}
+	//static ConstructorHelpers::FClassFinder<UUserWidget> FinalStageDieUI(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/BluePrint/UI/FinalStageLoser.FinalStageLoser_C'"));
+	//if (FinalStageDieUI.Succeeded())
+	//{
+	//	uiFinalStageDieBPClass = FinalStageDieUI.Class;
+	//}
 
 }
 
