@@ -20,7 +20,6 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCharacterDiedDelegate, ABaseCharacter*, Character);
 
-
 UCLASS()
 class KIDKING_API ABaseCharacter : public ACharacter, public IAbilitySystemInterface
 {
@@ -112,6 +111,7 @@ public:
 	TWeakObjectPtr<class UCharacterAbilitySystemComponent> AbilitySystemComponent;
 	UPROPERTY(EditDefaultsOnly, Category = "Abilities")
 	TWeakObjectPtr<class UCharacterAttributeSetBase> AttributeSetBase;
+
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "KidKing|Abilities")
 	TArray<TSubclassOf<class UCharacterGameplayAbility>> CharacterAbilities;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "KidKing|Abilities")
@@ -130,9 +130,6 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "KidKing|Character")
 	void SetHealth(float Value);
-
-	UFUNCTION(BlueprintCallable)
-	void InitHealthWidget();
 
 /***********************************************************
  * Input
