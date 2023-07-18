@@ -99,6 +99,7 @@ void ABotCharacterBase::BeginPlay()
 		AbilitySystemComponent->InitAbilityActorInfo(this, this);
 		//AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSetBase->GetHealthAttribute()).AddUObject(this, &ABotCharacterBase::HandleHealthChanged)
 	}
+
 }
 
 // Called every frame
@@ -156,6 +157,7 @@ void ABotCharacterBase::InitializeAttributes()
 		FActiveGameplayEffectHandle ActiveGEHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToTarget(*NewHandle.Data.Get(), AbilitySystemComponent);
 	}
 
+	AttributeSetBase->SetHealth(GetMaxHealth());
 }
 
 // Called to bind functionality to input
