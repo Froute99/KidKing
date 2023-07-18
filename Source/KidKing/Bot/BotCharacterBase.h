@@ -6,8 +6,7 @@
 #include "GameFramework/Character.h"
 
 #include "AbilitySystemInterface.h"
-
-#include "BaseCharacter.h"
+#include "CharacterAttributeSetBase.h"
 
 #include "BotCharacterBase.generated.h"
 
@@ -25,8 +24,7 @@ public:
 	ABotCharacterBase();
 
 
-	UFUNCTION(BlueprintCallable, Category = "Abilities")
-	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	class UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
 
 	UPROPERTY(BlueprintAssignable, Category = "KidKing|Bot")
@@ -38,6 +36,12 @@ public:
 	float GetHealth() const;
 	UFUNCTION(BlueprintCallable, Category = "KidKing|Bot|Attributes")
 	float GetMaxHealth() const;
+
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
+	// Called to bind functionality to input
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 
 protected:
@@ -52,21 +56,18 @@ protected:
 
 
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "KidKing|BotAbilities")
-	TWeakObjectPtr<class UAbilitySystemComponent> AbilitySystemComponent;
-	UPROPERTY(EditDefaultsOnly, Category = "KidKing|BotAbilities")
-	TWeakObjectPtr<class UBotAttributeSetBase> AttributeSetBase;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "KidKing|Bot|Abilities")
+	class UAbilitySystemComponent* AbilitySystemComponent;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly , Category = "KidKing|Bot|Abilities")
+	UCharacterAttributeSetBase* AttributeSetBase;
 	
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "KidKing|Bot|Abilities")
 	TArray<TSubclassOf<class UCharacterGameplayAbility>> BotAbilities;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "KidKing|Bot|Abilities")
 	TSubclassOf<class UGameplayEffect> DefaultAttributes;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+private:	
+	void InitializeAttributes();
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 };
