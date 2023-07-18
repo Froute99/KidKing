@@ -228,12 +228,6 @@ void ABaseCharacter::InitializeStartingValues(AKidKingPlayerState* PS)
 
 	AttributeSetBase = PS->GetAttributeSetBase();
 
-	if (AttributeSetBase.IsValid())
-	{
-		UE_LOG(LogTemp, Warning, TEXT("AttributeSetBase is valid"));
-	}
-
-
 	AbilitySystemComponent->SetTagMapCount(DeadTag, 0);
 
 	InitializeAttributes();
@@ -315,13 +309,6 @@ void ABaseCharacter::SetHealth(float Value)
 	{
 		AttributeSetBase->SetHealth(Value);
 	}
-}
-
-void ABaseCharacter::InitHealthWidget()
-{
-	UPlayerWidget* PlayerWidget = Cast<APlayerHUD>((Cast<APlayerController>(GetController())->GetHUD()))->PlayerWidget;
-	PlayerWidget->SetHealth(PlayerWidget->MaxHealth);
-	UE_LOG(LogTemp, Warning, TEXT("Health bar initialized"));
 }
 
 // Called to bind functionality to input
