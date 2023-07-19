@@ -33,41 +33,6 @@ void ABotCharacterBase::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 
-	//	InitializeStartingValues(PS);
-	//AbilitySystemComponent->InitAbilityActorInfo(NewController, this);
-
-	//AbilitySystemComponent->SetTagMapCount(DeadTag, 0);
-
-	//HealthChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSetBase->GetHealthAttribute()).AddUObject(this, &AKidKingPlayerState::HealthChanged);
-	//MaxHealthChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSetBase->GetMaxHealthAttribute()).AddUObject(this, &AKidKingPlayerState::MaxHealthChanged);
-	//CharacterLevelChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSetBase->GetLevelAttribute()).AddUObject(this, &AKidKingPlayerState::CharacterLevelChanged);
-
-
-
-
-
-	//	AddStartupEffects();
-	//if (GetLocalRole() != ROLE_Authority || !AbilitySystemComponent.IsValid() || AbilitySystemComponent->StartupEffectApplied)
-	//{
-	//	return;
-	//}
-
-	//FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
-	//EffectContext.AddSourceObject(this);
-
-	//for (TSubclassOf<UGameplayEffect> GameplayEffect : StartupEffects)
-	//{
-	//	FGameplayEffectSpecHandle NewHandle = AbilitySystemComponent->MakeOutgoingSpec(GameplayEffect, GetCharacterLevel(), EffectContext);
-
-	//	if (NewHandle.IsValid())
-	//	{
-	//		FActiveGameplayEffectHandle ActiveGEHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToTarget(*NewHandle.Data.Get(), AbilitySystemComponent.Get());
-	//	}
-	//}
-
-	//AbilitySystemComponent->StartupEffectApplied = true;
-
-
 	//	AddCharacterAbilities();
 	//if (GetLocalRole() != ROLE_Authority || !AbilitySystemComponent.IsValid() || AbilitySystemComponent->CharacterAbilitiesGiven)
 	//{
