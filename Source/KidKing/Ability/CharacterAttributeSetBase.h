@@ -22,6 +22,9 @@ class KIDKING_API UCharacterAttributeSetBase : public UAttributeSet
 	GENERATED_BODY()
 
 public:
+	void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
+
+
 	UPROPERTY(BlueprintReadOnly, Category = "Level", ReplicatedUsing = OnRep_Level)
 	FGameplayAttributeData Level;
 	ATTRIBUTE_ACCESSORS(UCharacterAttributeSetBase, Level)
