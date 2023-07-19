@@ -7,12 +7,12 @@
 
 AConnectionState_HUD::AConnectionState_HUD()
 {
-	static ConstructorHelpers::FClassFinder<UUserWidget> ui(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/BluePrint/UI/ConnectionState.ConnectionState_C'"));
+	//static ConstructorHelpers::FClassFinder<UUserWidget> ui(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/BluePrint/UI/ConnectionState.ConnectionState_C'"));
 
-	if (ui.Succeeded())
-	{
-		uiBPClass = ui.Class;
-	}
+	//if (ui.Succeeded())
+	//{
+	//	uiBPClass = ui.Class;
+	//}
 }
 
 void AConnectionState_HUD::BeginPlay()
