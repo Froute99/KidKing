@@ -329,7 +329,7 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 
 	ULocalPlayer* LocalPlayer = PC->GetLocalPlayer();
-	check(LocalPlayer);
+	//check(LocalPlayer);
 
 	UEnhancedInputLocalPlayerSubsystem* Subsystem = LocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
 	check(Subsystem);

@@ -88,7 +88,7 @@ void AKidKingPlayerState::BeginPlay()
 
 void AKidKingPlayerState::HealthChanged(const FOnAttributeChangeData& Data)
 {
-	UPlayerWidget* PlayerWidget = Cast<APlayerHUD>(GetPlayerController()->GetHUD())->PlayerWidget;
+	//UPlayerWidget* PlayerWidget = Cast<APlayerHUD>(GetPlayerController()->GetHUD())->PlayerWidget;
 	if (IsValid(PlayerWidget))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%f"), Data.NewValue);
@@ -117,7 +117,7 @@ void AKidKingPlayerState::MaxHealthChanged(const FOnAttributeChangeData& Data)
 
 void AKidKingPlayerState::StaminaChanged(const FOnAttributeChangeData& Data)
 {
-	UPlayerWidget* PlayerWidget = Cast<APlayerHUD>(GetPlayerController()->GetHUD())->PlayerWidget;
+	//UPlayerWidget* PlayerWidget = Cast<APlayerHUD>(GetPlayerController()->GetHUD())->PlayerWidget;
 	if (IsValid(PlayerWidget))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%f"), Data.NewValue);

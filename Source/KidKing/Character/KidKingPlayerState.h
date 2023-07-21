@@ -45,6 +45,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "KidKing|KidKingPlayerState|Attributes")
 	int32 GetCharacterLevel() const;
 
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "KidKing|KidKingPlayerState")
+	class UPlayerWidget* PlayerWidget;
+
 protected:
 	UPROPERTY()
 	class UCharacterAbilitySystemComponent* AbilitySystemComponent;
