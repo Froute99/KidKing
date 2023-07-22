@@ -10,15 +10,6 @@
  * 
  */
 
-UENUM(BlueprintType)
-enum class EKidKingGameState :uint8
-{
-	GameStart,
-	GamePlay,
-	GamePause,
-	GameOver,
-};
-
 
 UCLASS()
 class KIDKING_API AKidKingGameModeBase : public AGameModeBase
@@ -30,20 +21,6 @@ protected:
 	
 	virtual void BeginPlay()override;
 
-	UPROPERTY(EditAnywhere, Category = "UMG Game")
-	EKidKingGameState GameStateEnum;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UMG Game")
-	TSubclassOf<UUserWidget>HUDWidgetClass;
-
-
-	UUserWidget* CurrentWidget;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float RedTeamCapturePoint;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float BlueTeamCapturePoint;
-
 public:
-	void ChangeUI();
+
 };

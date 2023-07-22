@@ -32,6 +32,8 @@ void ACharacterController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 
+
+
 	//AKidKingPlayerState* PS = GetPlayerState<AKidKingPlayerState>();
 	//if (PS)
 	//{
