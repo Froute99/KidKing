@@ -54,6 +54,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool IsDead;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int TeamIndex;
+
 
 /***********************************************************
  * View
@@ -113,7 +116,7 @@ public:
 	TWeakObjectPtr<class UCharacterAttributeSetBase> AttributeSetBase;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "KidKing|Abilities")
-	TArray<TSubclassOf<class UCharacterGameplayAbility>> CharacterAbilities;
+	TArray<TSubclassOf<class UGameplayAbility>> CharacterAbilities;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "KidKing|Abilities")
 	TSubclassOf<class UGameplayEffect> DefaultAttributes;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "KidKing|Abilities")

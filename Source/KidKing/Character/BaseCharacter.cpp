@@ -245,9 +245,9 @@ void ABaseCharacter::AddCharacterAbilities()
 		return;
 	}
 
-	for (TSubclassOf<UCharacterGameplayAbility>& StartupAbility : CharacterAbilities)
+	for (TSubclassOf<UGameplayAbility>& StartupAbility : CharacterAbilities)
 	{
-		AbilitySystemComponent->GiveAbility(FGameplayAbilitySpec(StartupAbility, GetAbilityLevel(StartupAbility.GetDefaultObject()->AbilityID), static_cast<int32>(StartupAbility.GetDefaultObject()->AbilityInputID), this));
+		AbilitySystemComponent->GiveAbility(FGameplayAbilitySpec(StartupAbility, 1, -1, this));
 	}
 
 	AbilitySystemComponent->CharacterAbilitiesGiven = true;
