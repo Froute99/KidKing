@@ -97,18 +97,33 @@ void AKidKingPlayerState::BeginPlay()
 
 void AKidKingPlayerState::HealthChanged(const FOnAttributeChangeData& Data)
 {
-	UPlayerWidget* PlayerWidget = Cast<APlayerHUD>(GetPlayerController()->GetHUD())->PlayerWidget;
+	UPlayerWidget* PlayerWidget = nullptr;
+	APlayerController* PC = GetPlayerController();
+	APlayerHUD* HUD;
+
+	if (IsValid(PC))
+	{
+		HUD = Cast<APlayerHUD>(PC->GetHUD());
+		if (IsValid(HUD))
+		{
+			PlayerWidget = HUD->PlayerWidget;
+		}
+	}
+	
+
 	if (IsValid(PlayerWidget))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Health: %f"), Data.NewValue);
 		PlayerWidget->SetHealth(Data.NewValue);
 		if (FMath::IsNearlyZero(Data.NewValue))
 		{
-			APlayerController* PC = GetPlayerController();
 
 			if (IsValid(PC->GetCharacter()))
 			{
-				Cast<ABaseCharacter>(PC->GetCharacter())->Die();
+				if (IsValid(PC->GetCharacter()))
+				{
+					Cast<ABaseCharacter>(PC->GetCharacter())->Die();
+				}
 			}
 		}
 	}
@@ -123,7 +138,20 @@ void AKidKingPlayerState::MaxHealthChanged(const FOnAttributeChangeData& Data)
 
 void AKidKingPlayerState::StaminaChanged(const FOnAttributeChangeData& Data)
 {
-	UPlayerWidget* PlayerWidget = Cast<APlayerHUD>(GetPlayerController()->GetHUD())->PlayerWidget;
+	UPlayerWidget* PlayerWidget = nullptr;
+	APlayerController* PC = GetPlayerController();
+	APlayerHUD* HUD;
+
+	if (IsValid(PC))
+	{
+		HUD = Cast<APlayerHUD>(PC->GetHUD());
+		if (IsValid(HUD))
+		{
+			PlayerWidget = HUD->PlayerWidget;
+		}
+	}
+
+
 	if (IsValid(PlayerWidget))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Stamina: %f"), Data.NewValue);
