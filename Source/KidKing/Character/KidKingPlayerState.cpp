@@ -84,14 +84,23 @@ void AKidKingPlayerState::BeginPlay()
 		AbilitySystemComponent->RegisterGameplayTagEvent(FGameplayTag::RequestGameplayTag(FName("state.Debuff.Stun")), EGameplayTagEventType::NewOrRemoved).AddUObject(this, &AKidKingPlayerState::StunTagChanged);
 	}
 
+	//APlayerController* PC = GetPlayerController();
+	//if (PC->IsValidLowLevel())
+	//{
+	//	AHUD* HUD = PC->GetHUD();
+	//	if (HUD->IsValidLowLevel())
+	//	{
+	//		PlayerWidget = Cast<APlayerHUD>(GetPlayerController()->GetHUD())->PlayerWidget;
+	//	}
+	//}
 }
 
 void AKidKingPlayerState::HealthChanged(const FOnAttributeChangeData& Data)
 {
-	//UPlayerWidget* PlayerWidget = Cast<APlayerHUD>(GetPlayerController()->GetHUD())->PlayerWidget;
+	UPlayerWidget* PlayerWidget = Cast<APlayerHUD>(GetPlayerController()->GetHUD())->PlayerWidget;
 	if (IsValid(PlayerWidget))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%f"), Data.NewValue);
+		UE_LOG(LogTemp, Warning, TEXT("Health: %f"), Data.NewValue);
 		PlayerWidget->SetHealth(Data.NewValue);
 		if (FMath::IsNearlyZero(Data.NewValue))
 		{
@@ -99,11 +108,8 @@ void AKidKingPlayerState::HealthChanged(const FOnAttributeChangeData& Data)
 
 			if (IsValid(PC->GetCharacter()))
 			{
-				UE_LOG(LogTemp, Warning, TEXT("PC Valid"));
+				Cast<ABaseCharacter>(PC->GetCharacter())->Die();
 			}
-
-
-			Cast<ABaseCharacter>(PC->GetCharacter())->Die();
 		}
 	}
 
@@ -117,10 +123,10 @@ void AKidKingPlayerState::MaxHealthChanged(const FOnAttributeChangeData& Data)
 
 void AKidKingPlayerState::StaminaChanged(const FOnAttributeChangeData& Data)
 {
-	//UPlayerWidget* PlayerWidget = Cast<APlayerHUD>(GetPlayerController()->GetHUD())->PlayerWidget;
+	UPlayerWidget* PlayerWidget = Cast<APlayerHUD>(GetPlayerController()->GetHUD())->PlayerWidget;
 	if (IsValid(PlayerWidget))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%f"), Data.NewValue);
+		UE_LOG(LogTemp, Warning, TEXT("Stamina: %f"), Data.NewValue);
 		PlayerWidget->SetStamina(Data.NewValue);
 	}
 

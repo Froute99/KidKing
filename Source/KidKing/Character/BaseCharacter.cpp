@@ -71,6 +71,7 @@ void ABaseCharacter::PossessedBy(AController* NewController)
 		InitializeStartingValues(PS);
 		AddStartupEffects();
 		AddCharacterAbilities();
+
 	}
 }
 
@@ -234,7 +235,7 @@ void ABaseCharacter::InitializeStartingValues(AKidKingPlayerState* PS)
 
 
 	AttributeSetBase->SetHealth(GetMaxHealth());
-	AttributeSetBase->SetStamina(GetMaxHealth());
+	AttributeSetBase->SetStamina(GetMaxStamina());
 
 }
 

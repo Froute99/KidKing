@@ -46,8 +46,8 @@ public:
 	int32 GetCharacterLevel() const;
 
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "KidKing|KidKingPlayerState")
-	class UPlayerWidget* PlayerWidget;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "KidKing|KidKingPlayerState")
+	//class UPlayerWidget* PlayerWidget;
 
 protected:
 	UPROPERTY()
