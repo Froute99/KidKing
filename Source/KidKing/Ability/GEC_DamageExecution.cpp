@@ -10,6 +10,8 @@ struct FDamageStatics
 {
 	DECLARE_ATTRIBUTE_CAPTUREDEF(Health);
 	DECLARE_ATTRIBUTE_CAPTUREDEF(Damage);
+	DECLARE_ATTRIBUTE_CAPTUREDEF(Armor);
+
 	//DECLARE_ATTRIBUTE_CAPTUREDEF(Stamina);
 
 	FDamageStatics()
@@ -17,6 +19,7 @@ struct FDamageStatics
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UCharacterAttributeSetBase, Damage, Source, false);
 
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UCharacterAttributeSetBase, Health, Target, false);
+		DEFINE_ATTRIBUTE_CAPTUREDEF(UCharacterAttributeSetBase, Armor, Target, false);
 	}
 };
 
@@ -30,6 +33,7 @@ UGEC_DamageExecution::UGEC_DamageExecution()
 {
 	RelevantAttributesToCapture.Add(DamageStatics().HealthDef);
 	RelevantAttributesToCapture.Add(DamageStatics().DamageDef);
+	RelevantAttributesToCapture.Add(DamageStatics().ArmorDef);
 }
 
 void UGEC_DamageExecution::Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams, OUT FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const
@@ -53,7 +57,15 @@ void UGEC_DamageExecution::Execute_Implementation(const FGameplayEffectCustomExe
 	float BaseDamage = 0.f;
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().DamageDef, EvaluationParameters, BaseDamage);
 
+	float BaseArmor = 0.f;
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().ArmorDef, EvaluationParameters, BaseArmor);
+
 	float DamageDone = BaseDamage;
+
+	if (BaseArmor > 0.0f)
+	{
+		DamageDone -= BaseArmor;
+	}
 
 	if (DamageDone < 0.0f)
 	{
