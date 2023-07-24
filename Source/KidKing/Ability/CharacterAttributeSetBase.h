@@ -44,6 +44,9 @@ public:
 	ATTRIBUTE_ACCESSORS(UCharacterAttributeSetBase, MaxStamina)
 
 
+	UPROPERTY(BlueprintReadOnly, Category = "Stamina", ReplicatedUsing = OnRep_Armor)
+	FGameplayAttributeData Armor;
+	ATTRIBUTE_ACCESSORS(UCharacterAttributeSetBase, Armor)
 
 
 	UPROPERTY(BlueprintReadOnly, Category = "Damage")
@@ -61,6 +64,8 @@ public:
 	virtual void OnRep_Stamina(const FGameplayAttributeData& OldStamina);
 	UFUNCTION()
 	virtual void OnRep_MaxStamina(const FGameplayAttributeData& OldMaxStamina);
+	UFUNCTION()
+	virtual void OnRep_Armor(const FGameplayAttributeData& OldArmor);
 
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
