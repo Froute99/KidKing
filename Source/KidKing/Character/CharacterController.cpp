@@ -15,30 +15,8 @@ ACharacterController::ACharacterController(const FObjectInitializer& ObjectIniti
 
 }
 
-//void ACharacterController::SetupInputComponent()
-//{
-//	Super::SetupInputComponent();
-//
-//
-//	PawnMappingContext = NewObject<UInputMappingContext>(this);
-//
-//	MoveAction = NewObject<UInputAction>(this);
-//	MoveAction->ValueType = EInputActionValueType::Axis3D;
-//	PawnMappingContext->MapKey(MoveAction, EKeys::W);
-//
-//}
-
 void ACharacterController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 
-
-
-	//AKidKingPlayerState* PS = GetPlayerState<AKidKingPlayerState>();
-	//if (PS)
-	//{
-	//	PS->GetAbilitySystemComponent()->InitAbilityActorInfo(PS, InPawn);
-	//}
-
-	//EnableInput(this);
 }
