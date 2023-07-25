@@ -55,7 +55,7 @@ public:
 	bool IsDead;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		int TeamIndex;
+	int TeamIndex;
 
 
 /***********************************************************

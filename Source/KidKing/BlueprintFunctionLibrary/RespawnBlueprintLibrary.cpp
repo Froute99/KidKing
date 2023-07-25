@@ -8,15 +8,15 @@
 
 void UKidKingBlueprintLibrary::RegisterRespawn(ACharacter* Character)
 {
-	//UWorld* World = GEngine->GameViewport->GetWorld();
+	UWorld* World = GEngine->GameViewport->GetWorld();
 
-	//FTimerHandle RespawnHandle;
-	//
-	//FTimerDelegate Delegate;
-	//Delegate.BindUFunction(Character, "Respawn");
+	FTimerHandle RespawnHandle;
+	
+	FTimerDelegate Delegate;
+	Delegate.BindUFunction(Character, "Respawn");
 
 
-	//World->GetTimerManager().SetTimer(RespawnHandle, Delegate, 5.0f, false);
+	World->GetTimerManager().SetTimer(RespawnHandle, Delegate, 5.0f, false);
 	
 }
 

@@ -109,7 +109,7 @@ void AKidKingPlayerState::HealthChanged(const FOnAttributeChangeData& Data)
 			PlayerWidget = HUD->PlayerWidget;
 		}
 	}
-	
+
 
 	if (IsValid(PlayerWidget))
 	{
@@ -117,8 +117,7 @@ void AKidKingPlayerState::HealthChanged(const FOnAttributeChangeData& Data)
 		PlayerWidget->SetHealth(Data.NewValue);
 		if (FMath::IsNearlyZero(Data.NewValue))
 		{
-
-			if (IsValid(PC->GetCharacter()))
+			if (IsValid(PC))
 			{
 				if (IsValid(PC->GetCharacter()))
 				{
