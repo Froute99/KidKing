@@ -154,7 +154,7 @@ void AKidKingPlayerState::StaminaChanged(const FOnAttributeChangeData& Data)
 
 	if (IsValid(PlayerWidget))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Stamina: %f"), Data.NewValue);
+		//UE_LOG(LogTemp, Warning, TEXT("Stamina: %f"), Data.NewValue);
 		PlayerWidget->SetStamina(Data.NewValue);
 	}
 
