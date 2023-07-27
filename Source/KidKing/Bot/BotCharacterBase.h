@@ -44,6 +44,10 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "KidKing|Bot")
+	FName MonsterName;
+
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
