@@ -47,6 +47,17 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnRespawn();
 
+	UFUNCTION(BlueprintCallable)
+	void Win();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnWin();
+
+	UFUNCTION(BlueprintCallable)
+	void Lose();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnLose();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool IsDead;

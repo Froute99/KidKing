@@ -27,6 +27,7 @@
 
 #include "Engine/EngineTypes.h"
 
+#include "Kismet/KismetSystemLibrary.h"
 
 
 // Sets default values
@@ -106,6 +107,17 @@ void ABaseCharacter::Respawn()
 
 	OnRespawn();
 }
+
+void ABaseCharacter::Win()
+{
+	OnWin();
+}
+
+void ABaseCharacter::Lose()
+{
+	OnLose();
+}
+
 
 bool ABaseCharacter::IsAlive() const
 {
