@@ -42,13 +42,10 @@ public:
 	void OnActorHit(class AActor* SelfActor, class AActor* OtherActor,
 		FVector NormalImpulse, struct FHitResult Hit);
 
-
-	//void AttackHitCheck();
-	//float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent,
-	//	AController* EventInstigator, AActor* DamageCauser);
-
-	//UFUNCTION(BlueprintImplementableEvent)
-	//void ShouldApplyDamage(FHitResult HitResult);
+	UFUNCTION(BlueprintCallable)
+	void Respawn();
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnRespawn();
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

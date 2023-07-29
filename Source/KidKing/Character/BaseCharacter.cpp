@@ -80,6 +80,33 @@ void ABaseCharacter::OnActorHit(AActor* SelfActor, AActor* OtherActor, FVector N
 
 }
 
+void ABaseCharacter::Respawn()
+{
+	EnableInput(Cast<APlayerController>(GetController()));
+
+	IsDead = false;
+
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+
+	UE_LOG(LogTemp, Log, TEXT("Respawn"));
+
+	//GetCharacterMovement()->MaxWalkSpeed = 600.f;
+
+
+	AKidKingPlayerState* PS = GetPlayerState<AKidKingPlayerState>();
+	if (PS)
+	{
+		InitializeStartingValues(PS);
+		AddStartupEffects();
+		AddCharacterAbilities();
+		
+		UE_LOG(LogTemp, Log, TEXT("Player State is valid in respawn"));
+	}
+
+
+	OnRespawn();
+}
+
 bool ABaseCharacter::IsAlive() const
 {
 	return GetHealth() > 0.0f;
@@ -131,7 +158,7 @@ void ABaseCharacter::Die()
 	//GetCharacterMovement()->GravityScale = 0;
 	GetCharacterMovement()->StopMovementImmediately();
 	//GetCharacterMovement()->Velocity = FVector(0);
-	DisableInput(Cast<APlayerController>(GetController()));
+	//DisableInput(Cast<APlayerController>(GetController()));
 
 	OnCharacterDied.Broadcast(this);
 
