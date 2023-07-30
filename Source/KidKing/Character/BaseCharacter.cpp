@@ -108,12 +108,13 @@ void ABaseCharacter::Respawn()
 	OnRespawn();
 }
 
-void ABaseCharacter::Win()
+
+void ABaseCharacter::Lose_Implementation()
 {
 	OnWin();
 }
 
-void ABaseCharacter::Lose()
+void ABaseCharacter::Win_Implementation()
 {
 	OnLose();
 }
