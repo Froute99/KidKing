@@ -53,6 +53,10 @@ public:
 	FGameplayAttributeData Damage;
 	ATTRIBUTE_ACCESSORS(UCharacterAttributeSetBase, Damage)
 
+	UPROPERTY(BlueprintReadOnly, Category = "PowerUp")
+	FGameplayAttributeData PowerUp;
+	ATTRIBUTE_ACCESSORS(UCharacterAttributeSetBase, PowerUp)
+
 
 	UFUNCTION()
 	virtual void OnRep_Level(const FGameplayAttributeData& OldLevel);
