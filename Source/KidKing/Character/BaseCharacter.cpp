@@ -108,17 +108,15 @@ void ABaseCharacter::Respawn()
 	OnRespawn();
 }
 
-
-void ABaseCharacter::Lose_Implementation()
+void ABaseCharacter::Win_Implementation()
 {
 	OnWin();
 }
 
-void ABaseCharacter::Win_Implementation()
+void ABaseCharacter::Lose_Implementation()
 {
 	OnLose();
 }
-
 
 bool ABaseCharacter::IsAlive() const
 {
