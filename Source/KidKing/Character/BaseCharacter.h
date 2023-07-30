@@ -47,13 +47,13 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnRespawn();
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Client, Reliable)
 	void Win();
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnWin();
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Client, Reliable)
 	void Lose();
 
 	UFUNCTION(BlueprintImplementableEvent)
