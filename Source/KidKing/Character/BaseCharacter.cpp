@@ -11,23 +11,21 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubSystems.h"
 
-
 #include "CharacterAbilitySystemComponent.h"
 #include "CharacterAttributeSetBase.h"
 #include "CharacterGameplayAbility.h"
 
-
 #include "GameFramework/CharacterMovementComponent.h"
 
 #include "PlayerHUD.h"
-
 #include "PlayerWidget.h"
 
 #include "CharacterAnimInstance.h"
 
 #include "Engine/EngineTypes.h"
-
 #include "Kismet/KismetSystemLibrary.h"
+
+#include "Net/UnrealNetwork.h"
 
 
 // Sets default values
@@ -116,6 +114,13 @@ void ABaseCharacter::Win_Implementation()
 void ABaseCharacter::Lose_Implementation()
 {
 	OnLose();
+}
+
+void ABaseCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME_CONDITION_NOTIFY(ABaseCharacter, IsDead, COND_None, REPNOTIFY_Always);
 }
 
 bool ABaseCharacter::IsAlive() const

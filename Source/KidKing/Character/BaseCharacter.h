@@ -59,11 +59,14 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnLose();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite)
 	bool IsDead;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int TeamIndex;
+
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 
 /***********************************************************
