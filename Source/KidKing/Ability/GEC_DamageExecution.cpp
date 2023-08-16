@@ -76,6 +76,7 @@ void UGEC_DamageExecution::Execute_Implementation(const FGameplayEffectCustomExe
 
 	if (DamageDone < 0.0f)		DamageDone = 0.0f;
 
+	UE_LOG(LogTemp, Log, TEXT("%f"), DamageDone);
 
 
 	OutExecutionOutput.AddOutputModifier(FGameplayModifierEvaluatedData(DamageStatics().HealthProperty, EGameplayModOp::Additive, -DamageDone));
